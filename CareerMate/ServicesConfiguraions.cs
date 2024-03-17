@@ -25,7 +25,10 @@ namespace CareerMate
 
             // Add Identity
             services
-                .AddIdentity<IdentityUser, IdentityRole>()
+                .AddIdentity<IdentityUser, IdentityRole>(options =>
+                {
+                    options.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -36,6 +39,7 @@ namespace CareerMate
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireDigit = true;
+                options.User.RequireUniqueEmail = true;
             });
 
             // Add Authentication and JwtBearer

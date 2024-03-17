@@ -1,4 +1,4 @@
-﻿namespace CareerMate.Models.Enums
+﻿namespace CareerMate.Models
 {
     public static class Roles
     {
@@ -8,12 +8,5 @@
         public const string Student = "STUDENT";
         public const string Company = "COMPANY";
         public const string CompanySupervisor = "COMPANYSUPERVISOR";
-
-        //SysAdmin = 1,
-        //Coordinator = 2,
-        //CoordinatorAssistant = 3,
-        //Student = 4,
-        //Company = 5,
-        //CompanySupervisor = 6,
     }
 }

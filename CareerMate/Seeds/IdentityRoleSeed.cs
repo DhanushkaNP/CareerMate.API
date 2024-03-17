@@ -1,4 +1,4 @@
-﻿using CareerMate.Models.Enums;
+﻿using CareerMate.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
