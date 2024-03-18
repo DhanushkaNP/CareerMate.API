@@ -11,6 +11,6 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.CreateSysAdmin
         {
         }
 
-        public String Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

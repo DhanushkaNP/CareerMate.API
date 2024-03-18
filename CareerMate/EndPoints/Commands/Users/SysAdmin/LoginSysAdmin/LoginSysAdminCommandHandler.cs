@@ -1,4 +1,5 @@
 ﻿using CareerMate.EndPoints.Handlers;
+using CareerMate.Models.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -15,11 +16,11 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.LoginSysAdmin
 {
     public class LoginSysAdminCommandHandler : IRequestHandler<LoginSysAdminCommand, BaseResponse>
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationUserRoles> _roleManager;
         private readonly IConfiguration _configuration;
 
-        public LoginSysAdminCommandHandler(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public LoginSysAdminCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<ApplicationUserRoles> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -47,7 +48,7 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.LoginSysAdmin
             var authClaims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.UserName, ClaimValueTypes.String),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim("JWTID", Guid.NewGuid().ToString()),
             };
 

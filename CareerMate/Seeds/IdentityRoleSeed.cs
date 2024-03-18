@@ -1,4 +1,5 @@
 ﻿using CareerMate.Models;
+using CareerMate.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,14 +21,14 @@ namespace CareerMate.Seeds
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationUserRoles>>();
                 List<string> roles = new List<string>() { Roles.SysAdmin, Roles.Coordinator, Roles.CoordinatorAssistant, Roles.Student, Roles.Company, Roles.CompanySupervisor };
 
                 foreach (var role in roles)
                 {
                     if (!await roleManager.RoleExistsAsync(role))
                     {
-                        await roleManager.CreateAsync(new IdentityRole(role));
+                        await roleManager.CreateAsync(new ApplicationUserRoles(role));
                     }
                 }
             }

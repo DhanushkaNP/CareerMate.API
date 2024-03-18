@@ -1,5 +1,6 @@
 ﻿using CareerMate.EndPoints.Handlers;
 using CareerMate.Models;
+using CareerMate.Models.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,10 +12,10 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.CreateSysAdmin
 {
     public class CreateSysAdminCommandHandler : IRequestHandler<CreateSysAdminCommand, BaseResponse>
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationUserRoles> _roleManager;
 
-        public CreateSysAdminCommandHandler(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public CreateSysAdminCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<ApplicationUserRoles> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -29,7 +30,7 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.CreateSysAdmin
                 return new BadRequestResponse("Existing user");
             }
 
-            IdentityUser newUser = new IdentityUser()
+            ApplicationUser newUser = new ApplicationUser()
             {
                 Email = command.Email,
                 UserName = command.Email,
