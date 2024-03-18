@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CareerMate.Seeds
+namespace CareerMate.Infrastructure.Seeds
 {
     public class IdentityRoleSeed
     {

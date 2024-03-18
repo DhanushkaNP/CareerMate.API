@@ -1,5 +1,5 @@
 using CareerMate;
-using CareerMate.Seeds;
+using CareerMate.Infrastructure.Seeds;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
