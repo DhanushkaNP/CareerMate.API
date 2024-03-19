@@ -1,6 +1,6 @@
 ﻿namespace CareerMate.Models
 {
-    public static class Roles
+    public class Roles
     {
         public const string SysAdmin = "SYSADMIN";
         public const string Coordinator = "COORDINATOR";

@@ -9,5 +9,6 @@ namespace CareerMate.Models.Entities
         
         public string LastName { get; set; }
 
+        public override string? UserName {  get; set; }
     }
 }

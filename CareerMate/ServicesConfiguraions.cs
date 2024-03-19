@@ -1,6 +1,8 @@
-﻿using CareerMate.Infrastructure.Persistence;
+﻿using CareerMate.Abstractions.Services;
+using CareerMate.Infrastructure.Persistence;
 using CareerMate.Infrastructure.Seeds;
 using CareerMate.Models.Entities;
+using CareerMate.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -84,6 +86,8 @@ namespace CareerMate
         public static IServiceCollection RegisterSystemServices(this IServiceCollection services)
         {
             services.AddScoped<IdentityRoleSeed>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

@@ -23,7 +23,6 @@
     <Folder Include="API\DTOs\" />
     <Folder Include="EndPoints\Handlers\Users\SysAdmin\CreateSysAdminCommandHandler\" />
     <Folder Include="Models\Enums\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

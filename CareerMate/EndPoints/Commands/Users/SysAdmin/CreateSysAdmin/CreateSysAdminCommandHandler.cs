@@ -1,4 +1,5 @@
-﻿using CareerMate.EndPoints.Handlers;
+﻿using CareerMate.Abstractions.Services;
+using CareerMate.EndPoints.Handlers;
 using CareerMate.Models;
 using CareerMate.Models.Entities;
 using MediatR;
@@ -12,43 +13,20 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.CreateSysAdmin
 {
     public class CreateSysAdminCommandHandler : IRequestHandler<CreateSysAdminCommand, BaseResponse>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationUserRoles> _roleManager;
+        private readonly IUserService _userService;
 
-        public CreateSysAdminCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<ApplicationUserRoles> roleManager)
+        public CreateSysAdminCommandHandler(IUserService userService)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _userService = userService;
         }
 
         public async Task<BaseResponse> Handle(CreateSysAdminCommand command, CancellationToken cancellationToken)
         {
-            var isExistingUser = await _userManager.FindByEmailAsync(command.Email);
-
-            if (isExistingUser != null)
-            {
-                return new BadRequestResponse("Existing user");
-            }
-
-            ApplicationUser newUser = new ApplicationUser()
-            {
-                Email = command.Email,
-                UserName = command.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-            };
-
-            var createdUserResult = await _userManager.CreateAsync(newUser, command.Password);
-
-            if (!createdUserResult.Succeeded)
-            {               
-                return new BadRequestResponse(createdUserResult.Errors.FirstOrDefault().Description);
-            }
-
-            await _userManager.AddToRoleAsync(newUser, Roles.SysAdmin);
+            Guid userID = await _userService.CreateUser(command.Email, command.Password, Roles.SysAdmin);
 
             return new CreateSysAdminCommandResponse()
             {
-                Id = newUser.Id
+                Id = userID
             };
         }
     }
