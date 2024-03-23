@@ -1,5 +1,5 @@
 ﻿using CareerMate.Models;
-using CareerMate.Models.Entities;
+using CareerMate.Models.Entities.ApplicationUsers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;

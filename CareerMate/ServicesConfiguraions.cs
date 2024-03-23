@@ -1,7 +1,7 @@
 ﻿using CareerMate.Abstractions.Services;
 using CareerMate.Infrastructure.Persistence;
 using CareerMate.Infrastructure.Seeds;
-using CareerMate.Models.Entities;
+using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Reflection;
 using System.Text;
 

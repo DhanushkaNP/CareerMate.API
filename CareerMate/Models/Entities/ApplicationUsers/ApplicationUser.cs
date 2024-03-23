@@ -10,9 +10,9 @@ namespace CareerMate.Models.Entities.ApplicationUsers
             CreatedAt = DateTime.UtcNow;
         }
 
-        public string FirstName { get; private set; }
+        public string FirstName { get; set; }
 
-        public string LastName { get; private set; }
+        public string LastName { get; set; }
 
         public DateTime CreatedAt { get; private set; }
 
