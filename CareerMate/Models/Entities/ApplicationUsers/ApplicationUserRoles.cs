@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 
-namespace CareerMate.Models.Entities
+namespace CareerMate.Models.Entities.ApplicationUsers
 {
     public class ApplicationUserRoles : IdentityRole<Guid>
     {
@@ -11,8 +11,8 @@ namespace CareerMate.Models.Entities
 
 
         public ApplicationUserRoles(string roleName)
-            : base(roleName) 
-        { 
+            : base(roleName)
+        {
         }
     }
 }
