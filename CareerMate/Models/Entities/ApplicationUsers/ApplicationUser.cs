@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CareerMate.Models.Entities.SysAdmins;
+using Microsoft.AspNetCore.Identity;
 using System;
 
 namespace CareerMate.Models.Entities.ApplicationUsers
@@ -19,5 +20,7 @@ namespace CareerMate.Models.Entities.ApplicationUsers
         public DateTime? ModifiedAt { get; private set; }
 
         public DateTime? DeletedAt { get; private set; }
+
+        public SysAdmin SysAdmin { get; private set; }
     }
 }
