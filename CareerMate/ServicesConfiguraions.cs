@@ -1,6 +1,6 @@
 ﻿using CareerMate.Abstractions.Services;
+using CareerMate.Infrastructure.Persistence.Seeds;
 using CareerMate.Infrastructure.Persistence;
-using CareerMate.Infrastructure.Seeds;
 using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
