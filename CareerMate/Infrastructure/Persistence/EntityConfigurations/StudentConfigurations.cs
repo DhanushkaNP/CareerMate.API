@@ -1,0 +1,67 @@
+﻿using CareerMate.Models.Entities.Students;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
+{
+    public class StudentConfigurations : IEntityTypeConfiguration<Student>
+    {
+        public void Configure(EntityTypeBuilder<Student> builder)
+        {
+            builder.ToTable(nameof(Student));
+
+            builder.HasKey(i => i.Id);
+
+            builder.Property(i => i.StudentNumber).IsRequired();
+            
+            builder.Property(i => i.FirstName).IsRequired();
+            
+            builder.Property(i => i.LastName).IsRequired();
+            
+            builder.Property(i => i.UniversityEmail).IsRequired();
+            
+            builder.Property(i => i.PhoneNumber).IsRequired();
+            
+            builder.Property(i => i.CGPA).IsRequired();
+            
+            builder.Property(i => i.PersonalEmail).IsRequired();
+
+            builder.HasOne(i => i.Batch)
+                .WithMany(i => i.Students)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            builder.HasOne(i => i.ApplicationUser)
+                .WithOne(i => i.Student)
+                .HasForeignKey<Student>(i => i.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            builder.HasOne(i => i.Company)
+                .WithMany(i => i.Students)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(i => i.Internship)
+                .WithMany(i => i.Students)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.OwnsOne(i => i.CompanyFeedback, cf =>
+            {
+                cf.Property(i => i.Level).HasColumnName("CompanyFeedbackLevel").IsRequired(false);
+                cf.Property(i => i.Message).HasColumnName("CompanyFeedbackMessage").IsRequired(false);
+            });
+
+            builder.Navigation(i => i.CompanyFeedback).IsRequired();
+
+            builder.OwnsOne(i => i.Marks, m =>
+            {
+                m.Property(i => i.DailyDiary).HasColumnName("DailyDiaryMarks");
+                m.Property(i => i.Viva).HasColumnName("VivaMarks");
+                m.Property(i => i.Others).HasColumnName("OthersMarks");
+                m.Property(i => i.Total).HasColumnName("TotalMarks");
+            });
+
+            builder.Navigation(i => i.Marks).IsRequired();
+        }
+    }
+}

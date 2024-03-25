@@ -1,4 +1,8 @@
-﻿using System;
+﻿using CareerMate.Models.Entities.Companies;
+using CareerMate.Models.Entities.Coordinators;
+using CareerMate.Models.Entities.Universities;
+using System;
+using System.Collections.Generic;
 
 namespace CareerMate.Models.Entities.Faculties
 {
@@ -9,5 +13,11 @@ namespace CareerMate.Models.Entities.Faculties
         public string ShortName { get; private set; }
 
         public DateTime? DeletedAt { get; private set; }
+
+        public University University { get; private set; }
+
+        public List<Coordinator> Coordinators { get; private set; }
+
+        public List<Company> Companies { get; private set; }
     }
 }

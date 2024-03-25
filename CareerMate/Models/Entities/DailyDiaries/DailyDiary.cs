@@ -1,17 +1,26 @@
-﻿namespace CareerMate.Models.Entities.DailyDiaries
+﻿using CareerMate.Models.Entities.DailyRecords;
+using CareerMate.Models.Entities.Students;
+using System.Collections.Generic;
+using System.ComponentModel;
+
+namespace CareerMate.Models.Entities.DailyDiaries
 {
     public class DailyDiary : Entity
     {
         public PeriodCovered PeriodCovered { get; private set; }
 
-        public InternshipPeriod MyProperty { get; private set; }
+        public InternshipPeriod InternshipPeriod { get; private set; }
 
         public string TrainingLocation { get; private set; }
 
-        public bool SupervisorApproved { get; private set; }
-
-        public bool CoordinatorApproved { get; private set; }
-
         public string Summary { get; private set; }
+
+        public List<DailyRecord> Records { get; private set; }
+
+        public Student Student { get; private set; }
+
+        public CoordinatorApproval CoordinatorApproval { get; private set; }
+        
+        public SupervisorApproval SupervisorApproval { get; private set; }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using CareerMate.Abstractions.Enums;
 using System;
+using CareerMate.Models.Entities.Faculties;
 using System.Collections.Generic;
-using CareerMate.Models.Entities.ApplicationUsers;
-using CareerMate.Models.Entities.Industries;
+using CareerMate.Models.Entities.Students;
+using CareerMate.Models.Entities.Internships;
 
 namespace CareerMate.Models.Entities.Companies
 {
@@ -25,8 +26,14 @@ namespace CareerMate.Models.Entities.Companies
         // Can be converted to method
         public int NumberOfStudents { get; private set; }
 
-        public CompanyStatus Status { get; private set; }
+        public CompanyStatus? Status { get; private set; }
 
         public bool isBlocked { get; private set; }
+
+        public Faculty Faculty { get; private set; }
+
+        public List<Student> Students { get; private set; }
+
+        public List<Internship> Internships { get; private set; }
     }
 }

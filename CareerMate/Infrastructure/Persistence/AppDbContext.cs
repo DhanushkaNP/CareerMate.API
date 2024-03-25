@@ -1,6 +1,17 @@
 ﻿using CareerMate.Models;
 using CareerMate.Models.Entities.ApplicationUsers;
+using CareerMate.Models.Entities.Companies;
+using CareerMate.Models.Entities.CompanyLeaveRequests;
+using CareerMate.Models.Entities.Coordinators;
+using CareerMate.Models.Entities.DailyDiaries;
+using CareerMate.Models.Entities.DailyRecords;
+using CareerMate.Models.Entities.Faculties;
+using CareerMate.Models.Entities.InternshipPosts;
+using CareerMate.Models.Entities.Internships;
+using CareerMate.Models.Entities.StudentBatches;
+using CareerMate.Models.Entities.Students;
 using CareerMate.Models.Entities.SysAdmins;
+using CareerMate.Models.Entities.Universities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,5 +34,27 @@ namespace CareerMate.Infrastructure.Persistence
         public DbSet<Test> Test { get; set; }
 
         public DbSet<SysAdmin> SysAdmin { get; set; }
+
+        public DbSet<University> University { get; set; }
+
+        public DbSet<Faculty> Faculty { get; set; }
+
+        public DbSet<Coordinator> Coordinator { get; set; }
+
+        public DbSet<StudentBatch> StudentBatch { get; set; }
+
+        public DbSet<Student> Student { get; set; }
+
+        public DbSet<DailyDiary> DailyDiary { get; set; }
+
+        public DbSet<DailyRecord> DailyRecord { get; set; }
+
+        public DbSet<CompanyLeaveRequest> CompanyLeaveRequest { get; set; }
+
+        public DbSet<Company> Company { get; set; }
+
+        public DbSet<Internship> Internship { get; set; }
+
+        public DbSet<InternshipPost> InternshipPost { get; set; }
     }
 }

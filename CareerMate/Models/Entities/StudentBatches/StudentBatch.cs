@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CareerMate.Models.Entities.Coordinators;
+using CareerMate.Models.Entities.Students;
+using System;
+using System.Collections.Generic;
 
 namespace CareerMate.Models.Entities.StudentBatches
 {
@@ -11,5 +14,9 @@ namespace CareerMate.Models.Entities.StudentBatches
         public DateTime BatchEndAt { get; private set; }
 
         public DateTime LastAllowedDateForStartInternship { get; private set; }
+
+        public List<Coordinator> Coordinator { get; private set; }
+
+        public List<Student> Students { get; private set; }
     }
 }

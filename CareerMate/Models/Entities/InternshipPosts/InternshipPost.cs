@@ -1,4 +1,5 @@
 ﻿using CareerMate.Abstractions.Enums;
+using CareerMate.Models.Entities.Internships;
 using System;
 
 namespace CareerMate.Models.Entities.InternshipPosts
@@ -18,5 +19,9 @@ namespace CareerMate.Models.Entities.InternshipPosts
         public string Description { get; private set; }
 
         public string Address { get; private set; }
+
+        public Internship Internship { get; private set; }
+
+        public Guid InternshipId { get; private set; }
     }
 }

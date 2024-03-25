@@ -5,7 +5,7 @@
 namespace CareerMate.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityUserSysAdminRelation : Migration
+    public partial class StudentAndBatchesRefactor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

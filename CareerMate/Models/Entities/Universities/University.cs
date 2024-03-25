@@ -11,5 +11,7 @@ namespace CareerMate.Models.Entities.Universities
         public string ShortName { get; private set; }
 
         public DateTime? DeletedAt { get; private set; }
+
+        public List<Faculty> Faculty { get; private set; }
     }
 }

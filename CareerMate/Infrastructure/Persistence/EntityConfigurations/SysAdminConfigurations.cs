@@ -17,7 +17,8 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
             builder.HasOne(i => i.ApplicationUser)
                 .WithOne(i => i.SysAdmin)
                 .HasForeignKey<SysAdmin>(i => i.ApplicationUserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
         }
     }
 }
