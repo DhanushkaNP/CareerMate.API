@@ -1,5 +1,7 @@
 ﻿using CareerMate.Models.Entities.Companies;
 using CareerMate.Models.Entities.Coordinators;
+using CareerMate.Models.Entities.Degrees;
+using CareerMate.Models.Entities.Industries;
 using CareerMate.Models.Entities.Universities;
 using System;
 using System.Collections.Generic;
@@ -19,5 +21,9 @@ namespace CareerMate.Models.Entities.Faculties
         public List<Coordinator> Coordinators { get; private set; }
 
         public List<Company> Companies { get; private set; }
+
+        public List<Degree> Degrees { get; private set; }
+
+        public List<Industry> Industries { get; private set; }
     }
 }

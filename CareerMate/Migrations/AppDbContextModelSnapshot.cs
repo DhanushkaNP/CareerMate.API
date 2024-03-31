@@ -22,6 +22,33 @@ namespace CareerMate.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("CareerMate.Models.Entities.Applicants.Applicant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("InternshipPostId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InternshipPostId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Applicant", (string)null);
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.ApplicationUsers.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -129,6 +156,37 @@ namespace CareerMate.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
+            modelBuilder.Entity("CareerMate.Models.Entities.Certifications.Certification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<Guid?>("DeleteAt")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Certification", (string)null);
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.Companies.Company", b =>
                 {
                     b.Property<Guid>("Id")
@@ -137,6 +195,9 @@ namespace CareerMate.Migrations
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Bio")
                         .HasColumnType("text");
@@ -178,6 +239,9 @@ namespace CareerMate.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
+
                     b.HasIndex("FacultyId");
 
                     b.ToTable("Company", (string)null);
@@ -207,6 +271,29 @@ namespace CareerMate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CompanyLeaveRequest", (string)null);
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.CoordinatorAssistants.CoordinatorAssistant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<TimeSpan?>("DeletedAt")
+                        .HasColumnType("interval");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CoordinatorAssistant");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Coordinators.Coordinator", b =>
@@ -307,6 +394,74 @@ namespace CareerMate.Migrations
                     b.ToTable("DailyRecord", (string)null);
                 });
 
+            modelBuilder.Entity("CareerMate.Models.Entities.Degrees.Degree", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("FacultyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacultyId");
+
+                    b.ToTable("Degree", (string)null);
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Experiences.Experience", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedAt")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("From")
+                        .HasColumnType("date");
+
+                    b.Property<int>("JobType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly>("To")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Experience", (string)null);
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.Faculties.Faculty", b =>
                 {
                     b.Property<Guid>("Id")
@@ -339,6 +494,102 @@ namespace CareerMate.Migrations
                     b.ToTable("Faculty", (string)null);
                 });
 
+            modelBuilder.Entity("CareerMate.Models.Entities.Industries.Industry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("FacultyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacultyId");
+
+                    b.ToTable("Industry", (string)null);
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Interns.Intern", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("InternshipId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("IsDeletedAt")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("SupervisorId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("InternshipId");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
+
+                    b.HasIndex("SupervisorId");
+
+                    b.ToTable("Intern", (string)null);
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.InternshipInvites.InternshipInvite", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("InternshipId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InternshipId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("InternshipInvite", (string)null);
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.InternshipPosts.InternshipPost", b =>
                 {
                     b.Property<Guid>("Id")
@@ -348,8 +599,20 @@ namespace CareerMate.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CoordinatorAssistantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CoordinatorId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedUserRole")
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
@@ -363,11 +626,17 @@ namespace CareerMate.Migrations
                     b.Property<Guid>("InternshipId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("NumberOfPositions")
                         .HasColumnType("integer");
+
+                    b.Property<Guid?>("PostedStudentId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
@@ -377,8 +646,16 @@ namespace CareerMate.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CoordinatorAssistantId");
+
+                    b.HasIndex("CoordinatorId");
+
                     b.HasIndex("InternshipId")
                         .IsUnique();
+
+                    b.HasIndex("PostedStudentId");
 
                     b.ToTable("InternshipPost", (string)null);
                 });
@@ -412,6 +689,67 @@ namespace CareerMate.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Internship", (string)null);
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Pathways.Pathway", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DegreeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DegreeId");
+
+                    b.ToTable("Pathway", (string)null);
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Skills.Skill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedAt")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Skill", (string)null);
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.StudentBatches.StudentBatch", b =>
@@ -461,11 +799,11 @@ namespace CareerMate.Migrations
                     b.Property<byte[]>("CV")
                         .HasColumnType("bytea");
 
-                    b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DegreeId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
@@ -474,8 +812,8 @@ namespace CareerMate.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("InternshipId")
-                        .HasColumnType("uuid");
+                    b.Property<bool?>("IsCvApproved")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -513,14 +851,43 @@ namespace CareerMate.Migrations
 
                     b.HasIndex("BatchId");
 
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("InternshipId");
+                    b.HasIndex("DegreeId");
 
                     b.HasIndex("StudentId")
                         .IsUnique();
 
                     b.ToTable("Student", (string)null);
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Supervisors.Supervisor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedAt")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Supervisor", (string)null);
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.SysAdmins.SysAdmin", b =>
@@ -573,6 +940,39 @@ namespace CareerMate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("University", (string)null);
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Links.Link", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("URL")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Link", (string)null);
                 });
 
             modelBuilder.Entity("CareerMate.Models.Test", b =>
@@ -692,13 +1092,50 @@ namespace CareerMate.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CareerMate.Models.Entities.Applicants.Applicant", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.InternshipPosts.InternshipPost", "InternshipPost")
+                        .WithMany("Applicants")
+                        .HasForeignKey("InternshipPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                        .WithMany("Applicants")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InternshipPost");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Certifications.Certification", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                        .WithMany("Certification")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.Companies.Company", b =>
                 {
+                    b.HasOne("CareerMate.Models.Entities.ApplicationUsers.ApplicationUser", "ApplicationUser")
+                        .WithOne("Company")
+                        .HasForeignKey("CareerMate.Models.Entities.Companies.Company", "ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CareerMate.Models.Entities.Faculties.Faculty", "Faculty")
                         .WithMany("Companies")
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Faculty");
                 });
@@ -848,6 +1285,27 @@ namespace CareerMate.Migrations
                     b.Navigation("Diary");
                 });
 
+            modelBuilder.Entity("CareerMate.Models.Entities.Degrees.Degree", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Faculties.Faculty", "Faculty")
+                        .WithMany("Degrees")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Experiences.Experience", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                        .WithMany("Experiences")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.Faculties.Faculty", b =>
                 {
                     b.HasOne("CareerMate.Models.Entities.Universities.University", "University")
@@ -859,15 +1317,105 @@ namespace CareerMate.Migrations
                     b.Navigation("University");
                 });
 
+            modelBuilder.Entity("CareerMate.Models.Entities.Industries.Industry", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Faculties.Faculty", "Faculty")
+                        .WithMany("Industries")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Interns.Intern", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Companies.Company", "Company")
+                        .WithMany("Interns")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareerMate.Models.Entities.Internships.Internship", "Internship")
+                        .WithMany("Interns")
+                        .HasForeignKey("InternshipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                        .WithOne("Intern")
+                        .HasForeignKey("CareerMate.Models.Entities.Interns.Intern", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CareerMate.Models.Entities.Supervisors.Supervisor", "Supervisor")
+                        .WithMany("Interns")
+                        .HasForeignKey("SupervisorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Internship");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Supervisor");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.InternshipInvites.InternshipInvite", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Internships.Internship", "Internship")
+                        .WithMany("InternshipInvites")
+                        .HasForeignKey("InternshipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                        .WithMany("InternshipInvites")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Internship");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.InternshipPosts.InternshipPost", b =>
                 {
+                    b.HasOne("CareerMate.Models.Entities.Companies.Company", "Company")
+                        .WithMany("InternshipPosts")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareerMate.Models.Entities.CoordinatorAssistants.CoordinatorAssistant", "CoordinatorAssistant")
+                        .WithMany("InternshipPosts")
+                        .HasForeignKey("CoordinatorAssistantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareerMate.Models.Entities.Coordinators.Coordinator", "Coordinator")
+                        .WithMany("InternshipPosts")
+                        .HasForeignKey("CoordinatorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("CareerMate.Models.Entities.Internships.Internship", "Internship")
                         .WithOne("InternshipPost")
                         .HasForeignKey("CareerMate.Models.Entities.InternshipPosts.InternshipPost", "InternshipId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "PostedStudent")
+                        .WithMany("InternshipPosts")
+                        .HasForeignKey("PostedStudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Coordinator");
+
+                    b.Navigation("CoordinatorAssistant");
+
                     b.Navigation("Internship");
+
+                    b.Navigation("PostedStudent");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Internships.Internship", b =>
@@ -879,6 +1427,34 @@ namespace CareerMate.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Pathways.Pathway", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Degrees.Degree", "Degree")
+                        .WithMany("Pathways")
+                        .HasForeignKey("DegreeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Degree");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Skills.Skill", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Companies.Company", "Company")
+                        .WithMany("SkillsLookingFor")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                        .WithMany("Skills")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Students.Student", b =>
@@ -895,14 +1471,9 @@ namespace CareerMate.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CareerMate.Models.Entities.Companies.Company", "Company")
+                    b.HasOne("CareerMate.Models.Entities.Degrees.Degree", "Degree")
                         .WithMany("Students")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CareerMate.Models.Entities.Internships.Internship", "Internship")
-                        .WithMany("Students")
-                        .HasForeignKey("InternshipId")
+                        .HasForeignKey("DegreeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CareerMate.Models.Entities.CompanyLeaveRequests.CompanyLeaveRequest", "LeaveRequest")
@@ -965,17 +1536,34 @@ namespace CareerMate.Migrations
 
                     b.Navigation("Batch");
 
-                    b.Navigation("Company");
-
                     b.Navigation("CompanyFeedback")
                         .IsRequired();
 
-                    b.Navigation("Internship");
+                    b.Navigation("Degree");
 
                     b.Navigation("LeaveRequest");
 
                     b.Navigation("Marks")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Supervisors.Supervisor", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.ApplicationUsers.ApplicationUser", "ApplicationUser")
+                        .WithOne("Supervisor")
+                        .HasForeignKey("CareerMate.Models.Entities.Supervisors.Supervisor", "ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CareerMate.Models.Entities.Companies.Company", "Company")
+                        .WithMany("Supervisors")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.SysAdmins.SysAdmin", b =>
@@ -987,6 +1575,23 @@ namespace CareerMate.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Links.Link", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Companies.Company", "Company")
+                        .WithMany("Links")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                        .WithMany("Links")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1042,18 +1647,30 @@ namespace CareerMate.Migrations
 
             modelBuilder.Entity("CareerMate.Models.Entities.ApplicationUsers.ApplicationUser", b =>
                 {
+                    b.Navigation("Company");
+
                     b.Navigation("Coordinator");
 
                     b.Navigation("Student");
+
+                    b.Navigation("Supervisor");
 
                     b.Navigation("SysAdmin");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Companies.Company", b =>
                 {
+                    b.Navigation("Interns");
+
+                    b.Navigation("InternshipPosts");
+
                     b.Navigation("Internships");
 
-                    b.Navigation("Students");
+                    b.Navigation("Links");
+
+                    b.Navigation("SkillsLookingFor");
+
+                    b.Navigation("Supervisors");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.CompanyLeaveRequests.CompanyLeaveRequest", b =>
@@ -1061,9 +1678,26 @@ namespace CareerMate.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("CareerMate.Models.Entities.CoordinatorAssistants.CoordinatorAssistant", b =>
+                {
+                    b.Navigation("InternshipPosts");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Coordinators.Coordinator", b =>
+                {
+                    b.Navigation("InternshipPosts");
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.DailyDiaries.DailyDiary", b =>
                 {
                     b.Navigation("Records");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Degrees.Degree", b =>
+                {
+                    b.Navigation("Pathways");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Faculties.Faculty", b =>
@@ -1071,13 +1705,24 @@ namespace CareerMate.Migrations
                     b.Navigation("Companies");
 
                     b.Navigation("Coordinators");
+
+                    b.Navigation("Degrees");
+
+                    b.Navigation("Industries");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.InternshipPosts.InternshipPost", b =>
+                {
+                    b.Navigation("Applicants");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Internships.Internship", b =>
                 {
-                    b.Navigation("InternshipPost");
+                    b.Navigation("Interns");
 
-                    b.Navigation("Students");
+                    b.Navigation("InternshipInvites");
+
+                    b.Navigation("InternshipPost");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.StudentBatches.StudentBatch", b =>
@@ -1089,7 +1734,28 @@ namespace CareerMate.Migrations
 
             modelBuilder.Entity("CareerMate.Models.Entities.Students.Student", b =>
                 {
+                    b.Navigation("Applicants");
+
+                    b.Navigation("Certification");
+
                     b.Navigation("Diary");
+
+                    b.Navigation("Experiences");
+
+                    b.Navigation("Intern");
+
+                    b.Navigation("InternshipInvites");
+
+                    b.Navigation("InternshipPosts");
+
+                    b.Navigation("Links");
+
+                    b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Supervisors.Supervisor", b =>
+                {
+                    b.Navigation("Interns");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Universities.University", b =>

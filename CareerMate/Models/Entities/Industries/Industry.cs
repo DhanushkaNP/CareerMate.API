@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CareerMate.Models.Entities.Faculties;
+using System;
 
 namespace CareerMate.Models.Entities.Industries
 {
@@ -7,5 +8,7 @@ namespace CareerMate.Models.Entities.Industries
         public string Name { get; private set; }
 
         public DateTime? DeletedAt { get; private set; }
+
+        public Faculty Faculty { get; private set; }
     }
 }

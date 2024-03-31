@@ -1,11 +1,17 @@
 ﻿using CareerMate.Abstractions.Enums;
+using CareerMate.Models.Entities.Applicants;
 using CareerMate.Models.Entities.ApplicationUsers;
-using CareerMate.Models.Entities.Companies;
+using CareerMate.Models.Entities.Certifications;
 using CareerMate.Models.Entities.CompanyLeaveRequests;
 using CareerMate.Models.Entities.DailyDiaries;
+using CareerMate.Models.Entities.Degrees;
+using CareerMate.Models.Entities.Experiences;
+using CareerMate.Models.Entities.Interns;
+using CareerMate.Models.Entities.InternshipInvites;
 using CareerMate.Models.Entities.InternshipPosts;
-using CareerMate.Models.Entities.Internships;
+using CareerMate.Models.Entities.Skills;
 using CareerMate.Models.Entities.StudentBatches;
+using CareerMate.Models.Links;
 using System;
 using System.Collections.Generic;
 
@@ -32,6 +38,8 @@ namespace CareerMate.Models.Entities.Students
 
         public byte[] CV { get; private set; }
 
+        public bool? IsCvApproved { get; private set; }
+
         public CompanyFeedback CompanyFeedback { get; private set; }
 
         public StudentMark Marks { get; private set; }
@@ -50,8 +58,22 @@ namespace CareerMate.Models.Entities.Students
 
         public Guid StudentId { get; private set; }
 
-        public Company Company { get; private set; }
+        public Degree Degree { get; private set; }
 
-        public Internship Internship { get; private set; }
+        public List<InternshipInvite> InternshipInvites { get; private set; }
+
+        public List<Skill> Skills { get; private set; }
+
+        public List<Certification> Certification { get; private set; }
+
+        public List<Experience> Experiences { get; private set; }
+
+        public List<Link> Links { get; private set; }
+
+        public List<Applicant> Applicants { get; private set; }
+
+        public Intern Intern { get; private set; }
+
+        public List<InternshipPost> InternshipPosts { get; private set; }
     }
 }

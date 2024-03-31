@@ -37,11 +37,7 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
-            builder.HasOne(i => i.Company)
-                .WithMany(i => i.Students)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(i => i.Internship)
+            builder.HasOne(i => i.Degree)
                 .WithMany(i => i.Students)
                 .OnDelete(DeleteBehavior.Cascade);
 

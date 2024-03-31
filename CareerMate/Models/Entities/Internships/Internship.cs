@@ -1,7 +1,8 @@
 ﻿using CareerMate.Abstractions.Enums;
 using CareerMate.Models.Entities.Companies;
+using CareerMate.Models.Entities.Interns;
+using CareerMate.Models.Entities.InternshipInvites;
 using CareerMate.Models.Entities.InternshipPosts;
-using CareerMate.Models.Entities.Students;
 using System.Collections.Generic;
 
 namespace CareerMate.Models.Entities.Internships
@@ -18,6 +19,8 @@ namespace CareerMate.Models.Entities.Internships
 
         public InternshipPost InternshipPost { get; private set; }
 
-        public List<Student> Students { get; private set; }
+        public List<InternshipInvite> InternshipInvites { get; private set; }
+
+        public List<Intern> Interns { get; private set; }
     }
 }

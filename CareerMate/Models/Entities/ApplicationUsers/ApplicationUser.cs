@@ -1,8 +1,12 @@
-﻿using CareerMate.Models.Entities.Coordinators;
+﻿using CareerMate.Models.Entities.Companies;
+using CareerMate.Models.Entities.Coordinators;
+using CareerMate.Models.Entities.InternshipPosts;
 using CareerMate.Models.Entities.Students;
+using CareerMate.Models.Entities.Supervisors;
 using CareerMate.Models.Entities.SysAdmins;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace CareerMate.Models.Entities.ApplicationUsers
 {
@@ -28,5 +32,9 @@ namespace CareerMate.Models.Entities.ApplicationUsers
         public Coordinator Coordinator { get; private set; }
 
         public Student Student { get; private set; }
+
+        public Supervisor Supervisor { get; private set; }
+
+        public Company Company { get; private set; }
     }
 }

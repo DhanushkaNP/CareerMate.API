@@ -1,7 +1,9 @@
 ﻿using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Faculties;
+using CareerMate.Models.Entities.InternshipPosts;
 using CareerMate.Models.Entities.StudentBatches;
 using System;
+using System.Collections.Generic;
 
 namespace CareerMate.Models.Entities.Coordinators
 {
@@ -18,5 +20,7 @@ namespace CareerMate.Models.Entities.Coordinators
         public Guid ApplicationUserId { get; private set; }
 
         public StudentBatch StudentBatch { get; private set; }
+
+        public List<InternshipPost> InternshipPosts { get; private set; }
     }
 }
