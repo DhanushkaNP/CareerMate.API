@@ -1,17 +1,28 @@
 ﻿using CareerMate.Models;
+using CareerMate.Models.Entities.Applicants;
 using CareerMate.Models.Entities.ApplicationUsers;
+using CareerMate.Models.Entities.Certifications;
 using CareerMate.Models.Entities.Companies;
 using CareerMate.Models.Entities.CompanyLeaveRequests;
 using CareerMate.Models.Entities.Coordinators;
 using CareerMate.Models.Entities.DailyDiaries;
 using CareerMate.Models.Entities.DailyRecords;
+using CareerMate.Models.Entities.Degrees;
+using CareerMate.Models.Entities.Experiences;
 using CareerMate.Models.Entities.Faculties;
+using CareerMate.Models.Entities.Industries;
+using CareerMate.Models.Entities.Interns;
+using CareerMate.Models.Entities.InternshipInvites;
 using CareerMate.Models.Entities.InternshipPosts;
 using CareerMate.Models.Entities.Internships;
+using CareerMate.Models.Entities.Pathways;
+using CareerMate.Models.Entities.Skills;
 using CareerMate.Models.Entities.StudentBatches;
 using CareerMate.Models.Entities.Students;
+using CareerMate.Models.Entities.Supervisors;
 using CareerMate.Models.Entities.SysAdmins;
 using CareerMate.Models.Entities.Universities;
+using CareerMate.Models.Links;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -56,5 +67,27 @@ namespace CareerMate.Infrastructure.Persistence
         public DbSet<Internship> Internship { get; set; }
 
         public DbSet<InternshipPost> InternshipPost { get; set; }
+
+        public DbSet<Degree> Degree { get; set; }
+
+        public DbSet<Pathway> Pathway { get; set; }
+
+        public DbSet<Industry> Industry { get; set; }
+
+        public DbSet<InternshipInvite> InternshipInvites { get; set; }
+
+        public DbSet<Skill> Skill { get; set; }
+
+        public DbSet<Certification> Certification { get; set; }
+
+        public DbSet<Experience> Experience { get; private set; }
+
+        public DbSet<Link> Link { get; set; }
+
+        public DbSet<Applicant> Applicant { get; set; }
+
+        public DbSet<Intern> Intern { get; set; }
+
+        public DbSet<Supervisor> Supervisor { get; private set; }       
     }
 }

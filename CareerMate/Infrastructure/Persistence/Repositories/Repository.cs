@@ -1,0 +1,59 @@
+﻿
+using CareerMate.Abstractions.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace CareerMate.Infrastructure.Persistence.Repositories
+{
+    public abstract class Repository<TEntity> : IRepository<TEntity>
+    {
+        protected Repository(AppDbContext context)
+        {
+            Context = context;
+        }
+
+        protected AppDbContext Context { get; set; }
+
+        public virtual IRepository<TEntity> Add(TEntity entity)
+        {
+            Context.Add(entity);
+            return this;
+        }
+
+        public virtual IRepository<TEntity> AddRange(IEnumerable<TEntity> entities)
+        {
+            foreach (TEntity entity in entities)
+            {
+                Context.Add(entity);
+            }
+
+            return this;
+        }
+
+        public virtual IRepository<TEntity> Update(TEntity entity)
+        {
+            Context.Update(entity);
+            return this;
+        }
+
+        public virtual IRepository<TEntity> Remove(TEntity entity)
+        {
+            Context.Remove(entity);
+            return this;
+        }
+
+        public virtual IRepository<TEntity> RemoveRange(IEnumerable<TEntity> entities)
+        {
+            foreach (TEntity entity in entities)
+            {
+                Context.Remove(entity);
+            }
+
+            return this;
+        }
+
+        public abstract Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken, bool useLocal = false);
+    }
+}
