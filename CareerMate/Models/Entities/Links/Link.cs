@@ -1,9 +1,8 @@
-﻿using CareerMate.Models.Entities;
-using CareerMate.Models.Entities.Companies;
+﻿using CareerMate.Models.Entities.Companies;
 using CareerMate.Models.Entities.Students;
 using System;
 
-namespace CareerMate.Models.Links
+namespace CareerMate.Models.Entities.Links
 {
     public class Link : Entity
     {

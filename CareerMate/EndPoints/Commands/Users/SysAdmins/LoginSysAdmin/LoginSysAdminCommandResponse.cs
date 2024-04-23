@@ -1,7 +1,8 @@
 ﻿using CareerMate.EndPoints.Handlers;
 using Microsoft.AspNetCore.Http;
+using System;
 
-namespace CareerMate.EndPoints.Commands.Users.SysAdmin.LoginSysAdmin
+namespace CareerMate.EndPoints.Commands.Users.SysAdmins.LoginSysAdmin
 {
     public class LoginSysAdminCommandResponse : BaseResponse
     {
@@ -10,5 +11,7 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.LoginSysAdmin
         }
 
         public string Token { get; set; }
+
+        public Guid UserId { get; set; }
     }
 }

@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using CareerMate.Models.Entities.Students;
 using CareerMate.Models.Entities.Internships;
 using CareerMate.Models.Entities.Skills;
-using CareerMate.Models.Links;
 using CareerMate.Models.Entities.InternshipPosts;
 using CareerMate.Models.Entities.Supervisors;
 using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Interns;
+using CareerMate.Models.Entities.Links;
 
 namespace CareerMate.Models.Entities.Companies
 {

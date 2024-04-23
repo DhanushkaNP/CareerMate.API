@@ -9,9 +9,9 @@ using CareerMate.Models.Entities.Experiences;
 using CareerMate.Models.Entities.Interns;
 using CareerMate.Models.Entities.InternshipInvites;
 using CareerMate.Models.Entities.InternshipPosts;
+using CareerMate.Models.Entities.Links;
 using CareerMate.Models.Entities.Skills;
 using CareerMate.Models.Entities.StudentBatches;
-using CareerMate.Models.Links;
 using System;
 using System.Collections.Generic;
 

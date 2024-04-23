@@ -1,4 +1,4 @@
-﻿using CareerMate.Models.Links;
+﻿using CareerMate.Models.Entities.Links;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

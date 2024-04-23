@@ -1,19 +1,13 @@
 ﻿using CareerMate.Abstractions.Services;
-using CareerMate.EndPoints.Handlers;
-using CareerMate.Models.Entities;
+using CareerMate.EndPoints.Commands.Users.SysAdmins.LoginSysAdmin;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using CareerMate.Models;
+using System.Collections.Generic;
+using CareerMate.Services.UserServices;
 
-namespace CareerMate.EndPoints.Commands.Users.SysAdmin.LoginSysAdmin
+namespace CareerMate.EndPoints.Handlers.SysAdmins.Login
 {
     public class LoginSysAdminCommandHandler : IRequestHandler<LoginSysAdminCommand, BaseResponse>
     {
@@ -27,13 +21,13 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.LoginSysAdmin
 
         public async Task<BaseResponse> Handle(LoginSysAdminCommand command, CancellationToken cancellationToken)
         {
-            string token = await _userService.Login(command.Email, command.Password);
+            LoginUserDetailModel userDetails = await _userService.Login(command.Email, command.Password, new List<string>() { Roles.SysAdmin } , cancellationToken);
 
             return new LoginSysAdminCommandResponse()
             {
-                Token = token
+                Token = userDetails.Token,
+                UserId = userDetails.UserId,
             };
         }
     }
 }
-

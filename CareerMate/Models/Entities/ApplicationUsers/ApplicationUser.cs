@@ -1,12 +1,10 @@
 ﻿using CareerMate.Models.Entities.Companies;
 using CareerMate.Models.Entities.Coordinators;
-using CareerMate.Models.Entities.InternshipPosts;
 using CareerMate.Models.Entities.Students;
 using CareerMate.Models.Entities.Supervisors;
 using CareerMate.Models.Entities.SysAdmins;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
 
 namespace CareerMate.Models.Entities.ApplicationUsers
 {
@@ -36,5 +34,20 @@ namespace CareerMate.Models.Entities.ApplicationUsers
         public Supervisor Supervisor { get; private set; }
 
         public Company Company { get; private set; }
+
+        public void SetFirstName(string firstName)
+        {
+            FirstName = firstName;
+        }
+
+        public void SetLastName(string lastName)
+        {
+            LastName = lastName;
+        }
+
+        public void SetEmail(string email)
+        {
+            Email = email;
+        }
     }
 }

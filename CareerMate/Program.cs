@@ -1,4 +1,8 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using CareerMate;
+using CareerMate.API.AutofacModules;
+using CareerMate.API.Middlewares;
 using CareerMate.Infrastructure.Persistence.Seeds;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,11 +12,37 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string corsPolicy = "CorsPolicy";
+
+// Autofac
+builder.Host
+	.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+	.ConfigureContainer<ContainerBuilder>((container) =>
+	{
+		container.RegisterModule<PersistenceModules>();
+	});
+
 // Add services to the container.
 builder.Services.RegisterServices(builder.Configuration);
 builder.Services.RegisterSystemServices();
 
+//Roles configurations
+builder.Services.AddRolesPolicies();
+
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicy, policy =>
+    {
+		policy
+			.WithOrigins("http://localhost:3000")
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			.AllowCredentials()
+			.SetIsOriginAllowed((host) => true);
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,8 +56,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(corsPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Middleware 
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 using (var scope = app.Services.CreateScope())
 {

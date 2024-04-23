@@ -53,7 +53,12 @@ namespace CareerMate.Infrastructure.Persistence.Repositories
 
             return this;
         }
+   
+        public abstract Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-        public abstract Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken, bool useLocal = false);
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+           return await Context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

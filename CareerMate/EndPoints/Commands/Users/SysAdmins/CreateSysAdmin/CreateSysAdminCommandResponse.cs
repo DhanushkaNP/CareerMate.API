@@ -1,9 +1,9 @@
 ﻿using CareerMate.EndPoints.Handlers;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using CareerMate.Models.Entities.SysAdmins;
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace CareerMate.EndPoints.Commands.Users.SysAdmin.CreateSysAdmin
+namespace CareerMate.EndPoints.Commands.Users.SysAdmins.CreateSysAdmin
 {
     public class CreateSysAdminCommandResponse : BaseResponse
     {

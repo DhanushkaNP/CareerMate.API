@@ -2,9 +2,9 @@
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace CareerMate.EndPoints.Commands.Users.SysAdmin.LoginSysAdmin
+namespace CareerMate.EndPoints.Commands.Users.SysAdmins.CreateSysAdmin
 {
-    public class LoginSysAdminCommand : IRequest<BaseResponse>
+    public class CreateSysAdminCommand : IRequest<BaseResponse>
     {
         [Required(ErrorMessage = "Email required")]
         [EmailAddress]
@@ -12,5 +12,11 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmin.LoginSysAdmin
 
         [Required(ErrorMessage = "Password required")]
         public string Password { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 using CareerMate.Infrastructure.Persistence.Seeds;
 using CareerMate.Infrastructure.Persistence;
 using CareerMate.Models.Entities.ApplicationUsers;
-using CareerMate.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
+using CareerMate.Services.AuthServices;
+using CareerMate.Services.UserServices;
+using Microsoft.Extensions.Logging;
 
 namespace CareerMate
 {
@@ -21,7 +23,9 @@ namespace CareerMate
             // Add DB
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(
+                    configuration.GetConnectionString("DefaultConnection"));
+
                 options.EnableDetailedErrors();
                 options.EnableSensitiveDataLogging();
             });
@@ -79,6 +83,8 @@ namespace CareerMate
                 },
                 Assembly.GetAssembly(typeof(Program)));
 
+            services.AddLogging(logging => logging.AddConsole());
+
             return services;
         }
 
@@ -90,5 +96,13 @@ namespace CareerMate
 
             return services;
         }
+
+        //public static IServiceCollection AddRepositories(this IServiceCollection services)
+        //{
+        //    //services.AddSingleton<IUnitOfWork, AppDbContext>();
+        //    services.AddScoped<ISysAdminRepository,SysAdminRepository>();
+
+        //    return services;
+        //}
     }
 }
