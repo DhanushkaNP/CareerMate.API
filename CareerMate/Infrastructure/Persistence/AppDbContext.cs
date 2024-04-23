@@ -1,4 +1,5 @@
-﻿using CareerMate.Models;
+﻿using CareerMate.Abstractions;
+using CareerMate.Models;
 using CareerMate.Models.Entities.Applicants;
 using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Certifications;
@@ -15,6 +16,7 @@ using CareerMate.Models.Entities.Interns;
 using CareerMate.Models.Entities.InternshipInvites;
 using CareerMate.Models.Entities.InternshipPosts;
 using CareerMate.Models.Entities.Internships;
+using CareerMate.Models.Entities.Links;
 using CareerMate.Models.Entities.Pathways;
 using CareerMate.Models.Entities.Skills;
 using CareerMate.Models.Entities.StudentBatches;
@@ -22,14 +24,13 @@ using CareerMate.Models.Entities.Students;
 using CareerMate.Models.Entities.Supervisors;
 using CareerMate.Models.Entities.SysAdmins;
 using CareerMate.Models.Entities.Universities;
-using CareerMate.Models.Links;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace CareerMate.Infrastructure.Persistence
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationUserRoles, Guid>
+    public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationUserRoles, Guid>, IUnitOfWork
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -88,6 +89,6 @@ namespace CareerMate.Infrastructure.Persistence
 
         public DbSet<Intern> Intern { get; set; }
 
-        public DbSet<Supervisor> Supervisor { get; private set; }       
+        public DbSet<Supervisor> Supervisor { get; private set; }
     }
 }
