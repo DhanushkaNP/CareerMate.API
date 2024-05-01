@@ -10,13 +10,23 @@ namespace CareerMate.Models.Entities.Faculties
 {
     public class Faculty : Entity
     {
+        public Faculty(string name, string shortName, string email)
+        {
+            Name = name;
+            ShortName = shortName;
+            Coordinators = new List<Coordinator>();
+            Email = email;
+        }
+
         public string Name { get; private set; }
 
         public string ShortName { get; private set; }
 
+        public string Email { get; set; }
+
         public DateTime? DeletedAt { get; private set; }
 
-        public University University { get; private set; }
+        public University University { get; set; }
 
         public List<Coordinator> Coordinators { get; private set; }
 
@@ -25,5 +35,29 @@ namespace CareerMate.Models.Entities.Faculties
         public List<Degree> Degrees { get; private set; }
 
         public List<Industry> Industries { get; private set; }
+
+        public Faculty AddCoordinator(Coordinator coordinator)
+        {
+            Coordinators.Add(coordinator);
+            return this;
+        }
+
+        public Faculty UpdateName(string name)
+        {
+            Name = name;
+            return this;
+        }
+
+        public Faculty UpdateShortName(string shortName)
+        {
+            ShortName = shortName;
+            return this;
+        }
+
+        public Faculty UpdateEmail(string email)
+        {
+            Email = email;
+            return this;
+        }
     }
 }

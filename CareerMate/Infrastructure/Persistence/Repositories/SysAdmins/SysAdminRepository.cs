@@ -1,7 +1,6 @@
 ﻿using CareerMate.Abstractions.Models.Queries;
 using CareerMate.EndPoints.Handlers;
 using CareerMate.EndPoints.Queries.Users.SysAdmins;
-using CareerMate.EndPoints.Queries.Users.SysAdmins.SysAdminUsersList;
 using CareerMate.Models.Entities.SysAdmins;
 using Microsoft.EntityFrameworkCore;
 using System;

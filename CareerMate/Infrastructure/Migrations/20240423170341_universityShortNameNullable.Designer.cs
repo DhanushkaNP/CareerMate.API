@@ -3,6 +3,7 @@ using System;
 using CareerMate.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareerMate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240423170341_universityShortNameNullable")]
+    partial class universityShortNameNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,6 +320,9 @@ namespace CareerMate.Migrations
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("StudentBatchId")
                         .HasColumnType("uuid");
 
@@ -469,9 +475,6 @@ namespace CareerMate.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -1308,7 +1311,7 @@ namespace CareerMate.Migrations
             modelBuilder.Entity("CareerMate.Models.Entities.Faculties.Faculty", b =>
                 {
                     b.HasOne("CareerMate.Models.Entities.Universities.University", "University")
-                        .WithMany("Faculties")
+                        .WithMany("Faculty")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1759,7 +1762,7 @@ namespace CareerMate.Migrations
 
             modelBuilder.Entity("CareerMate.Models.Entities.Universities.University", b =>
                 {
-                    b.Navigation("Faculties");
+                    b.Navigation("Faculty");
                 });
 #pragma warning restore 612, 618
         }

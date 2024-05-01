@@ -12,7 +12,7 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
             
             builder.Property(i => i.Name).IsRequired();
             
-            builder.Property(i => i.ShortName).IsRequired();
+            builder.Property(i => i.ShortName);
 
             builder.HasKey(i => i.Id);
 

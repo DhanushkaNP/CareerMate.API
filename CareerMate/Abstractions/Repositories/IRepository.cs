@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CareerMate.Abstractions.Repositories
 {
@@ -20,5 +21,7 @@ namespace CareerMate.Abstractions.Repositories
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
         Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
+        Task<IDbContextTransaction> BeginTransaction(CancellationToken cancellationToken);
     }
 }

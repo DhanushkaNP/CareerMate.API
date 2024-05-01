@@ -1,5 +1,5 @@
-﻿
-using CareerMate.Abstractions.Repositories;
+﻿using CareerMate.Abstractions.Repositories;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -59,6 +59,11 @@ namespace CareerMate.Infrastructure.Persistence.Repositories
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
            return await Context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<IDbContextTransaction> BeginTransaction(CancellationToken cancellationToken)
+        {
+            return await Context.Database.BeginTransactionAsync(cancellationToken);
         }
     }
 }

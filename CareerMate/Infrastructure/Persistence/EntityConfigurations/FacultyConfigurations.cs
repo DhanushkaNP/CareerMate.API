@@ -18,15 +18,12 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
 
             builder.Property(i => i.Id).ValueGeneratedNever();
 
-            builder.HasOne(i => i.University)
-                .WithMany(i => i.Faculty)
-                .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+            builder.Property(i => i.Email);
 
             builder.HasOne(i => i.University)
-               .WithMany(i => i.Faculty)
-               .OnDelete(DeleteBehavior.Cascade)
-               .IsRequired();
+                .WithMany(i => i.Faculties)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
         }
     }
 }
