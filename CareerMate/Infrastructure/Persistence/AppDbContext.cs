@@ -5,6 +5,7 @@ using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Certifications;
 using CareerMate.Models.Entities.Companies;
 using CareerMate.Models.Entities.CompanyLeaveRequests;
+using CareerMate.Models.Entities.CoordinatorAssistants;
 using CareerMate.Models.Entities.Coordinators;
 using CareerMate.Models.Entities.DailyDiaries;
 using CareerMate.Models.Entities.DailyRecords;
@@ -43,8 +44,6 @@ namespace CareerMate.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Test> Test { get; set; }
-
         public DbSet<SysAdmin> SysAdmin { get; set; }
 
         public DbSet<University> University { get; set; }
@@ -52,6 +51,8 @@ namespace CareerMate.Infrastructure.Persistence
         public DbSet<Faculty> Faculty { get; set; }
 
         public DbSet<Coordinator> Coordinator { get; set; }
+
+        public DbSet<CoordinatorAssistant> CoordinatorAssistant { get; set; }
 
         public DbSet<StudentBatch> StudentBatch { get; set; }
 

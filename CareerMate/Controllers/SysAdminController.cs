@@ -18,15 +18,14 @@ namespace CareerMate.API.Controllers
     [Authorize(Policy = "AllowedSysAdmin")]
     public class SysAdminController : BaseController
     {
-        private readonly IMediator _mediator;
+            private readonly IMediator _mediator;
 
-        public SysAdminController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+            public SysAdminController(IMediator mediator)
+            {
+                _mediator = mediator;
+            }
 
         [HttpPost("Create")]
-        [AllowAnonymous]
         public async Task<IActionResult> CreateSysAdminUser([FromBody]CreateSysAdminCommand command, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(command, cancellationToken);

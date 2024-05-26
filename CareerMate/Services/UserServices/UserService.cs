@@ -33,7 +33,7 @@ namespace CareerMate.Services.UserServices
 
             if (isExistingUser != null)
             {
-                throw new BadRequestException(ErrorCodes.ExisitingUser ,"Existing user");
+                throw new BadRequestException(ErrorCodes.ExistingUser ,"Existing user");
             }
 
             ApplicationUser newUser = new ApplicationUser()

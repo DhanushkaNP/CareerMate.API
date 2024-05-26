@@ -17,7 +17,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Faculties
 
         public override async Task<Faculty> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await Context.Faculty.FirstOrDefaultAsync(f => f.Id == id);
+            return await Context.Faculty.Include(f => f.University).Include(f => f.StudentBatches).FirstOrDefaultAsync(f => f.Id == id);
         }
 
         public async Task<ListResponse<FacultyQueryItem>> GetFacultyListByUniversityId(Guid UniversityId, CancellationToken cancellationToken)

@@ -16,8 +16,7 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
             builder.HasKey(i => i.Id);
 
             builder.HasOne(i => i.Student)
-                .WithOne(i => i.LeaveRequest)
-                .HasForeignKey<Student>(i => i.StudentId)
+                .WithMany(i => i.LeaveRequests)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

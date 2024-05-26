@@ -12,19 +12,19 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
 
             builder.HasKey(i => i.Id);
 
-            builder.Property(i => i.StudentNumber).IsRequired();
+            builder.Property(i => i.StudentId).IsRequired();
             
-            builder.Property(i => i.FirstName).IsRequired();
+            builder.Property(i => i.FirstName);
             
-            builder.Property(i => i.LastName).IsRequired();
+            builder.Property(i => i.LastName);
             
             builder.Property(i => i.UniversityEmail).IsRequired();
             
-            builder.Property(i => i.PhoneNumber).IsRequired();
+            builder.Property(i => i.PhoneNumber);
             
-            builder.Property(i => i.CGPA).IsRequired();
+            builder.Property(i => i.CGPA);
             
-            builder.Property(i => i.PersonalEmail).IsRequired();
+            builder.Property(i => i.PersonalEmail);
 
             builder.HasOne(i => i.Batch)
                 .WithMany(i => i.Students)
@@ -35,7 +35,7 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
                 .WithOne(i => i.Student)
                 .HasForeignKey<Student>(i => i.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasOne(i => i.Degree)
                 .WithMany(i => i.Students)

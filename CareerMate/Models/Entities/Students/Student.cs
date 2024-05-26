@@ -19,7 +19,13 @@ namespace CareerMate.Models.Entities.Students
 {
     public class Student : Entity
     {
-        public string StudentNumber { get; private set; }
+        public Student(string studentId, string universityEmail)
+        {
+            StudentId = studentId;
+            UniversityEmail = universityEmail;
+        }
+
+        public string StudentId { get; private set; }
 
         public string FirstName { get; private set; }
 
@@ -52,11 +58,9 @@ namespace CareerMate.Models.Entities.Students
 
         public ApplicationUser ApplicationUser { get; private set; }
 
-        public Guid ApplicationUserId { get; private set; }
+        public Guid? ApplicationUserId { get; private set; }
 
-        public CompanyLeaveRequest LeaveRequest { get; private set; }
-
-        public Guid StudentId { get; private set; }
+        public List<CompanyLeaveRequest> LeaveRequests { get; private set; }
 
         public Degree Degree { get; private set; }
 
@@ -75,5 +79,11 @@ namespace CareerMate.Models.Entities.Students
         public Intern Intern { get; private set; }
 
         public List<InternshipPost> InternshipPosts { get; private set; }
+
+        public Student SetStudentBatch(StudentBatch batch)
+        {
+            Batch = batch;
+            return this;
+        }
     }
 }

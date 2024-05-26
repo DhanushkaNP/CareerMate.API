@@ -32,6 +32,8 @@ namespace CareerMate.EndPoints.Queries.Faculties.GetFacultyDetails
                 ShortName = faculty.ShortName,
                 Email = faculty.Email,
                 CreatedAt = faculty.CreatedAt,
+                UniversityId = faculty.University.Id,
+                UniversityName = faculty.University.Name
             };
         }
     }

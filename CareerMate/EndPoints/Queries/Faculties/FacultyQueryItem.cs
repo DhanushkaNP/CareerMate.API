@@ -18,5 +18,9 @@ namespace CareerMate.EndPoints.Queries.Faculties
         public string Email { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public Guid UniversityId { get; set; }
+
+        public string UniversityName { get; set; }
     }
 }

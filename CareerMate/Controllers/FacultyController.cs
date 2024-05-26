@@ -1,4 +1,5 @@
-﻿using CareerMate.EndPoints.Commands.Faculties.Delete;
+﻿using CareerMate.Abstractions.Enums;
+using CareerMate.EndPoints.Commands.Faculties.Delete;
 using CareerMate.EndPoints.Commands.Faculties.Update;
 using CareerMate.EndPoints.Queries.Faculties.GetFacultyDetails;
 using MediatR;
@@ -12,7 +13,6 @@ namespace CareerMate.API.Controllers
 {
     [Route("api/Faculty")]
     [ApiController]
-    [Authorize(Policy = "AllowedSysAdmin")]
     public class FacultyController : BaseController
     {
         private readonly IMediator _mediator;
@@ -23,6 +23,7 @@ namespace CareerMate.API.Controllers
         }
 
         [HttpDelete("{id:Guid}")]
+        [Authorize(Policy = Policies.SysAdminOnly)]
         public async Task<IActionResult> DeleteFaculty([FromRoute]Guid id, CancellationToken cancellationToken)
         {
             var command = new DeleteFacultyCommand
@@ -35,6 +36,7 @@ namespace CareerMate.API.Controllers
         }
 
         [HttpGet("{id:Guid}")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
         public async Task<IActionResult> GetFacultyDetails([FromRoute]Guid id, CancellationToken cancellationToken)
         {
             var query = new GetFacultyDetailsQuery { Id = id };
@@ -44,6 +46,7 @@ namespace CareerMate.API.Controllers
         }
 
         [HttpPut("{id:Guid}")]
+        [Authorize(Policy = Policies.SysAdminOnly)]
         public async Task<IActionResult> UpdateFaculty([FromRoute] Guid id, [FromBody]UpdateFacultyCommand command, CancellationToken cancellationToken)
         {
             command.Id = id;

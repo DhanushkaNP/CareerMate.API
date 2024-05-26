@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CareerMate.Infrastructure.Persistence.Repositories.Unveristies
 {
-    public class UniversityRepository: Repository<University>, IUniversityRepository
+    public class UniversityRepository : Repository<University>, IUniversityRepository
     {
         public UniversityRepository(AppDbContext context) : base(context)
         {

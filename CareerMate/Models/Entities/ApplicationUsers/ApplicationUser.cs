@@ -1,4 +1,5 @@
 ﻿using CareerMate.Models.Entities.Companies;
+using CareerMate.Models.Entities.CoordinatorAssistants;
 using CareerMate.Models.Entities.Coordinators;
 using CareerMate.Models.Entities.Students;
 using CareerMate.Models.Entities.Supervisors;
@@ -28,6 +29,8 @@ namespace CareerMate.Models.Entities.ApplicationUsers
         public SysAdmin SysAdmin { get; private set; }
 
         public Coordinator Coordinator { get; private set; }
+
+        public CoordinatorAssistant CoordinatorAssistant { get; private set; }
 
         public Student Student { get; private set; }
 
