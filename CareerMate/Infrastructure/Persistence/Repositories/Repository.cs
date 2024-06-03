@@ -1,4 +1,5 @@
 ﻿using CareerMate.Abstractions.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,12 @@ namespace CareerMate.Infrastructure.Persistence.Repositories
 
             return this;
         }
-   
+
+        public virtual void DetachEntity(object entity)
+        {
+            Context.Entry(entity).State = EntityState.Detached;
+        }
+
         public abstract Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)

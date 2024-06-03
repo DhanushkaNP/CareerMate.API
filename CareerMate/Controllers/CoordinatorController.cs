@@ -7,6 +7,11 @@ using System.Threading;
 using CareerMate.EndPoints.Commands.Users.Coordinators.Login;
 using System;
 using CareerMate.EndPoints.Queries.Users.Coordinators.GetFaculty;
+using CareerMate.EndPoints.Commands.Users.Coordinators.Create;
+using CareerMate.EndPoints.Commands.Users.Coordinators.Delete;
+using CareerMate.EndPoints.Queries.Users.Coordinators.GetCoordinator;
+using CareerMate.EndPoints.Commands.Users.Coordinators.Update;
+using CareerMate.EndPoints.Commands.Users.Coordinators.UpdatePassword;
 
 namespace CareerMate.Controllers
 {
@@ -31,10 +36,50 @@ namespace CareerMate.Controllers
         }
 
         [HttpGet("{Id:Guid}/Faculty")]
-        public async Task<IActionResult> GetFaculty([FromRoute]Guid Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetFaculty([FromRoute] Guid Id, CancellationToken cancellationToken)
         {
             var query = new GetCoordinatorFacultyQuery { ApplicationUserId = Id };
             var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPost("/api/Faculty/{facultyId:Guid}/Coordinator")]
+        public async Task<IActionResult> CreateCoordinator([FromRoute] Guid facultyId, [FromBody]CreateCoordinatorCommand command, CancellationToken cancellationToken)
+        {
+            command.FacultyId = facultyId;
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpDelete("{Id:Guid}")]
+        public async Task<IActionResult> DeleteCoordinator([FromRoute] Guid Id, CancellationToken cancellationToken)
+        {
+            var command = new DeleteCoordinatorCommand { Id = Id };
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{Id:Guid}")]
+        public async Task<IActionResult> GetCoordinator([FromRoute] Guid Id, CancellationToken cancellationToken)
+        {
+            var query = new GetCoordinatorQuery { Id = Id };
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{Id:Guid}")]
+        public async Task<IActionResult> UpdateCoordinator(Guid Id, [FromBody] UpdateCoordinatorCommand command, CancellationToken cancellationToken)
+        {
+            command.Id = Id;
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{Id:Guid}/Password")]
+        public async Task<IActionResult> UpdateCoordinatorPassword(Guid Id, [FromBody]UpdateCoordinatorPasswordCommand command, CancellationToken cancellationToken)
+        {
+            command.Id = Id;
+            var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);
         }
     }

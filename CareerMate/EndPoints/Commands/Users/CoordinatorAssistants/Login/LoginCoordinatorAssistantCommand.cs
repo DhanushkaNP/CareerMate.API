@@ -2,7 +2,7 @@
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants
+namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Login
 {
     public class LoginCoordinatorAssistantCommand : IRequest<BaseResponse>
     {

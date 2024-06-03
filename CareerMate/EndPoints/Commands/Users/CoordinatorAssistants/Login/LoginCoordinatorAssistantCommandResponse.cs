@@ -1,7 +1,7 @@
 ﻿using CareerMate.EndPoints.Handlers;
 using System;
 
-namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants
+namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Login
 {
     public class LoginCoordinatorAssistantCommandResponse : BaseResponse
     {

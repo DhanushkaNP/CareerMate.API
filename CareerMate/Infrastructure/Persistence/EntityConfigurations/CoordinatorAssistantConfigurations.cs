@@ -21,10 +21,6 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
                 .HasForeignKey<CoordinatorAssistant>(i => i.ApplicationUserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(i => i.StudentBatch)
-                .WithMany(i => i.CoordinatorAssistants)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

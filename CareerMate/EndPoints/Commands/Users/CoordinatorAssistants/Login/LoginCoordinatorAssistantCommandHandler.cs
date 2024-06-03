@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants
+namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Login
 {
     public class LoginCoordinatorAssistantCommandHandler : IRequestHandler<LoginCoordinatorAssistantCommand, BaseResponse>
     {

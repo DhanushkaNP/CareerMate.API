@@ -2,12 +2,14 @@
 using CareerMate.EndPoints.Commands.Faculties.Delete;
 using CareerMate.EndPoints.Commands.Faculties.Update;
 using CareerMate.EndPoints.Queries.Faculties.GetFacultyDetails;
+using CareerMate.EndPoints.Queries.Faculties.GetCoordinators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CareerMate.EndPoints.Queries.Faculties.GetCoordinatorAssistants;
 
 namespace CareerMate.API.Controllers
 {
@@ -52,6 +54,26 @@ namespace CareerMate.API.Controllers
             command.Id = id;
 
             var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{facultyId:Guid}/Coordinators")]
+        [Authorize(Policy = Policies.CoordinatorOnly)]
+        public async Task<IActionResult> GetFacultyCoordinators([FromRoute] Guid facultyId, [FromQuery]GetFacultyCoordinatorsQuery query, CancellationToken cancellationToken)
+        {
+            query.FacultyId = facultyId;
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{facultyId:Guid}/CoordinatorAssistants")]
+        [Authorize(Policy = Policies.CoordinatorOnly)]
+        public async Task<IActionResult> GetFacultyCoordinatorAssistants([FromRoute] Guid facultyId, [FromQuery]GetFacultyCoordinatorAssistantsQuery query, CancellationToken cancellationToken)
+        {
+            query.FacultyId = facultyId;
+
+            var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
         }
     }

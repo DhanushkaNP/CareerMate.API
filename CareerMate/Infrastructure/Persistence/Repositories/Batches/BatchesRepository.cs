@@ -26,9 +26,9 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Batches
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public override Task<StudentBatch> GetByIdAsync(Guid Id, CancellationToken cancellationToken)
-        {        
-            throw new NotImplementedException();
+        public async override Task<StudentBatch> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await Context.StudentBatch.FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
         }
     }
 }

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareerMate.Migrations
 {
     /// <inheritdoc />
-    public partial class RecreateAll : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,22 +54,6 @@ namespace CareerMate.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompanyLeaveRequest",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Approved = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Reason = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyLeaveRequest", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -277,6 +261,63 @@ namespace CareerMate.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Coordinator",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FacultyId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coordinator", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Coordinator_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Coordinator_Faculty_FacultyId",
+                        column: x => x.FacultyId,
+                        principalTable: "Faculty",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CoordinatorAssistant",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FacultyId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoordinatorAssistant", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CoordinatorAssistant_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CoordinatorAssistant_Faculty_FacultyId",
+                        column: x => x.FacultyId,
+                        principalTable: "Faculty",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Degree",
                 columns: table => new
                 {
@@ -418,77 +459,6 @@ namespace CareerMate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Coordinator",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DeletedAt = table.Column<TimeSpan>(type: "interval", nullable: true),
-                    FacultyId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    StudentBatchId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coordinator", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Coordinator_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Coordinator_Faculty_FacultyId",
-                        column: x => x.FacultyId,
-                        principalTable: "Faculty",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Coordinator_StudentBatch_StudentBatchId",
-                        column: x => x.StudentBatchId,
-                        principalTable: "StudentBatch",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CoordinatorAssistant",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    DeletedAt = table.Column<TimeSpan>(type: "interval", nullable: true),
-                    FacultyId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    StudentBatchId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CoordinatorAssistant", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CoordinatorAssistant_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CoordinatorAssistant_Faculty_FacultyId",
-                        column: x => x.FacultyId,
-                        principalTable: "Faculty",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CoordinatorAssistant_StudentBatch_StudentBatchId",
-                        column: x => x.StudentBatchId,
-                        principalTable: "StudentBatch",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Student",
                 columns: table => new
                 {
@@ -511,7 +481,7 @@ namespace CareerMate.Migrations
                     TotalMarks = table.Column<int>(type: "integer", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     BatchId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     DegreeId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -523,12 +493,6 @@ namespace CareerMate.Migrations
                         name: "FK_Student_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Student_CompanyLeaveRequest_Id",
-                        column: x => x.Id,
-                        principalTable: "CompanyLeaveRequest",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -562,6 +526,29 @@ namespace CareerMate.Migrations
                     table.PrimaryKey("PK_Certification", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Certification_Student_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Student",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanyLeaveRequest",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Approved = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Reason = table.Column<string>(type: "text", nullable: true),
+                    StudentId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyLeaveRequest", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompanyLeaveRequest_Student_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Student",
                         principalColumn: "Id",
@@ -922,6 +909,11 @@ namespace CareerMate.Migrations
                 column: "FacultyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompanyLeaveRequest_StudentId",
+                table: "CompanyLeaveRequest",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Coordinator_ApplicationUserId",
                 table: "Coordinator",
                 column: "ApplicationUserId",
@@ -933,11 +925,6 @@ namespace CareerMate.Migrations
                 column: "FacultyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Coordinator_StudentBatchId",
-                table: "Coordinator",
-                column: "StudentBatchId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CoordinatorAssistant_ApplicationUserId",
                 table: "CoordinatorAssistant",
                 column: "ApplicationUserId",
@@ -947,11 +934,6 @@ namespace CareerMate.Migrations
                 name: "IX_CoordinatorAssistant_FacultyId",
                 table: "CoordinatorAssistant",
                 column: "FacultyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CoordinatorAssistant_StudentBatchId",
-                table: "CoordinatorAssistant",
-                column: "StudentBatchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DailyDiary_StudentId",
@@ -1134,6 +1116,9 @@ namespace CareerMate.Migrations
                 name: "Certification");
 
             migrationBuilder.DropTable(
+                name: "CompanyLeaveRequest");
+
+            migrationBuilder.DropTable(
                 name: "DailyRecord");
 
             migrationBuilder.DropTable(
@@ -1186,9 +1171,6 @@ namespace CareerMate.Migrations
 
             migrationBuilder.DropTable(
                 name: "Company");
-
-            migrationBuilder.DropTable(
-                name: "CompanyLeaveRequest");
 
             migrationBuilder.DropTable(
                 name: "Degree");

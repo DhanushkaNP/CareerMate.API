@@ -25,10 +25,6 @@ namespace CareerMate.Models.Entities.StudentBatches
 
         public DateTime LastAllowedDateForStartInternship { get; private set; }
 
-        public List<Coordinator> Coordinator { get; private set; }
-
-        public List<CoordinatorAssistant> CoordinatorAssistants { get; private set; }
-
         public List<Student> Students { get; private set; }
 
         public Faculty Faculty { get; private set; }

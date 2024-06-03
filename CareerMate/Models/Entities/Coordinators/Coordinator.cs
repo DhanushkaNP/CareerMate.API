@@ -1,7 +1,6 @@
 ﻿using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Faculties;
 using CareerMate.Models.Entities.InternshipPosts;
-using CareerMate.Models.Entities.StudentBatches;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +13,7 @@ namespace CareerMate.Models.Entities.Coordinators
             ApplicationUserId = applicationUserId;
         }
 
-        public TimeSpan? DeletedAt { get; private set; }
+        public DateTime? DeletedAt { get; private set; }
 
         public Faculty Faculty { get; private set; }
 
@@ -22,8 +21,36 @@ namespace CareerMate.Models.Entities.Coordinators
 
         public Guid ApplicationUserId { get; private set; }
 
-        public StudentBatch StudentBatch { get; private set; }
-
         public List<InternshipPost> InternshipPosts { get; private set; }
+
+        public Coordinator Delete()
+        {
+            DeletedAt = DateTime.UtcNow;
+            return this;
+        }
+
+        public Coordinator SetFaculty(Faculty faculty)
+        {
+            Faculty = faculty;
+            return this;
+        }
+
+        public Coordinator SetFirstName(string firstName)
+        {
+            ApplicationUser.SetFirstName(firstName);
+            return this;
+        }
+
+        public Coordinator SetLastName(string lastName)
+        {
+            ApplicationUser.SetLastName(lastName);
+            return this;
+        }
+
+        public Coordinator SetEmail(string email)
+        {
+            ApplicationUser.SetEmail(email);
+            return this;
+        }
     }
 }

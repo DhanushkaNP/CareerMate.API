@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareerMate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240525174920_RecreateAll")]
-    partial class RecreateAll
+    [Migration("20240527044131_InitialMigrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -271,7 +271,12 @@ namespace CareerMate.Migrations
                     b.Property<string>("Reason")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("StudentId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("CompanyLeaveRequest", (string)null);
                 });
@@ -288,8 +293,8 @@ namespace CareerMate.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<TimeSpan?>("DeletedAt")
-                        .HasColumnType("interval");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("FacultyId")
                         .HasColumnType("uuid");
@@ -300,17 +305,12 @@ namespace CareerMate.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("StudentBatchId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
                     b.HasIndex("FacultyId");
-
-                    b.HasIndex("StudentBatchId");
 
                     b.ToTable("CoordinatorAssistant", (string)null);
                 });
@@ -327,8 +327,8 @@ namespace CareerMate.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<TimeSpan?>("DeletedAt")
-                        .HasColumnType("interval");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("FacultyId")
                         .HasColumnType("uuid");
@@ -336,17 +336,12 @@ namespace CareerMate.Migrations
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("StudentBatchId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
                     b.HasIndex("FacultyId");
-
-                    b.HasIndex("StudentBatchId");
 
                     b.ToTable("Coordinator", (string)null);
                 });
@@ -841,9 +836,10 @@ namespace CareerMate.Migrations
             modelBuilder.Entity("CareerMate.Models.Entities.Students.Student", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ApplicationUserId")
+                    b.Property<Guid?>("ApplicationUserId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BatchId")
@@ -1138,6 +1134,16 @@ namespace CareerMate.Migrations
                     b.Navigation("Faculty");
                 });
 
+            modelBuilder.Entity("CareerMate.Models.Entities.CompanyLeaveRequests.CompanyLeaveRequest", b =>
+                {
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                        .WithMany("LeaveRequests")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("CareerMate.Models.Entities.CoordinatorAssistants.CoordinatorAssistant", b =>
                 {
                     b.HasOne("CareerMate.Models.Entities.ApplicationUsers.ApplicationUser", "ApplicationUser")
@@ -1151,16 +1157,9 @@ namespace CareerMate.Migrations
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CareerMate.Models.Entities.StudentBatches.StudentBatch", "StudentBatch")
-                        .WithMany("CoordinatorAssistants")
-                        .HasForeignKey("StudentBatchId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Faculty");
-
-                    b.Navigation("StudentBatch");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Coordinators.Coordinator", b =>
@@ -1176,16 +1175,9 @@ namespace CareerMate.Migrations
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CareerMate.Models.Entities.StudentBatches.StudentBatch", "StudentBatch")
-                        .WithMany("Coordinator")
-                        .HasForeignKey("StudentBatchId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Faculty");
-
-                    b.Navigation("StudentBatch");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.DailyDiaries.DailyDiary", b =>
@@ -1513,8 +1505,7 @@ namespace CareerMate.Migrations
                     b.HasOne("CareerMate.Models.Entities.ApplicationUsers.ApplicationUser", "ApplicationUser")
                         .WithOne("Student")
                         .HasForeignKey("CareerMate.Models.Entities.Students.Student", "ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CareerMate.Models.Entities.StudentBatches.StudentBatch", "Batch")
                         .WithMany("Students")
@@ -1526,12 +1517,6 @@ namespace CareerMate.Migrations
                         .WithMany("Students")
                         .HasForeignKey("DegreeId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CareerMate.Models.Entities.CompanyLeaveRequests.CompanyLeaveRequest", "LeaveRequest")
-                        .WithOne("Student")
-                        .HasForeignKey("CareerMate.Models.Entities.Students.Student", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.OwnsOne("CareerMate.Models.Entities.Students.CompanyFeedback", "CompanyFeedback", b1 =>
                         {
@@ -1591,8 +1576,6 @@ namespace CareerMate.Migrations
                         .IsRequired();
 
                     b.Navigation("Degree");
-
-                    b.Navigation("LeaveRequest");
 
                     b.Navigation("Marks")
                         .IsRequired();
@@ -1709,11 +1692,6 @@ namespace CareerMate.Migrations
                     b.Navigation("Supervisors");
                 });
 
-            modelBuilder.Entity("CareerMate.Models.Entities.CompanyLeaveRequests.CompanyLeaveRequest", b =>
-                {
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("CareerMate.Models.Entities.CoordinatorAssistants.CoordinatorAssistant", b =>
                 {
                     b.Navigation("InternshipPosts");
@@ -1767,10 +1745,6 @@ namespace CareerMate.Migrations
 
             modelBuilder.Entity("CareerMate.Models.Entities.StudentBatches.StudentBatch", b =>
                 {
-                    b.Navigation("Coordinator");
-
-                    b.Navigation("CoordinatorAssistants");
-
                     b.Navigation("Students");
                 });
 
@@ -1789,6 +1763,8 @@ namespace CareerMate.Migrations
                     b.Navigation("InternshipInvites");
 
                     b.Navigation("InternshipPosts");
+
+                    b.Navigation("LeaveRequests");
 
                     b.Navigation("Links");
 

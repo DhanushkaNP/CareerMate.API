@@ -18,6 +18,8 @@ namespace CareerMate.Abstractions.Repositories
 
         IRepository<TEntity> RemoveRange(IEnumerable<TEntity> entities);
 
+        void DetachEntity(object entity);
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
         Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);

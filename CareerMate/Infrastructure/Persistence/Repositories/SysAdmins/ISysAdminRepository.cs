@@ -10,6 +10,6 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.SysAdmins
 {
     public interface ISysAdminRepository : IRepository<SysAdmin>
     {
-        Task<PagedResponse<GetSysAdminUsersListQueryItem>> GetSysAdminList(PagedQuery searchTerm, CancellationToken cancellationToken);
+        Task<PagedResponse<GetSysAdminUsersListQueryItem>> GetSysAdminList(PagedQuery pagedQuery, CancellationToken cancellationToken);
     }
 }

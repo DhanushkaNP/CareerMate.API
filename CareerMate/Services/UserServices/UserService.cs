@@ -110,11 +110,13 @@ namespace CareerMate.Services.UserServices
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(applicationUser);
 
-            var result = _userManager.ResetPasswordAsync(applicationUser, token, password);
-
-            if (!result.IsCompletedSuccessfully)
+            try
             {
-                throw new BadRequestException("Something happen when updating password");
+                 await _userManager.ResetPasswordAsync(applicationUser, token, password);
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException(ex.Message);
             }
         }
     }

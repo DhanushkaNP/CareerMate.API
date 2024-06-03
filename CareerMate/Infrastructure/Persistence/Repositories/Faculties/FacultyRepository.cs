@@ -22,7 +22,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Faculties
 
         public async Task<ListResponse<FacultyQueryItem>> GetFacultyListByUniversityId(Guid UniversityId, CancellationToken cancellationToken)
         {
-            IQueryable<FacultyQueryItem> query = 
+            IQueryable<FacultyQueryItem> query =
                 Context.Faculty.Include(f => f.University).Where(f => f.University.Id == UniversityId).Select(f => new FacultyQueryItem
                 {
                     Id = f.Id,
@@ -35,6 +35,6 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Faculties
             {
                 Items = await query.ToListAsync(cancellationToken)
             };
-        }
+        }       
     }
 }

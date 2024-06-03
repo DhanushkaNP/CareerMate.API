@@ -4,9 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Threading;
-using CareerMate.EndPoints.Commands.Users.CoordinatorAssistants;
 using System;
 using CareerMate.EndPoints.Queries.Users.CoordinatorAssistants.GetFaculty;
+using CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Login;
+using CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Create;
+using CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Delete;
+using CareerMate.EndPoints.Queries.Users.CoordinatorAssistants.GetCoordinatorAssistant;
+using CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Update;
+using CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.UpdatePassword;
 
 namespace CareerMate.Controllers
 {
@@ -35,6 +40,46 @@ namespace CareerMate.Controllers
         {
             var query = new GetCoordinatorAssistantsFacultyQuery { ApplicationUserId = Id };
             var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPost("/api/Faculty/{facultyId:Guid}/CoordinatorAssistant")]
+        public async Task<IActionResult> CreateCoordinatorAssistant([FromRoute] Guid facultyId, [FromBody] CreateCoordinatorAssistantCommand command, CancellationToken cancellationToken)
+        {
+            command.FacultyId = facultyId;
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpDelete("{Id:Guid}")]
+        public async Task<IActionResult> DeleteCoordinatorAssistant([FromRoute] Guid Id, CancellationToken cancellationToken)
+        {
+            var command = new DeleteCoordinatorAssistantsCommand { Id = Id };
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{Id:Guid}")]
+        public async Task<IActionResult> GetCoordinatorAssistant([FromRoute] Guid Id, CancellationToken cancellationToken)
+        {
+            var query = new GetCoordinatorAssistantQuery { Id = Id };
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{Id:Guid}")]
+        public async Task<IActionResult> UpdateCoordinatorAssistant(Guid Id, [FromBody] UpdateCoordinatorAssistantCommand command, CancellationToken cancellationToken)
+        {
+            command.Id = Id;
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{Id:Guid}/Password")]
+        public async Task<IActionResult> UpdateCoordinatorPassword(Guid Id, [FromBody] UpdateCoordinatorAssistantPasswordCommand command, CancellationToken cancellationToken)
+        {
+            command.Id = Id;
+            var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);
         }
     }
