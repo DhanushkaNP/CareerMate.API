@@ -10,6 +10,7 @@ using CareerMate.Models.Entities.Interns;
 using CareerMate.Models.Entities.InternshipInvites;
 using CareerMate.Models.Entities.InternshipPosts;
 using CareerMate.Models.Entities.Links;
+using CareerMate.Models.Entities.Pathways;
 using CareerMate.Models.Entities.Skills;
 using CareerMate.Models.Entities.StudentBatches;
 using System;
@@ -63,6 +64,8 @@ namespace CareerMate.Models.Entities.Students
         public List<CompanyLeaveRequest> LeaveRequests { get; private set; }
 
         public Degree Degree { get; private set; }
+
+        public Pathway Pathway { get; private set; }
 
         public List<InternshipInvite> InternshipInvites { get; private set; }
 

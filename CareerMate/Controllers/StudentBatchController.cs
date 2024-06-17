@@ -2,7 +2,9 @@
 using CareerMate.Abstractions.Enums;
 using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.Batches.Create;
+using CareerMate.EndPoints.Commands.Batches.Update;
 using CareerMate.EndPoints.Handlers;
+using CareerMate.EndPoints.Queries.Batches.GetDetails;
 using CareerMate.EndPoints.Queries.Batches.GetListByFaculty;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -70,6 +72,26 @@ namespace CareerMate.Controllers
         {
             query.FacultyId = facultyId;
             var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{id:Guid}")]
+        [Authorize(Policy = Policies.CoordinatorLevel)]
+        public async Task<IActionResult> GetFacultyStudentBatchDetails([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            var query = new GetFacultyStudentBatchDetailsQuery { Id = id };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{id:Guid}")]
+        [Authorize(Policy = Policies.CoordinatorOnly)]
+        public async Task<IActionResult> UpdateFacultyStudentBatch([FromRoute] Guid id, [FromBody] UpdateFacultyStudentBatchCommand command, CancellationToken cancellationToken)
+        {
+            command.Id = id;
+
+            var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);
         }
     }

@@ -14,7 +14,8 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
 
             builder.HasOne(i => i.Faculty)
                 .WithMany(i => i.Degrees)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
         }
     }
 }

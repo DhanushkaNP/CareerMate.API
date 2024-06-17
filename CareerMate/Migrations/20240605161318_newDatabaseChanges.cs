@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareerMate.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class newDatabaseChanges : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -323,8 +323,9 @@ namespace CareerMate.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    ShortName = table.Column<string>(type: "text", nullable: true),
-                    FacultyId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Acronym = table.Column<string>(type: "text", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FacultyId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -443,6 +444,7 @@ namespace CareerMate.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Code = table.Column<string>(type: "text", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DegreeId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -483,6 +485,7 @@ namespace CareerMate.Migrations
                     BatchId = table.Column<Guid>(type: "uuid", nullable: false),
                     ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     DegreeId = table.Column<Guid>(type: "uuid", nullable: true),
+                    PathwayId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -499,6 +502,12 @@ namespace CareerMate.Migrations
                         name: "FK_Student_Degree_DegreeId",
                         column: x => x.DegreeId,
                         principalTable: "Degree",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Student_Pathway_PathwayId",
+                        column: x => x.PathwayId,
+                        principalTable: "Pathway",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1069,6 +1078,11 @@ namespace CareerMate.Migrations
                 column: "DegreeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Student_PathwayId",
+                table: "Student",
+                column: "PathwayId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StudentBatch_FacultyId",
                 table: "StudentBatch",
                 column: "FacultyId");
@@ -1137,9 +1151,6 @@ namespace CareerMate.Migrations
                 name: "Link");
 
             migrationBuilder.DropTable(
-                name: "Pathway");
-
-            migrationBuilder.DropTable(
                 name: "Skill");
 
             migrationBuilder.DropTable(
@@ -1173,13 +1184,16 @@ namespace CareerMate.Migrations
                 name: "Company");
 
             migrationBuilder.DropTable(
-                name: "Degree");
+                name: "Pathway");
 
             migrationBuilder.DropTable(
                 name: "StudentBatch");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Degree");
 
             migrationBuilder.DropTable(
                 name: "Faculty");

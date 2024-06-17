@@ -408,19 +408,22 @@ namespace CareerMate.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Acronym")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("FacultyId")
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("FacultyId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ShortName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -750,6 +753,9 @@ namespace CareerMate.Migrations
                     b.Property<Guid>("DegreeId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -869,6 +875,9 @@ namespace CareerMate.Migrations
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("PathwayId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("PersonalEmail")
                         .HasColumnType("text");
 
@@ -894,6 +903,8 @@ namespace CareerMate.Migrations
                     b.HasIndex("BatchId");
 
                     b.HasIndex("DegreeId");
+
+                    b.HasIndex("PathwayId");
 
                     b.ToTable("Student", (string)null);
                 });
@@ -1302,7 +1313,8 @@ namespace CareerMate.Migrations
                     b.HasOne("CareerMate.Models.Entities.Faculties.Faculty", "Faculty")
                         .WithMany("Degrees")
                         .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Faculty");
                 });
@@ -1515,6 +1527,11 @@ namespace CareerMate.Migrations
                         .HasForeignKey("DegreeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("CareerMate.Models.Entities.Pathways.Pathway", "Pathway")
+                        .WithMany("Students")
+                        .HasForeignKey("PathwayId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.OwnsOne("CareerMate.Models.Entities.Students.CompanyFeedback", "CompanyFeedback", b1 =>
                         {
                             b1.Property<Guid>("StudentId")
@@ -1576,6 +1593,8 @@ namespace CareerMate.Migrations
 
                     b.Navigation("Marks")
                         .IsRequired();
+
+                    b.Navigation("Pathway");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Supervisors.Supervisor", b =>
@@ -1738,6 +1757,11 @@ namespace CareerMate.Migrations
                     b.Navigation("InternshipInvites");
 
                     b.Navigation("InternshipPost");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Pathways.Pathway", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.StudentBatches.StudentBatch", b =>

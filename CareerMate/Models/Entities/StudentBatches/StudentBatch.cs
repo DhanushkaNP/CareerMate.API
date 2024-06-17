@@ -28,5 +28,13 @@ namespace CareerMate.Models.Entities.StudentBatches
         public List<Student> Students { get; private set; }
 
         public Faculty Faculty { get; private set; }
+
+        public void Update(string batchCode, DateTime batchStartAt, DateTime batchEndAt, DateTime lastAllowedDateForStartInternship)
+        {
+            BatchCode = batchCode;
+            BatchStartAt = batchStartAt;
+            BatchEndAt = batchEndAt;
+            LastAllowedDateForStartInternship = lastAllowedDateForStartInternship;
+        }
     }
 }

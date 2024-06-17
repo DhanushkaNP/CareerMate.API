@@ -41,6 +41,10 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
                 .WithMany(i => i.Students)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(i => i.Pathway)
+                .WithMany(i => i.Students)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.OwnsOne(i => i.CompanyFeedback, cf =>
             {
                 cf.Property(i => i.Level).HasColumnName("CompanyFeedbackLevel").IsRequired(false);
