@@ -5,6 +5,7 @@ using CareerMate.EndPoints.Commands.Pathways.Delete;
 using CareerMate.EndPoints.Commands.Pathways.Update;
 using CareerMate.EndPoints.Queries.Pathways.GetDetail;
 using CareerMate.EndPoints.Queries.Pathways.GetList;
+using CareerMate.EndPoints.Queries.Pathways.GetPathwaySuggestionList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +76,16 @@ namespace CareerMate.Controllers
             command.Id = id;
             command.DegreeId = degreeId;
             var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("Suggestions")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPathwaySuggestions([FromRoute] Guid degreeId, [FromQuery] GetPathwaySuggestionsQuery query, CancellationToken cancellationToken)
+        {
+            query.DegreeId = degreeId;
+
+            var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
         }
     }

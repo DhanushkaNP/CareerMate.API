@@ -4,6 +4,7 @@ using CareerMate.EndPoints.Commands.Universities.Delete;
 using CareerMate.EndPoints.Commands.Universities.Update;
 using CareerMate.EndPoints.Queries.Universities.GetFacultyList;
 using CareerMate.EndPoints.Queries.Universities.GetList;
+using CareerMate.EndPoints.Queries.Universities.GetSuggestionsList;
 using CareerMate.EndPoints.Queries.Universities.GetUniversityDetail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -88,6 +89,14 @@ namespace CareerMate.API.Controllers
                 UniversityId = universityId
             };
 
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("Suggestions")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUniversitySuggestions([FromQuery] GetUniversitySuggestionsQuery query, CancellationToken cancellationToken)
+        {
             var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
         }

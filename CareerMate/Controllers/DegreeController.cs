@@ -3,6 +3,7 @@ using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.Degrees.Create;
 using CareerMate.EndPoints.Commands.Degrees.Delete;
 using CareerMate.EndPoints.Commands.Degrees.Update;
+using CareerMate.EndPoints.Queries.Degrees.GetDegreeSuggestionList;
 using CareerMate.EndPoints.Queries.Degrees.GetDetails;
 using CareerMate.EndPoints.Queries.Degrees.GetList;
 using MediatR;
@@ -74,6 +75,15 @@ namespace CareerMate.Controllers
             command.Id = id;
 
             var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("Suggestions")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetBatchesSuggestions([FromRoute] Guid facultyId, [FromQuery] GetDegreesSuggestionsQuery query, CancellationToken cancellationToken)
+        {
+            query.FacultyId = facultyId;
+            var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
         }
     }

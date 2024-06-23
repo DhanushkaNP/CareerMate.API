@@ -1,6 +1,6 @@
 ﻿using CareerMate.EndPoints.Handlers;
 using CareerMate.Infrastructure.Persistence.Repositories.Faculties;
-using CareerMate.Infrastructure.Persistence.Repositories.Unveristies;
+using CareerMate.Infrastructure.Persistence.Repositories.Universities;
 using CareerMate.Models.Entities.Universities;
 using MediatR;
 using System.Threading;

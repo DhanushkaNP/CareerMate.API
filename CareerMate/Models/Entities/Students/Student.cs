@@ -47,6 +47,8 @@ namespace CareerMate.Models.Entities.Students
 
         public bool? IsCvApproved { get; private set; }
 
+        public string ProfilePicUrl { get; set; }
+
         public CompanyFeedback CompanyFeedback { get; private set; }
 
         public StudentMark Marks { get; private set; }
@@ -83,9 +85,54 @@ namespace CareerMate.Models.Entities.Students
 
         public List<InternshipPost> InternshipPosts { get; private set; }
 
-        public Student SetStudentBatch(StudentBatch batch)
+        public void SetStudentBatch(StudentBatch batch)
         {
             Batch = batch;
+        }
+
+        public void SetDegree(Degree degree)
+        {
+            Degree = degree;
+        }
+
+        public void SetPathway(Pathway pathway)
+        {
+            Pathway = pathway;
+        }
+
+        public Student SetFirstName(string firstName)
+        {
+            FirstName = firstName;
+            return this;
+        }
+
+        public Student SetLastName(string lastName)
+        {
+            LastName = lastName;
+            return this;
+        }
+
+        public Student SetPhoneNumber(string phoneNumber)
+        {
+            PhoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Student SetPersonalEmail(string personalEmail)
+        {
+            PersonalEmail = personalEmail;
+            return this;
+        }
+
+        public Student SetUniversityEmail(string universityEmail)
+        {
+            UniversityEmail = universityEmail;
+            return this;
+        }
+
+        public Student SetUnemployed()
+        {
+            Status = StudentStatus.Unemployed;
             return this;
         }
     }

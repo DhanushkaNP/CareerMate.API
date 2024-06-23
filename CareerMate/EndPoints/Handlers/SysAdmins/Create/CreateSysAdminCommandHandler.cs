@@ -16,13 +16,11 @@ namespace CareerMate.EndPoints.Handlers.SysAdmins.Create
     {
         private readonly IUserService _userService;
         private readonly ISysAdminRepository _sysAdminRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateSysAdminCommandHandler(IUserService userService, ISysAdminRepository sysAdminRepository, IUnitOfWork unitOfWork)
+        public CreateSysAdminCommandHandler(IUserService userService, ISysAdminRepository sysAdminRepository)
         {
             _userService = userService;
             _sysAdminRepository = sysAdminRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<BaseResponse> Handle(CreateSysAdminCommand command, CancellationToken cancellationToken)

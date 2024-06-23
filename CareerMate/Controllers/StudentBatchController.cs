@@ -4,8 +4,10 @@ using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.Batches.Create;
 using CareerMate.EndPoints.Commands.Batches.Update;
 using CareerMate.EndPoints.Handlers;
+using CareerMate.EndPoints.Queries.Batches.GetBatchesSuggestionList;
 using CareerMate.EndPoints.Queries.Batches.GetDetails;
 using CareerMate.EndPoints.Queries.Batches.GetListByFaculty;
+using CareerMate.EndPoints.Queries.Universities.GetSuggestionsList;
 using CsvHelper;
 using CsvHelper.Configuration;
 using MediatR;
@@ -92,6 +94,15 @@ namespace CareerMate.Controllers
             command.Id = id;
 
             var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("Suggestions")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetBatchesSuggestions([FromRoute]Guid facultyId, [FromQuery] GetBatchSuggestionsQuery query, CancellationToken cancellationToken)
+        {
+            query.FacultyId = facultyId;
+            var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
         }
     }

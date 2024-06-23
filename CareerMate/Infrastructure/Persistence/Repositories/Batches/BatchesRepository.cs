@@ -1,4 +1,8 @@
-﻿using CareerMate.Models.Entities.StudentBatches;
+﻿using CareerMate.Abstractions.Models.Queries;
+using CareerMate.EndPoints.Queries.Batches;
+using CareerMate.EndPoints.Queries.Faculties;
+using CareerMate.Models.Entities.Faculties;
+using CareerMate.Models.Entities.StudentBatches;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,6 +33,26 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Batches
         public async override Task<StudentBatch> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await Context.StudentBatch.FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+        }
+
+        public async Task<List<StudentBatchListQueryItem>> GetSuggestionsList(Guid facultyId, SuggestionQuery suggestionsQuery, CancellationToken cancellationToken)
+        {
+            IQueryable<StudentBatch> query = Context.StudentBatch.Include(u => u.Faculty).Where(u => u.Faculty.Id == facultyId).AsNoTracking();
+
+            if (!string.IsNullOrEmpty(suggestionsQuery.Search))
+            {
+                string searchLower = suggestionsQuery.Search.ToLower();
+                query = query.Where(
+                    u => u.BatchCode.ToLower().Contains(searchLower));
+            }
+
+            return await query.OrderByDescending(u => u.CreatedAt)
+                .Take(suggestionsQuery.Limit)
+                .Select(u => new StudentBatchListQueryItem
+                {
+                    Id = u.Id,
+                    BatchCode = u.BatchCode
+                }).ToListAsync(cancellationToken);
         }
     }
 }

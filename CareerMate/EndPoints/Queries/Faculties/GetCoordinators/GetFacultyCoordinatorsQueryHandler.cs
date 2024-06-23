@@ -19,16 +19,16 @@ namespace CareerMate.EndPoints.Queries.Faculties.GetCoordinators
             _coordinatorRepository = coordinatorRepository;
         }
 
-        public async Task<BaseResponse> Handle(GetFacultyCoordinatorsQuery command, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetFacultyCoordinatorsQuery query, CancellationToken cancellationToken)
         {
-            Faculty faculty = await _facultyRepository.GetByIdAsync(command.FacultyId, cancellationToken);
+            Faculty faculty = await _facultyRepository.GetByIdAsync(query.FacultyId, cancellationToken);
 
             if (faculty == null)
             {
                 return new NotFoundResponse<Faculty>();
             }
 
-            var response = await _coordinatorRepository.GetCoordinatorsListByFacultyId(command.FacultyId, command, cancellationToken);
+            var response = await _coordinatorRepository.GetCoordinatorsListByFacultyId(query.FacultyId, query, cancellationToken);
 
             return response;
         }

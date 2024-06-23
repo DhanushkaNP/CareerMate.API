@@ -1,8 +1,13 @@
-﻿using CareerMate.EndPoints.Handlers;
+﻿using CareerMate.Abstractions.Models.Queries;
+using CareerMate.EndPoints.Handlers;
+using CareerMate.EndPoints.Queries.Batches;
 using CareerMate.EndPoints.Queries.Degrees;
 using CareerMate.Models.Entities.Degrees;
+using CareerMate.Models.Entities.Faculties;
+using CareerMate.Models.Entities.StudentBatches;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,6 +44,28 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Degrees
             {
                 Items = await query.ToListAsync(cancellationToken)
             };
+        }
+
+        public async Task<List<DegreeQueryItem>> GetSuggestionsList(Guid facultyId, SuggestionQuery suggestionsQuery, CancellationToken cancellationToken)
+        {
+            IQueryable<Degree> query = Context.Degree.Include(u => u.Faculty).Where(u => u.Faculty.Id == facultyId && u.DeletedAt == null).AsNoTracking();
+
+            if (!string.IsNullOrEmpty(suggestionsQuery.Search))
+            {
+                string searchLower = suggestionsQuery.Search.ToLower();
+                query = query.Where(
+                    u => u.Name.ToLower().Contains(searchLower) ||
+                    u.Acronym.ToLower().Contains(searchLower));
+            }
+
+            return await query.OrderByDescending(u => u.CreatedAt)
+                .Take(suggestionsQuery.Limit)
+                .Select(u => new DegreeQueryItem
+                {
+                    Id = u.Id,
+                    Name = u.Name,
+                    Acronym = u.Acronym
+                }).ToListAsync(cancellationToken);
         }
     }
 }

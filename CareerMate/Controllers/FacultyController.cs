@@ -10,6 +10,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using CareerMate.EndPoints.Queries.Faculties.GetCoordinatorAssistants;
+using CareerMate.EndPoints.Queries.Faculties.GetFacultySuggestionsList;
 
 namespace CareerMate.API.Controllers
 {
@@ -73,6 +74,15 @@ namespace CareerMate.API.Controllers
         {
             query.FacultyId = facultyId;
 
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("/api/Universities/{universityId:Guid}/Faculty/Suggestions")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFacultySuggestions([FromRoute]Guid universityId, [FromQuery] GetFacultySuggestionsQuery query, CancellationToken cancellationToken)
+        {
+            query.UniversityId = universityId;
             var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
         }

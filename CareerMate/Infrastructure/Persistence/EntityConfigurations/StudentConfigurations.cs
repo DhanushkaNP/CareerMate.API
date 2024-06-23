@@ -26,6 +26,8 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
             
             builder.Property(i => i.PersonalEmail);
 
+            builder.Property(i => i.ProfilePicUrl).IsRequired(false);
+
             builder.HasOne(i => i.Batch)
                 .WithMany(i => i.Students)
                 .OnDelete(DeleteBehavior.Cascade)

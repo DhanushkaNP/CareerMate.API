@@ -11,5 +11,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
         Task<bool> AnyByDegreeId(Guid degreeId, CancellationToken cancellationToken);
 
         Task<bool> AnyByPathwayId(Guid pathwayId, CancellationToken cancellationToken);
+
+        Task<Student> GetByEmailAndId(string studentId, string email, CancellationToken cancellationToken);
     }
 }

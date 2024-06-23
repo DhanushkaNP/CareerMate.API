@@ -15,17 +15,32 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
 
         public async Task<bool> AnyByDegreeId(Guid degreeId, CancellationToken cancellationToken)
         {
-            return await Context.Student.Include(s => s.Degree).Where(s => s.Degree.Id == degreeId).AnyAsync();
+            return await GetQueryable().Where(s => s.Degree.Id == degreeId).AnyAsync();
         }
 
         public async Task<bool> AnyByPathwayId(Guid pathwayId, CancellationToken cancellationToken)
         {
-            return await Context.Student.Include(s => s.Pathway).Where(s => s.Pathway.Id == pathwayId).AnyAsync();
+            return await GetQueryable().Include(s => s.Pathway).Where(s => s.Pathway.Id == pathwayId).AnyAsync();
         }
 
         public override Task<Student> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<Student> GetByEmailAndId(string studentId, string email, CancellationToken cancellationToken)
+        {
+            return GetQueryable().Where(
+                    s => s.StudentId.ToLower() == studentId.ToLower() &&
+                    s.UniversityEmail.ToLower() == email.ToLower() &&
+                    s.ApplicationUserId == null)
+                .Include(s => s.Batch)
+                .FirstOrDefaultAsync();
+        }
+
+        private IQueryable<Student> GetQueryable()
+        {
+            return Context.Student;
         }
     }
 }

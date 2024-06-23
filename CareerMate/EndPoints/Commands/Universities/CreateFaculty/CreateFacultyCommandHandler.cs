@@ -2,7 +2,7 @@
 using CareerMate.EndPoints.Handlers;
 using CareerMate.Infrastructure.Persistence;
 using CareerMate.Infrastructure.Persistence.Repositories.Faculties;
-using CareerMate.Infrastructure.Persistence.Repositories.Unveristies;
+using CareerMate.Infrastructure.Persistence.Repositories.Universities;
 using CareerMate.Models;
 using CareerMate.Models.Entities.Coordinators;
 using CareerMate.Models.Entities.Faculties;
