@@ -1,7 +1,5 @@
 ﻿using CareerMate.Abstractions.Models.Queries;
 using CareerMate.EndPoints.Queries.Batches;
-using CareerMate.EndPoints.Queries.Faculties;
-using CareerMate.Models.Entities.Faculties;
 using CareerMate.Models.Entities.StudentBatches;
 using Microsoft.EntityFrameworkCore;
 using System;

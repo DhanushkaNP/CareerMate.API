@@ -25,7 +25,8 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
 
         public override Task<Student> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return GetQueryable()
+                .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
         }
 
         public Task<Student> GetByEmailAndId(string studentId, string email, CancellationToken cancellationToken)
@@ -36,6 +37,15 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                     s.ApplicationUserId == null)
                 .Include(s => s.Batch)
                 .FirstOrDefaultAsync();
+        }
+
+        public Task<Student> GetByApplicationUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        {
+            return GetQueryable()
+                .Include(s => s.Degree)
+                .Include(s => s.Pathway)
+                .Include(s => s.Batch).ThenInclude(b => b.Faculty).ThenInclude(f => f.University)
+                .FirstOrDefaultAsync(s => s.ApplicationUserId == userId, cancellationToken);
         }
 
         private IQueryable<Student> GetQueryable()

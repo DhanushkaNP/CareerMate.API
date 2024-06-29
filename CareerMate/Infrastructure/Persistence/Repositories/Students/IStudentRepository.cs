@@ -13,5 +13,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
         Task<bool> AnyByPathwayId(Guid pathwayId, CancellationToken cancellationToken);
 
         Task<Student> GetByEmailAndId(string studentId, string email, CancellationToken cancellationToken);
+
+        Task<Student> GetByApplicationUserIdAsync(Guid userId, CancellationToken cancellationToken);
     }
 }

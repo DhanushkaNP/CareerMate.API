@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Commands.Users.Students
+namespace CareerMate.EndPoints.Commands.Users.Students.Create
 {
     public class CreateStudentCommandHandler : IRequestHandler<CreateStudentCommand, BaseResponse>
     {
@@ -68,7 +68,7 @@ namespace CareerMate.EndPoints.Commands.Users.Students
 
             if (student == null)
             {
-                return new BadRequestResponse(ErrorCodes.InvalidStudentData ,"Invalid student data");
+                return new BadRequestResponse(ErrorCodes.InvalidStudentData, "Invalid student data");
             }
 
             using (var transaction = await _studentRepository.BeginTransaction(cancellationToken))
@@ -86,6 +86,7 @@ namespace CareerMate.EndPoints.Commands.Users.Students
                 student.SetPathway(pathway);
 
                 student
+                    .SetApplicationUserId(userId)
                     .SetFirstName(command.FirstName)
                     .SetLastName(command.LastName)
                     .SetPhoneNumber(command.PhoneNumber)
@@ -101,12 +102,12 @@ namespace CareerMate.EndPoints.Commands.Users.Students
             }
 
             LoginUserDetailModel userLoginDetail = await _userService.Login(
-                command.PersonalEmail, command.Password, new List<string>() { Roles.Student },  cancellationToken);
+                command.PersonalEmail, command.Password, new List<string>() { Roles.Student }, cancellationToken);
 
             return new CreateStudentCommandResponse
             {
                 Token = userLoginDetail.Token,
-                UserId = userLoginDetail.UserId,
+                UserId = student.Id,
                 FacultyId = faculty.Id,
                 UniversityId = faculty.University.Id,
                 BatchId = student.Batch.Id,

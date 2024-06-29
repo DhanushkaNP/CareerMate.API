@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace CareerMate.EndPoints.Commands.Users.Students
+namespace CareerMate.EndPoints.Commands.Users.Students.Login
 {
-    public class CreateStudentCommandResponse : BaseResponse
+    public class LoginStudentCommandResponse : BaseResponse
     {
-        public CreateStudentCommandResponse() : base(StatusCodes.Status200OK)
+        public LoginStudentCommandResponse() : base(StatusCodes.Status200OK)
         {
         }
 

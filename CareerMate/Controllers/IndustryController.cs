@@ -35,7 +35,6 @@ namespace CareerMate.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
         public async Task<IActionResult> GetIndustries([FromRoute] Guid facultyId, CancellationToken cancellationToken)
         {
             var query = new GetIndustriesQuery { FacultyId = facultyId };

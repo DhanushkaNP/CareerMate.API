@@ -100,6 +100,12 @@ namespace CareerMate.Models.Entities.Students
             Pathway = pathway;
         }
 
+        public Student SetApplicationUserId(Guid userId)
+        {
+            ApplicationUserId = userId;
+            return this;
+        }
+
         public Student SetFirstName(string firstName)
         {
             FirstName = firstName;

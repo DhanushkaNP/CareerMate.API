@@ -1,5 +1,6 @@
 ﻿using CareerMate.API.Controllers;
-using CareerMate.EndPoints.Commands.Users.Students;
+using CareerMate.EndPoints.Commands.Users.Students.Create;
+using CareerMate.EndPoints.Commands.Users.Students.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,14 @@ namespace CareerMate.Controllers
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> CreateStudent([FromBody] CreateStudentCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginStudentCommand command, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);

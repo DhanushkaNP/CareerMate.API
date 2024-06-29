@@ -3,7 +3,7 @@ using MediatR;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CareerMate.EndPoints.Commands.Users.Students
+namespace CareerMate.EndPoints.Commands.Users.Students.Create
 {
     public class CreateStudentCommand : IRequest<BaseResponse>
     {
