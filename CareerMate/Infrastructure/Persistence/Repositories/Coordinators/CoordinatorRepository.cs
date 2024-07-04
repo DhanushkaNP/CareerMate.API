@@ -1,8 +1,6 @@
 ﻿using CareerMate.Abstractions.Models.Queries;
 using CareerMate.EndPoints.Handlers;
-using CareerMate.EndPoints.Queries.Users.CoordinatorAssistants;
 using CareerMate.EndPoints.Queries.Users.Coordinators;
-using CareerMate.Models.Entities.CoordinatorAssistants;
 using CareerMate.Models.Entities.Coordinators;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,6 +25,13 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Coordinators
         public async Task<Coordinator> GetCoordinatorFacultyByApplicationUserId(Guid userId, CancellationToken cancellationToken)
         {
             IQueryable<Coordinator> query = Context.Coordinator.Include(c => c.Faculty).ThenInclude(f => f.University).Where(c => c.ApplicationUserId == userId);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Coordinator> GetCoordinatorByApplicationUserId(Guid userId, CancellationToken cancellationToken)
+        {
+            IQueryable<Coordinator> query = Context.Coordinator.Where(c => c.ApplicationUserId == userId);
 
             return await query.FirstOrDefaultAsync();
         }

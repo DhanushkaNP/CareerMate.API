@@ -17,11 +17,14 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
-            builder.Property(i => i.isBlocked).HasDefaultValue(false);
-
             builder.HasOne(i => i.ApplicationUser)
                 .WithOne(i => i.Company)
                 .HasForeignKey<Company>(i => i.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            builder.HasOne(i => i.Industry)
+                .WithMany(i => i.Companies)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
         }

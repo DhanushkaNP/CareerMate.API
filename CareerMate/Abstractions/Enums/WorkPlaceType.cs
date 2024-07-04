@@ -2,8 +2,8 @@
 {
     public enum WorkPlaceType
     {
-        Remote = 1,
-        OnSite = 2,
-        Hybrid = 3,
+        Remote = 0,
+        OnSite = 1,
+        Hybrid = 2,
     }
 }

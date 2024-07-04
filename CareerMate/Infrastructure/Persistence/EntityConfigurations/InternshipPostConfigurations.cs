@@ -16,7 +16,7 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
                 .WithOne(i => i.InternshipPost)
                 .HasForeignKey<InternshipPost>(i => i.InternshipId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasOne(i => i.Company)
                .WithMany(i => i.InternshipPosts)
@@ -26,13 +26,18 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
                .WithMany(i => i.InternshipPosts)
                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(i => i.Coordinator)
+            builder.HasOne(i => i.PostedCoordinator)
                .WithMany(i => i.InternshipPosts)
                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(i => i.CoordinatorAssistant)
+            builder.HasOne(i => i.PostedCoordinatorAssistant)
                .WithMany(i => i.InternshipPosts)
                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(i => i.Faculty)
+                .WithMany(i => i.InternshipPosts)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
         }
     }
 }

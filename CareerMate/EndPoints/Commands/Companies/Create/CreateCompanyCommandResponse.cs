@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace CareerMate.EndPoints.Commands.Companies
+namespace CareerMate.EndPoints.Commands.Companies.Create
 {
     public class CreateCompanyCommandResponse : BaseResponse
     {

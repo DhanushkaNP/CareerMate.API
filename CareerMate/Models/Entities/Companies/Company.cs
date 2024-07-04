@@ -9,6 +9,7 @@ using CareerMate.Models.Entities.Supervisors;
 using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Interns;
 using CareerMate.Models.Entities.Links;
+using CareerMate.Models.Entities.Industries;
 
 namespace CareerMate.Models.Entities.Companies
 {
@@ -22,7 +23,8 @@ namespace CareerMate.Models.Entities.Companies
             string bio,
             string email,
             Guid applicationUserId,
-            Faculty faculty)
+            Faculty faculty,
+            Industry industry)
         {
             Name = name;
             PhoneNumber = phoneNumber;
@@ -32,6 +34,7 @@ namespace CareerMate.Models.Entities.Companies
             Email = email;
             ApplicationUserId = applicationUserId;
             Faculty = faculty;
+            Industry = industry;
 
             Status = CompanyStatus.Pending;
         }
@@ -58,11 +61,11 @@ namespace CareerMate.Models.Entities.Companies
 
         public CompanyStatus? Status { get; private set; }
 
-        public bool isBlocked { get; private set; }
-
         public string LogoUrl { get; private set; }
 
         public Faculty Faculty { get; private set; }
+
+        public Industry Industry { get; private set; }
 
         public List<InternshipPost> InternshipPosts { get; private set; }
 

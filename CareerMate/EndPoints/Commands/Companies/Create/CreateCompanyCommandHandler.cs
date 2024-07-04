@@ -2,10 +2,12 @@
 using CareerMate.EndPoints.Handlers;
 using CareerMate.Infrastructure.Persistence.Repositories.Companies;
 using CareerMate.Infrastructure.Persistence.Repositories.Faculties;
+using CareerMate.Infrastructure.Persistence.Repositories.Industries;
 using CareerMate.Infrastructure.Persistence.Repositories.Universities;
 using CareerMate.Models;
 using CareerMate.Models.Entities.Companies;
 using CareerMate.Models.Entities.Faculties;
+using CareerMate.Models.Entities.Industries;
 using CareerMate.Models.Entities.Universities;
 using CareerMate.Services.UserServices;
 using MediatR;
@@ -14,7 +16,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Commands.Companies
+namespace CareerMate.EndPoints.Commands.Companies.Create
 {
     public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, BaseResponse>
     {
@@ -22,13 +24,20 @@ namespace CareerMate.EndPoints.Commands.Companies
         private readonly IFacultyRepository _facultyRepository;
         private readonly ICompanyRepository _companyRepository;
         private readonly IUserService _userService;
+        private readonly IIndustryRepository _industryRepository;
 
-        public CreateCompanyCommandHandler(IUniversityRepository universityRepository, IFacultyRepository facultyRepository, ICompanyRepository companyRepository, IUserService userService)
+        public CreateCompanyCommandHandler(
+            IUniversityRepository universityRepository,
+            IFacultyRepository facultyRepository,
+            ICompanyRepository companyRepository,
+            IUserService userService,
+            IIndustryRepository industryRepository)
         {
             _universityRepository = universityRepository;
             _facultyRepository = facultyRepository;
             _companyRepository = companyRepository;
             _userService = userService;
+            _industryRepository = industryRepository;
         }
 
         public async Task<BaseResponse> Handle(CreateCompanyCommand command, CancellationToken cancellationToken)
@@ -47,6 +56,13 @@ namespace CareerMate.EndPoints.Commands.Companies
                 return new NotFoundResponse<Faculty>();
             }
 
+            Industry industry = await _industryRepository.GetByIdAsync(command.IndustryId, cancellationToken);
+
+            if (industry == null)
+            {
+                return new NotFoundResponse<Industry>();
+            }
+
             Company company;
 
             using (var transaction = await _companyRepository.BeginTransaction(cancellationToken))
@@ -60,7 +76,15 @@ namespace CareerMate.EndPoints.Commands.Companies
                     cancellationToken);
 
                 company = new Company(
-                    command.Name, command.PhoneNumber, command.Address, command.Location, command.Bio, command.Email, userId, faculty);
+                    command.Name,
+                    command.PhoneNumber,
+                    command.Address,
+                    command.Location,
+                    command.Bio,
+                    command.Email,
+                    userId,
+                    faculty,
+                    industry);
 
                 _companyRepository.Add(company);
 

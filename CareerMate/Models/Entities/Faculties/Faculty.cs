@@ -3,6 +3,8 @@ using CareerMate.Models.Entities.CoordinatorAssistants;
 using CareerMate.Models.Entities.Coordinators;
 using CareerMate.Models.Entities.Degrees;
 using CareerMate.Models.Entities.Industries;
+using CareerMate.Models.Entities.InternshipPosts;
+using CareerMate.Models.Entities.Internships;
 using CareerMate.Models.Entities.StudentBatches;
 using CareerMate.Models.Entities.Universities;
 using System;
@@ -41,6 +43,10 @@ namespace CareerMate.Models.Entities.Faculties
         public List<Industry> Industries { get; private set; }
 
         public List<StudentBatch> StudentBatches { get; set; }
+
+        public List<Internship> Internships { get; set; }
+
+        public List<InternshipPost> InternshipPosts { get; set; }
 
         public Faculty AddCoordinator(Coordinator coordinator)
         {

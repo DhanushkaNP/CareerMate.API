@@ -2,6 +2,7 @@
 using CareerMate.Services.UserServices;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,5 +19,7 @@ namespace CareerMate.Abstractions.Services
         Task<ApplicationUser> GetUserById(Guid id, CancellationToken cancellationToken);
 
         Task UpdatePassword(Guid id, string password, CancellationToken cancellationToken);
+
+        Task<UserDetailModel> GetUserDetails(ClaimsPrincipal user, CancellationToken cancellationToken);
     }
 }

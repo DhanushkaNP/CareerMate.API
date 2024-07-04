@@ -1,7 +1,6 @@
 ﻿using CareerMate.Abstractions.Models.Queries;
 using CareerMate.Abstractions.Repositories;
 using CareerMate.EndPoints.Handlers;
-using CareerMate.EndPoints.Queries.Users.CoordinatorAssistants;
 using CareerMate.EndPoints.Queries.Users.Coordinators;
 using CareerMate.Models.Entities.Coordinators;
 using System;
@@ -17,5 +16,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Coordinators
         Task<PagedResponse<CoordinatorQueryItem>> GetCoordinatorsListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken);
 
         Task<Coordinator> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken);
+
+        Task<Coordinator> GetCoordinatorByApplicationUserId(Guid userId, CancellationToken cancellationToken);
     }
 }

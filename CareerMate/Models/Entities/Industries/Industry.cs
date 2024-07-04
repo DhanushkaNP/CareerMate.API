@@ -1,5 +1,7 @@
-﻿using CareerMate.Models.Entities.Faculties;
+﻿using CareerMate.Models.Entities.Companies;
+using CareerMate.Models.Entities.Faculties;
 using System;
+using System.Collections.Generic;
 
 namespace CareerMate.Models.Entities.Industries
 {
@@ -15,6 +17,8 @@ namespace CareerMate.Models.Entities.Industries
         public DateTime? DeletedAt { get; private set; }
 
         public Faculty Faculty { get; private set; }
+
+        public List<Company> Companies { get; private set; }
 
         public void SetFaculty(Faculty faculty)
         {

@@ -16,5 +16,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.CoordinatorAssistan
         Task<CoordinatorAssistant> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken);
 
         Task<PagedResponse<CoordinatorAssistantQueryItem>> GetCoordinatorAssistantsListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken);
+
+        Task<CoordinatorAssistant> GetCoordinatorAssistantByApplicationUserId(Guid userId, CancellationToken cancellationToken);
     }
 }

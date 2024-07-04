@@ -214,6 +214,9 @@ namespace CareerMate.Migrations
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("IndustryId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
@@ -235,17 +238,14 @@ namespace CareerMate.Migrations
                     b.Property<string>("WebURL")
                         .HasColumnType("text");
 
-                    b.Property<bool>("isBlocked")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
                     b.HasIndex("FacultyId");
+
+                    b.HasIndex("IndustryId");
 
                     b.ToTable("Company", (string)null);
                 });
@@ -613,16 +613,7 @@ namespace CareerMate.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
                     b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CoordinatorAssistantId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CoordinatorId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -637,8 +628,11 @@ namespace CareerMate.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("Flyer")
-                        .HasColumnType("bytea");
+                    b.Property<Guid>("FacultyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FlyerUrl")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("InternshipId")
                         .HasColumnType("uuid");
@@ -646,11 +640,20 @@ namespace CareerMate.Migrations
                     b.Property<bool>("IsApproved")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("NumberOfPositions")
                         .HasColumnType("integer");
+
+                    b.Property<Guid?>("PostedCoordinatorAssistantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("PostedCoordinatorId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("PostedStudentId")
                         .HasColumnType("uuid");
@@ -665,12 +668,14 @@ namespace CareerMate.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("CoordinatorAssistantId");
-
-                    b.HasIndex("CoordinatorId");
+                    b.HasIndex("FacultyId");
 
                     b.HasIndex("InternshipId")
                         .IsUnique();
+
+                    b.HasIndex("PostedCoordinatorAssistantId");
+
+                    b.HasIndex("PostedCoordinatorId");
 
                     b.HasIndex("PostedStudentId");
 
@@ -689,8 +694,14 @@ namespace CareerMate.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("FacultyId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -704,6 +715,8 @@ namespace CareerMate.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("FacultyId");
 
                     b.ToTable("Internship", (string)null);
                 });
@@ -1143,9 +1156,17 @@ namespace CareerMate.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CareerMate.Models.Entities.Industries.Industry", "Industry")
+                        .WithMany("Companies")
+                        .HasForeignKey("IndustryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Faculty");
+
+                    b.Navigation("Industry");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.CompanyLeaveRequests.CompanyLeaveRequest", b =>
@@ -1416,21 +1437,26 @@ namespace CareerMate.Migrations
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CareerMate.Models.Entities.CoordinatorAssistants.CoordinatorAssistant", "CoordinatorAssistant")
+                    b.HasOne("CareerMate.Models.Entities.Faculties.Faculty", "Faculty")
                         .WithMany("InternshipPosts")
-                        .HasForeignKey("CoordinatorAssistantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CareerMate.Models.Entities.Coordinators.Coordinator", "Coordinator")
-                        .WithMany("InternshipPosts")
-                        .HasForeignKey("CoordinatorId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CareerMate.Models.Entities.Internships.Internship", "Internship")
                         .WithOne("InternshipPost")
                         .HasForeignKey("CareerMate.Models.Entities.InternshipPosts.InternshipPost", "InternshipId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareerMate.Models.Entities.CoordinatorAssistants.CoordinatorAssistant", "PostedCoordinatorAssistant")
+                        .WithMany("InternshipPosts")
+                        .HasForeignKey("PostedCoordinatorAssistantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareerMate.Models.Entities.Coordinators.Coordinator", "PostedCoordinator")
+                        .WithMany("InternshipPosts")
+                        .HasForeignKey("PostedCoordinatorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CareerMate.Models.Entities.Students.Student", "PostedStudent")
                         .WithMany("InternshipPosts")
@@ -1439,11 +1465,13 @@ namespace CareerMate.Migrations
 
                     b.Navigation("Company");
 
-                    b.Navigation("Coordinator");
-
-                    b.Navigation("CoordinatorAssistant");
+                    b.Navigation("Faculty");
 
                     b.Navigation("Internship");
+
+                    b.Navigation("PostedCoordinator");
+
+                    b.Navigation("PostedCoordinatorAssistant");
 
                     b.Navigation("PostedStudent");
                 });
@@ -1456,7 +1484,15 @@ namespace CareerMate.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CareerMate.Models.Entities.Faculties.Faculty", "Faculty")
+                        .WithMany("Internships")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Company");
+
+                    b.Navigation("Faculty");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Links.Link", b =>
@@ -1748,7 +1784,16 @@ namespace CareerMate.Migrations
 
                     b.Navigation("Industries");
 
+                    b.Navigation("InternshipPosts");
+
+                    b.Navigation("Internships");
+
                     b.Navigation("StudentBatches");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Industries.Industry", b =>
+                {
+                    b.Navigation("Companies");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.InternshipPosts.InternshipPost", b =>

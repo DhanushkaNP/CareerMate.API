@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace CareerMate.Services.UserServices
 
             if (isExistingUser != null)
             {
-                throw new BadRequestException(ErrorCodes.ExistingUser ,"Existing user");
+                throw new BadRequestException(ErrorCodes.ExistingUser, "Existing user");
             }
 
             ApplicationUser newUser = new ApplicationUser()
@@ -70,7 +71,7 @@ namespace CareerMate.Services.UserServices
 
             if (!isCorrectPassword)
             {
-                throw new BadRequestException(ErrorCodes.LoggingUserDetailsIncorrect ,"Wrong user details");
+                throw new BadRequestException(ErrorCodes.LoggingUserDetailsIncorrect, "Wrong user details");
             }
 
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
@@ -104,7 +105,7 @@ namespace CareerMate.Services.UserServices
             return user;
         }
 
-        public async Task UpdatePassword(Guid id,  string password, CancellationToken cancellationToken)
+        public async Task UpdatePassword(Guid id, string password, CancellationToken cancellationToken)
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(id.ToString());
 
@@ -112,12 +113,25 @@ namespace CareerMate.Services.UserServices
 
             try
             {
-                 await _userManager.ResetPasswordAsync(applicationUser, token, password);
+                await _userManager.ResetPasswordAsync(applicationUser, token, password);
             }
             catch (Exception ex)
             {
                 throw new BadRequestException(ex.Message);
             }
+        }
+
+        public async Task<UserDetailModel> GetUserDetails(ClaimsPrincipal user, CancellationToken cancellationToken)
+        {
+            var currentUser = await _userManager.GetUserAsync(user);
+
+            IList<string>  roles = await _userManager.GetRolesAsync(currentUser);
+
+            return new UserDetailModel
+            {
+                Role = roles.FirstOrDefault(),
+                Id = currentUser.Id
+            };
         }
     }
 }

@@ -14,7 +14,7 @@ using CareerMate.EndPoints.Queries.Faculties.GetFacultySuggestionsList;
 
 namespace CareerMate.API.Controllers
 {
-    [Route("api/Faculty")]
+    [Route("api/Faculty/{id:Guid}")]
     [ApiController]
     public class FacultyController : BaseController
     {
@@ -25,7 +25,7 @@ namespace CareerMate.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpDelete("{id:Guid}")]
+        [HttpDelete]
         [Authorize(Policy = Policies.SysAdminOnly)]
         public async Task<IActionResult> DeleteFaculty([FromRoute]Guid id, CancellationToken cancellationToken)
         {
@@ -38,7 +38,7 @@ namespace CareerMate.API.Controllers
             return ToActionResult(result);
         }
 
-        [HttpGet("{id:Guid}")]
+        [HttpGet]
         [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
         public async Task<IActionResult> GetFacultyDetails([FromRoute]Guid id, CancellationToken cancellationToken)
         {
@@ -48,7 +48,7 @@ namespace CareerMate.API.Controllers
             return ToActionResult(result);
         }
 
-        [HttpPut("{id:Guid}")]
+        [HttpPut]
         [Authorize(Policy = Policies.SysAdminOnly)]
         public async Task<IActionResult> UpdateFaculty([FromRoute] Guid id, [FromBody]UpdateFacultyCommand command, CancellationToken cancellationToken)
         {
@@ -58,21 +58,21 @@ namespace CareerMate.API.Controllers
             return ToActionResult(result);
         }
 
-        [HttpGet("{facultyId:Guid}/Coordinators")]
+        [HttpGet("Coordinators")]
         [Authorize(Policy = Policies.CoordinatorOnly)]
-        public async Task<IActionResult> GetFacultyCoordinators([FromRoute] Guid facultyId, [FromQuery]GetFacultyCoordinatorsQuery query, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetFacultyCoordinators([FromRoute] Guid id, [FromQuery]GetFacultyCoordinatorsQuery query, CancellationToken cancellationToken)
         {
-            query.FacultyId = facultyId;
+            query.FacultyId = id;
 
             var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
         }
 
-        [HttpGet("{facultyId:Guid}/CoordinatorAssistants")]
+        [HttpGet("CoordinatorAssistants")]
         [Authorize(Policy = Policies.CoordinatorOnly)]
-        public async Task<IActionResult> GetFacultyCoordinatorAssistants([FromRoute] Guid facultyId, [FromQuery]GetFacultyCoordinatorAssistantsQuery query, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetFacultyCoordinatorAssistants([FromRoute] Guid id, [FromQuery]GetFacultyCoordinatorAssistantsQuery query, CancellationToken cancellationToken)
         {
-            query.FacultyId = facultyId;
+            query.FacultyId = id;
 
             var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);

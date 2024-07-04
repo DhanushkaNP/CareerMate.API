@@ -3,7 +3,7 @@ using MediatR;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CareerMate.EndPoints.Commands.Companies
+namespace CareerMate.EndPoints.Commands.Companies.Create
 {
     public class CreateCompanyCommand : IRequest<BaseResponse>
     {

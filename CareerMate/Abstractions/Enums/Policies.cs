@@ -6,5 +6,6 @@
         public const string CoordinatorLevel = "AllowedCoordinatorLevel";
         public const string CoordinatorOnly = "AllowedCoordinatorOnly";
         public const string CoordinatorAssistantLevel = "AllowedCoordinatorAssistantLevel";
+        public const string AllUserRoles = "AllUsers";
     }
 }

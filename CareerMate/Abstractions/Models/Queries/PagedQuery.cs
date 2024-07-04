@@ -20,6 +20,6 @@ namespace CareerMate.Abstractions.Models.Queries
 
         public string Search { get; set; }
 
-        public Dictionary<string, string[]> Filter { get; set; }
+        public Dictionary<string, string> Filter { get; set; }
     }
 }

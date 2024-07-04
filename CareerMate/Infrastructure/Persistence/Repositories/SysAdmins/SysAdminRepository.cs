@@ -1,6 +1,7 @@
 ﻿using CareerMate.Abstractions.Models.Queries;
 using CareerMate.EndPoints.Handlers;
 using CareerMate.EndPoints.Queries.Users.SysAdmins;
+using CareerMate.Models.Entities.CoordinatorAssistants;
 using CareerMate.Models.Entities.SysAdmins;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -60,6 +61,13 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.SysAdmins
                     Count = count
                 }
             };
+        }
+
+        public async Task<SysAdmin> GetSysAdminByApplicationUserId(Guid userId, CancellationToken cancellationToken)
+        {
+            IQueryable<SysAdmin> query = Context.SysAdmin.Where(c => c.ApplicationUserId == userId);
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

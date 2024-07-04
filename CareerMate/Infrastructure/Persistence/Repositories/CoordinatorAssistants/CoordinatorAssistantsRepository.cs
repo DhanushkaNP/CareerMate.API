@@ -2,6 +2,7 @@
 using CareerMate.EndPoints.Handlers;
 using CareerMate.EndPoints.Queries.Users.CoordinatorAssistants;
 using CareerMate.Models.Entities.CoordinatorAssistants;
+using CareerMate.Models.Entities.Coordinators;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,13 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.CoordinatorAssistan
         public async Task<CoordinatorAssistant> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken)
         {
             return await Context.CoordinatorAssistant.AsNoTracking().Include(c => c.ApplicationUser).FirstOrDefaultAsync(c => c.Id == id && c.DeletedAt == null, cancellationToken);
+        }
+
+        public async Task<CoordinatorAssistant> GetCoordinatorAssistantByApplicationUserId(Guid userId, CancellationToken cancellationToken)
+        {
+            IQueryable<CoordinatorAssistant> query = Context.CoordinatorAssistant.Where(c => c.ApplicationUserId == userId);
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }
