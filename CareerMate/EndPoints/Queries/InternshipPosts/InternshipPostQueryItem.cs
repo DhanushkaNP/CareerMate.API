@@ -18,5 +18,11 @@ namespace CareerMate.EndPoints.Queries.InternshipPosts
         public string Location { get; set; }
 
         public bool IsApproved { get; set; }
+
+        public string Description { get; set; }
+
+        public int NumberOfApplicants { get; set; }
+
+        public int NumberOfJobs { get; set; }
     }
 }

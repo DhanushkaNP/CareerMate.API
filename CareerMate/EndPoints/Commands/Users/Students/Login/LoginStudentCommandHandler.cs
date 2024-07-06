@@ -37,6 +37,8 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Login
             return new LoginStudentCommandResponse
             {
                 Token = userDetails.Token,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
                 UserId = student.Id,
                 UniversityId = student.Batch.Faculty.University.Id,
                 FacultyId = student.Batch.Faculty.Id,

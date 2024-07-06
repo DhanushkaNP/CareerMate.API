@@ -107,6 +107,8 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Create
             return new CreateStudentCommandResponse
             {
                 Token = userLoginDetail.Token,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
                 UserId = student.Id,
                 FacultyId = faculty.Id,
                 UniversityId = faculty.University.Id,

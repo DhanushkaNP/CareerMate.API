@@ -12,6 +12,10 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Create
 
         public string Token { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         public Guid UserId { get; set; }
 
         public Guid UniversityId { get; set; }

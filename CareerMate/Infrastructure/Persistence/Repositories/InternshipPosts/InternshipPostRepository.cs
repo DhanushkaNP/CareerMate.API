@@ -27,27 +27,45 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
 
         public async Task<PagedResponse<InternshipPostQueryItem>> GetInternshipPostsListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken)
         {
-            IQueryable<InternshipPost> query =
-                Context.InternshipPost.Include(i => i.Company).ThenInclude(c => c.Industry).Include(i => i.Faculty)
+            IQueryable<InternshipPost> query = Context.InternshipPost
+                .Include(i => i.Company).ThenInclude(c => c.Industry)
+                .Include(i => i.Faculty)
+                .Include(i => i.Applicants)
                 .Where(s => s.DeletedAt == null && s.Faculty.Id == facultyId)
                 .AsNoTracking();
 
-            if (pagedQuery.Filter.ContainsKey("status"))
+            if (pagedQuery.Filter != null)
             {
-                switch (pagedQuery.Filter["status"])
+                if (pagedQuery.Filter.ContainsKey("status"))
                 {
-                    case "approved":
-                        query = query.Where(i => i.IsApproved.Equals(true));
-                        break;
-                    case "waiting":
-                        query = query.Where(i => i.IsApproved.Equals(false));
-                        break;
+                    switch (pagedQuery.Filter["status"])
+                    {
+                        case "approved":
+                            query = query.Where(i => i.IsApproved.Equals(true));
+                            break;
+                        case "waiting":
+                            query = query.Where(i => i.IsApproved.Equals(false));
+                            break;
+                    }
                 }
-            }
 
-            if (pagedQuery.Filter.ContainsKey("industry"))
-            {
-                query = query.Where(i => i.Company.Industry.Id == new Guid(pagedQuery.Filter["industry"]));
+                if (pagedQuery.Filter.ContainsKey("industry"))
+                {
+                    query = query.Where(i => i.Company.Industry.Id == new Guid(pagedQuery.Filter["industry"]));
+                }
+
+                if (pagedQuery.Filter.ContainsKey("company"))
+                {
+                    query = query.Where(i => i.Company.Id == new Guid(pagedQuery.Filter["company"]));
+                }
+
+                if (pagedQuery.Filter.ContainsKey("type"))
+                {
+                    if (int.TryParse(pagedQuery.Filter["type"].ToString(), out int type))
+                    {
+                        query = query.Where(i => (int)i.WorkPlaceType == type);
+                    }
+                }
             }
 
             if (!string.IsNullOrEmpty(pagedQuery.Search))
@@ -72,6 +90,9 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
                 Type = i.WorkPlaceType,
                 Location = i.Location,
                 IsApproved = i.IsApproved,
+                Description = i.Description,
+                NumberOfApplicants = i.Applicants.Count(),
+                NumberOfJobs = i.NumberOfPositions,
             }).ToListAsync(cancellationToken);
 
             return new PagedResponse<InternshipPostQueryItem>()
