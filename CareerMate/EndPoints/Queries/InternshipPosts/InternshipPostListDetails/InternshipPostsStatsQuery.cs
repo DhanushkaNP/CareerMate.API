@@ -2,7 +2,7 @@
 using MediatR;
 using System;
 
-namespace CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostDetails
+namespace CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostListDetails
 {
     public class InternshipPostsStatsQuery : IRequest<BaseResponse>
     {

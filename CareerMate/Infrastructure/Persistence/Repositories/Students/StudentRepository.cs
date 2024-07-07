@@ -26,7 +26,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
         public override Task<Student> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return GetQueryable()
-                .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+                .FirstOrDefaultAsync(s => s.Id == id && s.DeletedAt == null, cancellationToken);
         }
 
         public Task<Student> GetByEmailAndId(string studentId, string email, CancellationToken cancellationToken)

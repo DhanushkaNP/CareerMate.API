@@ -17,17 +17,25 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
         {
         }
 
+        public Task<InternshipPost> GetApprovedByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return GetQueryable()
+                .Where(i => i.Id == id && i.DeletedAt == null && i.IsApproved == true)
+                .FirstOrDefaultAsync();
+        }
+
         public override Task<InternshipPost> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return GetQueryable()
                 .Include(i => i.PostedStudent).ThenInclude(s => s.ApplicationUser)
                 .Include(i => i.Company).ThenInclude(s => s.ApplicationUser)
-                .Where(i => i.Id == id && i.DeletedAt == null).FirstOrDefaultAsync();
+                .Where(i => i.Id == id && i.DeletedAt == null)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<PagedResponse<InternshipPostQueryItem>> GetInternshipPostsListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken)
         {
-            IQueryable<InternshipPost> query = Context.InternshipPost
+            IQueryable<InternshipPost> query = GetQueryable()
                 .Include(i => i.Company).ThenInclude(c => c.Industry)
                 .Include(i => i.Faculty)
                 .Include(i => i.Applicants)
@@ -116,6 +124,53 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
                 NumberOfApprovedPosts = approvedPostsCount,
                 NumberOfWaitingPosts = waitingPostsCount
             };
+        }
+
+        public async Task<InternshipPostDetailQueryItem> GetPostDetails(Guid Id, CancellationToken cancellationToken)
+        {
+            IQueryable<InternshipPost> query = GetQueryable()
+                .Include(i => i.Company)
+                .Include(i => i.Applicants).ThenInclude(a => a.Student)
+                .Where(s => s.DeletedAt == null && s.Id == Id)
+                .AsNoTracking();
+
+            InternshipPostDetailQueryItem internshipPost = await query.Select(i => new InternshipPostDetailQueryItem
+            {
+                Id = i.Id,
+                Title = i.Title,
+                CompanyName = i.Company.Name,
+                CompanyLogoUrl = i.Company.LogoUrl,
+                Type = i.WorkPlaceType,
+                Location = i.Location,
+                IsApproved = i.IsApproved,
+                Description = i.Description,
+                NumberOfApplicants = i.Applicants.Count(),
+                NumberOfJobs = i.NumberOfPositions,
+                Flyer = i.FlyerUrl,
+                StudentApplicants = i.Applicants.Select(a => a.Student.Id).ToList(),
+            }).FirstOrDefaultAsync();
+
+            return internshipPost;
+        }
+
+        public async Task<List<InternshipPostQueryItem>> GetPostsByStudentId(Guid studentId, CancellationToken cancellationToken)
+        {
+            return await GetQueryable()
+                .Include(i => i.PostedStudent)
+                .Where(i => i.DeletedAt == null && i.PostedStudent.Id == studentId)
+                .Select(i => new InternshipPostQueryItem
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    CompanyName = i.Company.Name,
+                    CompanyLogoUrl = i.Company.LogoUrl,
+                    Type = i.WorkPlaceType,
+                    Location = i.Location,
+                    IsApproved = i.IsApproved,
+                    Description = i.Description,
+                    NumberOfApplicants = i.Applicants.Count(),
+                    NumberOfJobs = i.NumberOfPositions,
+                }).ToListAsync();
         }
 
         private IQueryable<InternshipPost> GetQueryable()

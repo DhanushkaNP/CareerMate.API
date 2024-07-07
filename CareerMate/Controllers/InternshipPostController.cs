@@ -1,10 +1,13 @@
 ﻿using CareerMate.Abstractions.Enums;
 using CareerMate.Abstractions.Services;
 using CareerMate.API.Controllers;
+using CareerMate.EndPoints.Commands.InternshipPosts.Approve;
 using CareerMate.EndPoints.Commands.InternshipPosts.Create;
 using CareerMate.EndPoints.Commands.InternshipPosts.Delete;
 using CareerMate.EndPoints.Queries.InternshipPosts.GetList;
-using CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostDetails;
+using CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostDetail;
+using CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostListDetails;
+using CareerMate.EndPoints.Queries.InternshipPosts.StudentInternshipPostsList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -74,6 +77,48 @@ namespace CareerMate.Controllers
             var query = new InternshipPostsStatsQuery { FacultyId = facultyId };
 
             var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{id:Guid}")]
+        [Authorize(Policy = Policies.AllUserRoles)]
+        public async Task<IActionResult> GetInternshipPostDetails([FromRoute] Guid id, [FromRoute] Guid facultyId, CancellationToken cancellationToken)
+        {
+            var query = new InternshipPostDetailQuery
+            {
+                Id = id,
+                FacultyId = facultyId,
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("Students/{id:Guid}/List")]
+        [Authorize(Policy = Policies.StudentOnly)]
+        public async Task<IActionResult> GetStudentInternshipPosts([FromRoute] Guid id, [FromRoute] Guid facultyId, CancellationToken cancellationToken)
+        {
+            var query = new StudentInternshipPostsQuery
+            {
+                FacultyId = facultyId,
+                StudentId = id
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{id:Guid}/Approve")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
+        public async Task<IActionResult> ApproveInternshipPost([FromRoute] Guid id, [FromRoute] Guid facultyId, CancellationToken cancellationToken)
+        {
+            var command = new ApproveInternshipPostCommand
+            {
+                Id = id,
+                FacultyId = facultyId,
+            };
+
+            var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);
         }
     }

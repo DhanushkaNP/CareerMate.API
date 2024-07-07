@@ -6,7 +6,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostDetails
+namespace CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostListDetails
 {
     public class InternshipPostsDetailQueryHandler : IRequestHandler<InternshipPostsStatsQuery, BaseResponse>
     {

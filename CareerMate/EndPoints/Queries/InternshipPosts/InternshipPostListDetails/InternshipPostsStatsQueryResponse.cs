@@ -1,7 +1,7 @@
 ﻿using CareerMate.EndPoints.Handlers;
 using Microsoft.AspNetCore.Http;
 
-namespace CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostDetails
+namespace CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostListDetails
 {
     public class InternshipPostsStatsQueryResponse : BaseResponse
     {
