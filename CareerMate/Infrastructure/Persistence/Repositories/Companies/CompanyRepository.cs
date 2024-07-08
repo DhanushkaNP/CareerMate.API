@@ -1,6 +1,7 @@
 ﻿using CareerMate.Abstractions.Enums;
 using CareerMate.Abstractions.Models.Queries;
-using CareerMate.EndPoints.Queries.Company;
+using CareerMate.EndPoints.Handlers;
+using CareerMate.EndPoints.Queries.Companies;
 using CareerMate.Models.Entities.Companies;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,12 +31,64 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
 
+        public async Task<PagedResponse<CompanyQueryItem>> GetListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken)
+        {
+            IQueryable<Company> query = GetQueryable()
+                .Include(c => c.Faculty)
+                .Include(c => c.Industry)
+                .Include(c => c.Followers)
+                .Where(c => c.DeletedAt == null && c.Faculty.Id == facultyId && c.Status == CompanyStatus.Approved)
+                .AsNoTracking();
+
+            if (pagedQuery.Filter != null)
+            {
+                if (pagedQuery.Filter.ContainsKey("industry"))
+                {
+                    query = query.Where(c => c.Industry.Id == new Guid(pagedQuery.Filter["industry"]));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(pagedQuery.Search))
+            {
+                query = query.Where(c => c.Name.ToLower().Contains(pagedQuery.Search.ToLower()) ||
+                                    c.Bio.ToLower().Contains(pagedQuery.Search.ToLower()));
+            }
+
+            int count = await query.CountAsync(cancellationToken);
+
+            query = query.OrderByDescending(c => c.Followers.Count())
+                         .Skip(pagedQuery.Offset)
+                         .Take(pagedQuery.Limit);
+
+            List<CompanyQueryItem> companies = await query.Select(c => new CompanyQueryItem
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Email = c.Email,
+                IndustryName = c.Industry.Name,
+                Location = c.Location,
+                FollowersCount = c.Followers.Count(),
+                Bio = c.Bio,
+                LogoUrl = c.LogoUrl
+            }).ToListAsync(cancellationToken);
+
+            return new PagedResponse<CompanyQueryItem>
+            {
+                Items = companies,
+                Meta = new PagedResponseMetaData()
+                {
+                    Offset = pagedQuery.Offset,
+                    Count = count
+                }
+            };
+        }
+
         public async Task<List<CompanyQueryItem>> GetSuggestionsList(Guid facultyId, SuggestionQuery suggestionsQuery, CancellationToken cancellationToken)
         {
             IQueryable<Company> query = GetQueryable()
                 .Include(f => f.Faculty)
-                .Where(c => c.DeletedAt == null && c.Faculty.Id == facultyId && c.Status == CompanyStatus.Approved )
-            .AsNoTracking();
+                .Where(c => c.DeletedAt == null && c.Faculty.Id == facultyId && c.Status == CompanyStatus.Approved)
+                .AsNoTracking();
 
             if (!string.IsNullOrEmpty(suggestionsQuery.Search))
             {

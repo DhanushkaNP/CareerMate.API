@@ -3,6 +3,7 @@ using System;
 using CareerMate.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareerMate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240707172814_CompanyFollowerEntity2")]
+    partial class CompanyFollowerEntity2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,6 +262,9 @@ namespace CareerMate.Migrations
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("CompanyId1")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -268,11 +274,18 @@ namespace CareerMate.Migrations
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("StudentId1")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
+                    b.HasIndex("CompanyId1");
+
                     b.HasIndex("StudentId");
+
+                    b.HasIndex("StudentId1");
 
                     b.ToTable("CompanyFollower", (string)null);
                 });
@@ -1199,16 +1212,24 @@ namespace CareerMate.Migrations
             modelBuilder.Entity("CareerMate.Models.Entities.CompanyFollowers.CompanyFollower", b =>
                 {
                     b.HasOne("CareerMate.Models.Entities.Companies.Company", "Company")
-                        .WithMany("Followers")
+                        .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CareerMate.Models.Entities.Companies.Company", null)
+                        .WithMany("Followers")
+                        .HasForeignKey("CompanyId1");
+
                     b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
-                        .WithMany("CompanyFollowers")
+                        .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", null)
+                        .WithMany("CompanyFollowers")
+                        .HasForeignKey("StudentId1");
 
                     b.Navigation("Company");
 

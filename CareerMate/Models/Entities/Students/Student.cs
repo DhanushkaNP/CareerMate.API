@@ -2,6 +2,7 @@
 using CareerMate.Models.Entities.Applicants;
 using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Certifications;
+using CareerMate.Models.Entities.CompanyFollowers;
 using CareerMate.Models.Entities.CompanyLeaveRequests;
 using CareerMate.Models.Entities.DailyDiaries;
 using CareerMate.Models.Entities.Degrees;
@@ -84,6 +85,8 @@ namespace CareerMate.Models.Entities.Students
         public Intern Intern { get; private set; }
 
         public List<InternshipPost> InternshipPosts { get; private set; }
+
+        public List<CompanyFollower> CompanyFollowers { get; set; }
 
         public void SetStudentBatch(StudentBatch batch)
         {

@@ -10,6 +10,7 @@ using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Interns;
 using CareerMate.Models.Entities.Links;
 using CareerMate.Models.Entities.Industries;
+using CareerMate.Models.Entities.CompanyFollowers;
 
 namespace CareerMate.Models.Entities.Companies
 {
@@ -82,5 +83,7 @@ namespace CareerMate.Models.Entities.Companies
         public Guid ApplicationUserId { get; private set; }
 
         public List<Intern> Interns { get; private set; }
+
+        public List<CompanyFollower> Followers { get; private set; }
     }
 }

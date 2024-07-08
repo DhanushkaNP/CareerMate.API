@@ -2,7 +2,8 @@
 using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.Companies.Create;
 using CareerMate.EndPoints.Commands.Companies.Login;
-using CareerMate.EndPoints.Queries.Company.GetSuggestions;
+using CareerMate.EndPoints.Queries.Companies.GetList;
+using CareerMate.EndPoints.Queries.Companies.GetSuggestions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,15 @@ namespace CareerMate.Controllers
         [HttpGet("Suggestions")]
         [Authorize(Policy = Policies.AllUserRoles)]
         public async Task<IActionResult> GetSuggestionsList([FromRoute] Guid facultyId, [FromQuery] CompanySuggestionsQuery query, CancellationToken cancellationToken)
+        {
+            query.FacultyId = facultyId;
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("List")]
+        [Authorize(Policy = Policies.AllUserRoles)]
+        public async Task<IActionResult> GetCompanyList([FromRoute] Guid facultyId, [FromQuery] CompanyListQuery query, CancellationToken cancellationToken)
         {
             query.FacultyId = facultyId;
             var result = await _mediator.Send(query, cancellationToken);

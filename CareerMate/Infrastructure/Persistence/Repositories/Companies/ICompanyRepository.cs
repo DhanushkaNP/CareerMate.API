@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using System.Collections.Generic;
-using CareerMate.EndPoints.Queries.Company;
+using CareerMate.EndPoints.Queries.Companies;
 using CareerMate.Abstractions.Models.Queries;
+using CareerMate.EndPoints.Handlers;
 
 namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
 {
@@ -14,5 +15,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
         Task<Company> GetByApplicationUserIdAsync(Guid userId, CancellationToken cancellationToken);
 
         Task<List<CompanyQueryItem>> GetSuggestionsList(Guid facultyId, SuggestionQuery suggestionsQuery, CancellationToken cancellationToken);
+
+        Task<PagedResponse<CompanyQueryItem>> GetListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken);
     }
 }

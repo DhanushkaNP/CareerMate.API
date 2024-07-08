@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Queries.Company.GetSuggestions
+namespace CareerMate.EndPoints.Queries.Companies.GetSuggestions
 {
     public class CompanySuggestionsQueryHandler : IRequestHandler<CompanySuggestionsQuery, BaseResponse>
     {

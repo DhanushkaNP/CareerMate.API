@@ -4,6 +4,7 @@ using CareerMate.Models.Entities.Applicants;
 using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Certifications;
 using CareerMate.Models.Entities.Companies;
+using CareerMate.Models.Entities.CompanyFollowers;
 using CareerMate.Models.Entities.CompanyLeaveRequests;
 using CareerMate.Models.Entities.CoordinatorAssistants;
 using CareerMate.Models.Entities.Coordinators;
@@ -91,5 +92,7 @@ namespace CareerMate.Infrastructure.Persistence
         public DbSet<Intern> Intern { get; set; }
 
         public DbSet<Supervisor> Supervisor { get; private set; }
+
+        public DbSet<CompanyFollower> CompanyFollower { get; set; }
     }
 }
