@@ -3,7 +3,6 @@ using CareerMate.Infrastructure.Persistence.Repositories.Companies;
 using CareerMate.Infrastructure.Persistence.Repositories.CoordinatorAssistants;
 using CareerMate.Infrastructure.Persistence.Repositories.Coordinators;
 using CareerMate.Infrastructure.Persistence.Repositories.Faculties;
-using CareerMate.Infrastructure.Persistence.Repositories.Industries;
 using CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts;
 using CareerMate.Infrastructure.Persistence.Repositories.Internships;
 using CareerMate.Infrastructure.Persistence.Repositories.Students;
@@ -12,7 +11,6 @@ using CareerMate.Models.Entities.Companies;
 using CareerMate.Models.Entities.CoordinatorAssistants;
 using CareerMate.Models.Entities.Coordinators;
 using CareerMate.Models.Entities.Faculties;
-using CareerMate.Models.Entities.Industries;
 using CareerMate.Models.Entities.InternshipPosts;
 using CareerMate.Models.Entities.Internships;
 using CareerMate.Models.Entities.Students;
@@ -112,6 +110,12 @@ namespace CareerMate.EndPoints.Commands.InternshipPosts.Create
                         }
                         break;
                     case Roles.Company:
+                        Company companyByApplicationUser = await _companyRepository.GetByApplicationUserIdAsync(command.ApplicationUserId, cancellationToken);
+                        
+                        if (companyByApplicationUser.Id != company.Id)
+                        {
+                            return new BadRequestResponse("You are not allowed to post internship for other companies");
+                        }
                         internshipPost.SetApproved();
                         break;
                 }

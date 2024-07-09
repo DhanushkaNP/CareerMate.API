@@ -10,6 +10,13 @@ namespace CareerMate.Models.Entities.Interns
     {
         public Guid? IsDeletedAt { get; private set; }
 
+        public DateTime StartedDate { get; set; }
+
+        public DateTime EndedDate { get; set; }
+
+        // Months
+        public int Duration { get; set; }
+
         public Student Student { get; private set; }
 
         public Guid StudentId { get; private set; }
@@ -17,6 +24,7 @@ namespace CareerMate.Models.Entities.Interns
         public Internship Internship { get; private set; }
 
         public Supervisor Supervisor { get; private set; }
+
 
         public Company Company { get; private set; }
     }

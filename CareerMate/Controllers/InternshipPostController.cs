@@ -4,6 +4,8 @@ using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.InternshipPosts.Approve;
 using CareerMate.EndPoints.Commands.InternshipPosts.Create;
 using CareerMate.EndPoints.Commands.InternshipPosts.Delete;
+using CareerMate.EndPoints.Queries.InternshipPosts.CompanyPostDetailList;
+using CareerMate.EndPoints.Queries.InternshipPosts.CompanySuggestionsList;
 using CareerMate.EndPoints.Queries.InternshipPosts.GetList;
 using CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostDetail;
 using CareerMate.EndPoints.Queries.InternshipPosts.InternshipPostListDetails;
@@ -38,6 +40,7 @@ namespace CareerMate.Controllers
 
             command.FacultyId = facultyId;
             command.CurrentUserRole = userDetails.Role;
+            command.ApplicationUserId = userDetails.Id;
 
             var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);
@@ -47,7 +50,7 @@ namespace CareerMate.Controllers
         [Authorize(Policy = Policies.AllUserRoles)]
         public async Task<IActionResult> GetInternshipPosts([FromRoute] Guid facultyId, [FromQuery] GetInternshipsPostsListQuery query, CancellationToken cancellationToken)
         {
-            query.facultyId = facultyId;
+            query.FacultyId = facultyId;
 
             var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
@@ -108,6 +111,20 @@ namespace CareerMate.Controllers
             return ToActionResult(result);
         }
 
+        [HttpGet("Companies/{companyId:Guid}/List")]
+        [Authorize(Policy = Policies.CompaniesOnly)]
+        public async Task<IActionResult> GetCompanyInternshipPosts([FromRoute] Guid companyId, [FromRoute] Guid facultyId, CancellationToken cancellationToken)
+        {
+            var query = new InternshipPostListDetailsQuery
+            {
+                FacultyId = facultyId,
+                CompanyId = companyId
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
         [HttpPut("{id:Guid}/Approve")]
         [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
         public async Task<IActionResult> ApproveInternshipPost([FromRoute] Guid id, [FromRoute] Guid facultyId, CancellationToken cancellationToken)
@@ -119,6 +136,21 @@ namespace CareerMate.Controllers
             };
 
             var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("/api/Faculties/{facultyId:Guid}/Companies/{companyId:Guid}/InternshipPosts/Suggestions")]
+        [Authorize(Policy = Policies.CompaniesOnly)]
+        public async Task<IActionResult> GetCompanyInternshipPostSuggestions([FromRoute] Guid companyId, [FromRoute] Guid facultyId, CancellationToken cancellationToken)
+        {
+            var query = new CompanyInternshipPostListSuggestionsQuery
+            {
+                FacultyId = facultyId,
+                CompanyId = companyId
+
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);
         }
     }

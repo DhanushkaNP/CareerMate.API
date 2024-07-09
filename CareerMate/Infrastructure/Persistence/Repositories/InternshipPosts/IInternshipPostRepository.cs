@@ -21,5 +21,9 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
         Task<InternshipPost> GetApprovedByIdAsync(Guid id, CancellationToken cancellationToken);
 
         Task<List<InternshipPostQueryItem>> GetPostsByStudentId(Guid studentId, CancellationToken cancellationToken);
+
+        Task<List<InternshipPostQueryItem>> GetPostsByCompanyId(Guid companyId, CancellationToken cancellationToken);
+
+        Task<List<InternshipPostListQueryItem>> GetSuggestionsByCompanyId(Guid companyId, Guid facultyId, SuggestionQuery suggestionsQuery, CancellationToken cancellationToken);
     }
 }

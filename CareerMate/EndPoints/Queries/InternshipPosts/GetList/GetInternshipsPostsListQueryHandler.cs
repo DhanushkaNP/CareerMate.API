@@ -21,14 +21,14 @@ namespace CareerMate.EndPoints.Queries.InternshipPosts.GetList
 
         public async Task<BaseResponse> Handle(GetInternshipsPostsListQuery query, CancellationToken cancellationToken)
         {
-            Faculty faculty = await _faultyRepository.GetByIdAsync(query.facultyId, cancellationToken);
+            Faculty faculty = await _faultyRepository.GetByIdAsync(query.FacultyId, cancellationToken);
 
             if (faculty == null)
             {
                 return new NotFoundResponse<Faculty>();
             }
 
-            return await _internshipPostRepository.GetInternshipPostsListByFacultyId(query.facultyId, query, cancellationToken);
+            return await _internshipPostRepository.GetInternshipPostsListByFacultyId(query.FacultyId, query, cancellationToken);
         }
     }
 }

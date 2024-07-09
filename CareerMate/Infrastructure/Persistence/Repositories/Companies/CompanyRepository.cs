@@ -28,7 +28,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
         public override Task<Company> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return GetQueryable()
-                .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Id == id && c.DeletedAt == null, cancellationToken);
         }
 
         public async Task<PagedResponse<CompanyQueryItem>> GetListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken)

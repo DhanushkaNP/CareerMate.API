@@ -153,6 +153,27 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
             return internshipPost;
         }
 
+        public async Task<List<InternshipPostQueryItem>> GetPostsByCompanyId(Guid companyId, CancellationToken cancellationToken)
+        {
+            return await GetQueryable()
+                .Include(i => i.Company)
+                .Where(i => i.DeletedAt == null && i.Company.Id == companyId)
+                .OrderByDescending(i => i.CreatedAt)
+                .Select(i => new InternshipPostQueryItem
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    CompanyName = i.Company.Name,
+                    CompanyLogoUrl = i.Company.LogoUrl,
+                    Type = i.WorkPlaceType,
+                    Location = i.Location,
+                    IsApproved = i.IsApproved,
+                    Description = i.Description,
+                    NumberOfApplicants = i.Applicants.Count(),
+                    NumberOfJobs = i.NumberOfPositions,
+                }).ToListAsync();
+        }
+
         public async Task<List<InternshipPostQueryItem>> GetPostsByStudentId(Guid studentId, CancellationToken cancellationToken)
         {
             return await GetQueryable()
@@ -171,6 +192,31 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
                     NumberOfApplicants = i.Applicants.Count(),
                     NumberOfJobs = i.NumberOfPositions,
                 }).ToListAsync();
+        }
+
+        public Task<List<InternshipPostListQueryItem>> GetSuggestionsByCompanyId(Guid companyId, Guid facultyId, SuggestionQuery suggestionsQuery, CancellationToken cancellationToken)
+        {
+            IQueryable<InternshipPost> query = GetQueryable()
+                .Include(i => i.Company)
+                .Include(i => i.Faculty)
+                .Where(i => i.DeletedAt == null && i.IsApproved == true && i.Company.Id == companyId && i.Faculty.Id == facultyId)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(suggestionsQuery.Search))
+            {
+                string searchLower = suggestionsQuery.Search.ToLower();
+                query = query.Where(
+                    u => u.Title.ToLower().Contains(searchLower) ||
+                    u.Company.Name.ToLower().Contains(searchLower));
+            }
+
+            return query.OrderByDescending(u => u.CreatedAt)
+                .Take(suggestionsQuery.Limit)
+                .Select(u => new InternshipPostListQueryItem
+                {
+                    Id = u.Id,
+                    Title = u.Title
+                }).ToListAsync(cancellationToken);
         }
 
         private IQueryable<InternshipPost> GetQueryable()

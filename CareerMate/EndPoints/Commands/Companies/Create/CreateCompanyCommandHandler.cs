@@ -102,7 +102,8 @@ namespace CareerMate.EndPoints.Commands.Companies.Create
                 Token = userLoginDetail.Token,
                 UniversityId = university.Id,
                 FacultyId = faculty.Id,
-                CompanyLogoUrl = company.LogoUrl
+                CompanyLogoUrl = company.LogoUrl,
+                CompanyName = company.Name            
             };
         }
     }

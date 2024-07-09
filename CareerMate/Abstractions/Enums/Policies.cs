@@ -5,6 +5,7 @@
         public const string SysAdminOnly = "AllowedSysAdmin";
         public const string CoordinatorOnly = "AllowedCoordinatorOnly";
         public const string StudentOnly = "StudentOnly";
+        public const string CompaniesOnly = "CompaniesOnly";
         
         public const string CoordinatorAssistantLevel = "AllowedCoordinatorAssistantLevel";
         public const string CoordinatorLevel = "AllowedCoordinatorLevel";

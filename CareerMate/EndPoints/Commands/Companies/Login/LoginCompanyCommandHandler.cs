@@ -70,10 +70,11 @@ namespace CareerMate.EndPoints.Commands.Companies.Login
             return new LoginCompanyCommandResponse
             {
                 Token = loginUserDetail.Token,
-                UserId = loginUserDetail.UserId,
+                UserId = company.Id,
                 UniversityId = university.Id,
                 FacultyId = command.FacultyId,
                 CompanyLogoUrl = company.LogoUrl,
+                CompanyName = company.Name
             };
         }
     }

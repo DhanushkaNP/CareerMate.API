@@ -1,4 +1,7 @@
-﻿using CareerMate.Models.Entities.Students;
+﻿using CareerMate.Abstractions.Models.Queries;
+using CareerMate.EndPoints.Handlers;
+using CareerMate.EndPoints.Queries.Students;
+using CareerMate.Models.Entities.Students;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -46,6 +49,67 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                 .Include(s => s.Pathway)
                 .Include(s => s.Batch).ThenInclude(b => b.Faculty).ThenInclude(f => f.University)
                 .FirstOrDefaultAsync(s => s.ApplicationUserId == userId, cancellationToken);
+        }
+
+        public async Task<PagedResponse<StudentQueryItem>> GetStudentsListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken)
+        {
+            IQueryable<Student> query = GetQueryable()
+                .Include(s => s.Intern)
+                .Include(s => s.Degree)
+                .Include(s => s.Pathway)
+                .Include(s => s.Batch).ThenInclude(b => b.Faculty)
+                .Where(s => s.Batch.Faculty.Id == facultyId)
+                .AsNoTracking();
+
+            if (pagedQuery.Filter != null)
+            {
+                if (pagedQuery.Filter.ContainsKey("degree"))
+                {
+                    query = query.Where(s => s.Degree.Id == new Guid(pagedQuery.Filter["degree"]));
+                }
+
+                if (pagedQuery.Filter.ContainsKey("pathway"))
+                {
+                    query = query.Where(s => s.Pathway.Id == new Guid(pagedQuery.Filter["pathway"]));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(pagedQuery.Search))
+            {
+                query = query
+                    .Where(s => s.FirstName.ToLower().Contains(pagedQuery.Search.ToLower()) ||
+                           s.LastName.ToLower().Contains(pagedQuery.Search.ToLower()) ||
+                           s.StudentId.ToLower().Contains(pagedQuery.Search.ToLower()));
+            }
+
+            int count = await query.CountAsync(cancellationToken);
+
+            query = query.OrderByDescending(sa => sa.CreatedAt)
+                         .Skip(pagedQuery.Offset)
+                         .Take(pagedQuery.Limit);
+
+            var items = await query.Select(s => new StudentQueryItem
+            {
+                Id = s.Id,
+                StudentId = s.StudentId,
+                DegreeAcronym = s.Degree.Acronym,
+                PathwayName = s.Pathway.Name,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                IsHired = s.IsHired(),
+                ProfilePicUrl = s.ProfilePicUrl
+            }).ToListAsync(cancellationToken);
+            
+
+            return new PagedResponse<StudentQueryItem>
+            {
+                Items = items,
+                Meta = new PagedResponseMetaData()
+                {
+                    Offset = pagedQuery.Offset,
+                    Count = count
+                }
+            };
         }
 
         private IQueryable<Student> GetQueryable()

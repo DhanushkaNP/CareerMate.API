@@ -19,5 +19,7 @@ namespace CareerMate.EndPoints.Commands.Companies.Create
         public Guid FacultyId { get; set; }
 
         public string CompanyLogoUrl { get; set; }
+
+        public string CompanyName { get; set; }
     }
 }

@@ -15,6 +15,9 @@ namespace CareerMate.EndPoints.Commands.InternshipPosts.Create
         [JsonIgnore]
         public string CurrentUserRole { get; set; }
 
+        [JsonIgnore]
+        public Guid ApplicationUserId { get; set; }
+
         [Required(AllowEmptyStrings = false)]
         public Guid UserId { get; set; }
 

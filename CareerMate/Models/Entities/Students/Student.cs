@@ -144,5 +144,10 @@ namespace CareerMate.Models.Entities.Students
             Status = StudentStatus.Unemployed;
             return this;
         }
+
+        public bool IsHired()
+        {
+            return Intern != null;
+        }
     }
 }

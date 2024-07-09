@@ -16,6 +16,8 @@ namespace CareerMate
                     policy => policy.RequireRole(Roles.Coordinator));
                 options.AddPolicy(Policies.StudentOnly,
                     policy => policy.RequireRole(Roles.Student));
+                options.AddPolicy(Policies.CompaniesOnly,
+                    policy => policy.RequireRole(Roles.Company));
 
                 options.AddPolicy(Policies.CoordinatorLevel,
                     policy => policy.RequireRole(Roles.SysAdmin ,Roles.Coordinator));
