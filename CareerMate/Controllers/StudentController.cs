@@ -3,6 +3,7 @@ using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.Users.Students.Create;
 using CareerMate.EndPoints.Commands.Users.Students.Login;
 using CareerMate.EndPoints.Queries.Students.GetList;
+using CareerMate.EndPoints.Queries.Students.GetStats;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CareerMate.Controllers
 {
-    [Route("api/Students")]
+    [Route("api/Faculties/{facultyId:Guid}/Student")]
     [ApiController]
     public class StudentController : BaseController
     {
@@ -31,7 +32,7 @@ namespace CareerMate.Controllers
             return ToActionResult(result);
         }
 
-        [HttpPost("Login")]
+        [HttpPost("/api/Students/Login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginStudentCommand command, CancellationToken cancellationToken)
         {
@@ -39,11 +40,25 @@ namespace CareerMate.Controllers
             return ToActionResult(result);
         }
 
-        [HttpGet("/api/Faculties/{facultyId:Guid}/Student/List")]
+        [HttpGet("List")]
         [Authorize(Policy = Policies.CompaniesOnly)]
         public async Task<IActionResult> GetStudentList([FromRoute] Guid facultyId, [FromQuery] GetStudentsListQuery query, CancellationToken cancellationToken)
         {
             query.FacultyId = facultyId;
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("Stats")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
+        public async Task<IActionResult> GetStudentStats([FromRoute] Guid facultyId, CancellationToken cancellationToken)
+        {
+            var query = new GetStudentsStatsQuery
+            {
+                FacultyId = facultyId
+
+            };
 
             var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);

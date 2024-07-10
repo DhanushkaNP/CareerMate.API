@@ -20,5 +20,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
         Task<Student> GetByApplicationUserIdAsync(Guid userId, CancellationToken cancellationToken);
 
         Task<PagedResponse<StudentQueryItem>> GetStudentsListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken);
+
+        Task<StudentStatsQueryItem> GetStudentsStats(Guid facultyId, CancellationToken cancellationToken);
     }
 }

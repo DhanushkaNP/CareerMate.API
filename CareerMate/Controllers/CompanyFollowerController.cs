@@ -2,7 +2,6 @@
 using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.CompanyFollowers;
 using CareerMate.EndPoints.Queries.CompanyFollowers.Validate;
-using CareerMate.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

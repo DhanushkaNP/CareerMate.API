@@ -112,6 +112,24 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
             };
         }
 
+        public async Task<StudentStatsQueryItem> GetStudentsStats(Guid facultyId, CancellationToken cancellationToken)
+        {
+            IQueryable<Student> query = GetQueryable()
+                .Include(s => s.Intern)
+                .Include(s => s.Batch).ThenInclude(b => b.Faculty)
+                .Where(s => s.Batch.Faculty.Id == facultyId)
+                .AsNoTracking();
+
+            var students = await query.ToListAsync(cancellationToken);
+
+            return new StudentStatsQueryItem
+            {
+                TotalStudentsCount = students.Count,
+                RegisteredStudentsCount = students.Count(s => s.ApplicationUserId != null),
+                HiredStudentsCount = students.Count(s => s.IsHired())
+            };
+        }
+
         private IQueryable<Student> GetQueryable()
         {
             return Context.Student;
