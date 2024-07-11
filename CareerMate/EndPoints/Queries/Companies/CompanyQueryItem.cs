@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CareerMate.Abstractions.Enums;
+using System;
 
 namespace CareerMate.EndPoints.Queries.Companies
 {
@@ -19,5 +20,9 @@ namespace CareerMate.EndPoints.Queries.Companies
         public string Bio { get; set; }
 
         public string LogoUrl { get; set; }
+
+        public int TotalInternsCount { get; set; }
+
+        public CompanyStatus? Status { get; set; }
     }
 }

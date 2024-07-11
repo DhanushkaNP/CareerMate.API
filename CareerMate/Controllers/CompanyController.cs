@@ -1,8 +1,10 @@
 ﻿using CareerMate.Abstractions.Enums;
 using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.Companies.Create;
+using CareerMate.EndPoints.Commands.Companies.Delete;
 using CareerMate.EndPoints.Commands.Companies.Login;
 using CareerMate.EndPoints.Queries.Companies.GetList;
+using CareerMate.EndPoints.Queries.Companies.GetStats;
 using CareerMate.EndPoints.Queries.Companies.GetSuggestions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +28,7 @@ namespace CareerMate.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateCompany([FromRoute]Guid facultyId, [FromBody] CreateCompanyCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateCompany([FromRoute] Guid facultyId, [FromBody] CreateCompanyCommand command, CancellationToken cancellationToken)
         {
             command.FacultyId = facultyId;
             var result = await _mediator.Send(command, cancellationToken);
@@ -58,6 +60,33 @@ namespace CareerMate.Controllers
         {
             query.FacultyId = facultyId;
             var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("Stats")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
+        public async Task<IActionResult> GetCompanyStats([FromRoute] Guid facultyId, CancellationToken cancellationToken)
+        {
+            var query = new GetCompanyStatsQuery
+            {
+                FacultyId = facultyId
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpDelete("{companyId:Guid}")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
+        public async Task<IActionResult> DeleteCompany([FromRoute] Guid facultyId, Guid companyId, CancellationToken cancellationToken)
+        {
+            var command = new DeleteCompanyCommand
+            {
+                FacultyId = facultyId,
+                CompanyId = companyId
+            };
+
+            var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);
         }
     }

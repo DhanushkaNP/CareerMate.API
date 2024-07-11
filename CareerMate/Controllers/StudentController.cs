@@ -1,6 +1,7 @@
 ﻿using CareerMate.Abstractions.Enums;
 using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.Users.Students.Create;
+using CareerMate.EndPoints.Commands.Users.Students.Delete;
 using CareerMate.EndPoints.Commands.Users.Students.Login;
 using CareerMate.EndPoints.Queries.Students.GetList;
 using CareerMate.EndPoints.Queries.Students.GetStats;
@@ -41,7 +42,7 @@ namespace CareerMate.Controllers
         }
 
         [HttpGet("List")]
-        [Authorize(Policy = Policies.CompaniesOnly)]
+        [Authorize(Policy = Policies.CompanyAndCoordinatorLevel)]
         public async Task<IActionResult> GetStudentList([FromRoute] Guid facultyId, [FromQuery] GetStudentsListQuery query, CancellationToken cancellationToken)
         {
             query.FacultyId = facultyId;
@@ -61,6 +62,20 @@ namespace CareerMate.Controllers
             };
 
             var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpDelete("{studentId:Guid}")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
+        public async Task<IActionResult> DeleteStudent([FromRoute] Guid facultyId, Guid studentId, CancellationToken cancellationToken)
+        {
+            var command = new DeleteStudentCommand
+            {
+                FacultyId = facultyId,
+                StudentId = studentId
+            };
+
+            var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);
         }
     }

@@ -54,9 +54,10 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
         public async Task<PagedResponse<StudentQueryItem>> GetStudentsListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken)
         {
             IQueryable<Student> query = GetQueryable()
-                .Include(s => s.Intern)
+                .Include(s => s.Intern).ThenInclude(i => i.Company)
                 .Include(s => s.Degree)
                 .Include(s => s.Pathway)
+                .Include(s => s.ApplicationUser)
                 .Include(s => s.Batch).ThenInclude(b => b.Faculty)
                 .Where(s => s.Batch.Faculty.Id == facultyId)
                 .AsNoTracking();
@@ -71,6 +72,39 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                 if (pagedQuery.Filter.ContainsKey("pathway"))
                 {
                     query = query.Where(s => s.Pathway.Id == new Guid(pagedQuery.Filter["pathway"]));
+                }
+
+                if (pagedQuery.Filter.ContainsKey("cvStatus"))
+                {
+
+                    switch (pagedQuery.Filter["cvStatus"])
+                    {
+                        case "notUploaded":
+                            query = query.Where(s => s.CV == null);
+                            break;
+                        case "unApproved":
+                            query = query.Where(s => (s.IsCvApproved == null || s.IsCvApproved == false) && s.CV != null);
+                            break;
+                        case "approved":
+                            query = query.Where(s => s.IsCvApproved == true);
+                            break;
+                    }
+                }
+
+                if (pagedQuery.Filter.ContainsKey("status"))
+                {
+                    switch (pagedQuery.Filter["status"])
+                    {
+                        case "registered":
+                            query = query.Where(s => s.ApplicationUserId != null);
+                            break;
+                        case "hired":
+                            query = query.Where(s => s.IsHired());
+                            break;
+                        case "seeking":
+                            query = query.Where(s => s.Intern == null);
+                            break;
+                    };
                 }
             }
 
@@ -97,9 +131,11 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                 FirstName = s.FirstName,
                 LastName = s.LastName,
                 IsHired = s.IsHired(),
-                ProfilePicUrl = s.ProfilePicUrl
+                ProfilePicUrl = s.ProfilePicUrl,
+                CompanyName = s.Intern.Company.Name,
+                CompanyId = s.Intern.Company.Id
             }).ToListAsync(cancellationToken);
-            
+
 
             return new PagedResponse<StudentQueryItem>
             {

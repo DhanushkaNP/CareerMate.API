@@ -2,8 +2,10 @@
 using CareerMate.Abstractions.Models.Queries;
 using CareerMate.EndPoints.Handlers;
 using CareerMate.EndPoints.Queries.Companies;
+using CareerMate.EndPoints.Queries.Companies.GetStats;
 using CareerMate.Models.Entities.Companies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +35,16 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
 
         public async Task<PagedResponse<CompanyQueryItem>> GetListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken)
         {
+            string companyStatus = pagedQuery.Filter != null && pagedQuery.Filter.ContainsKey("status") && pagedQuery.Filter["status"] != null
+                                   ? pagedQuery.Filter["status"] : "approved";
+
+
             IQueryable<Company> query = GetQueryable()
                 .Include(c => c.Faculty)
                 .Include(c => c.Industry)
                 .Include(c => c.Followers)
-                .Where(c => c.DeletedAt == null && c.Faculty.Id == facultyId && c.Status == CompanyStatus.Approved)
+                .Include(c => c.Interns)
+                .Where(c => c.DeletedAt == null && c.Faculty.Id == facultyId)
                 .AsNoTracking();
 
             if (pagedQuery.Filter != null)
@@ -45,6 +52,22 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
                 if (pagedQuery.Filter.ContainsKey("industry"))
                 {
                     query = query.Where(c => c.Industry.Id == new Guid(pagedQuery.Filter["industry"]));
+                }               
+            }
+
+            if (!companyStatus.IsNullOrEmpty())
+            {
+                switch (companyStatus)
+                {
+                    case "approved":
+                        query = query.Where(c => c.Status == CompanyStatus.Approved);
+                        break;
+                    case "waiting":
+                        query = query.Where(c => c.Status == CompanyStatus.Pending);
+                        break;
+                    case "blocked":
+                        query = query.Where(c => c.Status == CompanyStatus.Blocked);
+                        break;
                 }
             }
 
@@ -69,7 +92,9 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
                 Location = c.Location,
                 FollowersCount = c.Followers.Count(),
                 Bio = c.Bio,
-                LogoUrl = c.LogoUrl
+                LogoUrl = c.LogoUrl,
+                TotalInternsCount = c.Interns.Count(),
+                Status = c.Status
             }).ToListAsync(cancellationToken);
 
             return new PagedResponse<CompanyQueryItem>
@@ -80,6 +105,20 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
                     Offset = pagedQuery.Offset,
                     Count = count
                 }
+            };
+        }
+
+        public async Task<CompanyStatsQueryItem> GetCompanyStats(Guid facultyId, CancellationToken cancellationToken)
+        {
+            List<Company> company = await GetQueryable()
+                .Where(c => c.DeletedAt == null && c.Faculty.Id == facultyId)
+                .ToListAsync();
+
+            return new CompanyStatsQueryItem
+            {
+                ApprovedCompaniesCount = company.Where(company => company.Status == CompanyStatus.Approved).Count(),
+                PendingCompaniesCount = company.Where(company => company.Status == CompanyStatus.Pending).Count(),
+                BlockedCompaniesCount = company.Where(company => company.Status == CompanyStatus.Blocked).Count(),
             };
         }
 

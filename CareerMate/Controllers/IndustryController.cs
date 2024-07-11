@@ -35,9 +35,9 @@ namespace CareerMate.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetIndustries([FromRoute] Guid facultyId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetIndustries([FromRoute] Guid facultyId, [FromQuery] GetIndustriesQuery query, CancellationToken cancellationToken)
         {
-            var query = new GetIndustriesQuery { FacultyId = facultyId };
+            query.FacultyId = facultyId;
 
             var result = await _mediator.Send(query, cancellationToken);
             return ToActionResult(result);

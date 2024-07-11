@@ -27,7 +27,7 @@ namespace CareerMate.EndPoints.Queries.Industries.GetList
                 return new NotFoundResponse<Faculty>();
             }
 
-            return await _industryRepository.GetIndustriesByFacultyId(query.FacultyId, cancellationToken);
+            return await _industryRepository.GetIndustriesByFacultyId(query.FacultyId, query, cancellationToken);
         }
     }
 }

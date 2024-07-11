@@ -19,5 +19,9 @@ namespace CareerMate.EndPoints.Queries.Students
         public bool IsHired { get; set; }
 
         public string ProfilePicUrl { get; set; }
+
+        public string CompanyName { get; set; }
+
+        public Guid? CompanyId { get; set; }
     }
 }

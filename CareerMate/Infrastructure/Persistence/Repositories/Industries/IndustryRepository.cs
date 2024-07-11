@@ -1,4 +1,5 @@
-﻿using CareerMate.EndPoints.Handlers;
+﻿using CareerMate.Abstractions.Models.Queries;
+using CareerMate.EndPoints.Handlers;
 using CareerMate.EndPoints.Queries.Industries;
 using CareerMate.Models.Entities.Industries;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Industries
             return await Context.Industry.Include(f => f.Faculty).FirstOrDefaultAsync(f => f.Id == id && f.DeletedAt == null, cancellationToken);
         }
 
-        public async Task<ListResponse<IndustryQueryItem>> GetIndustriesByFacultyId(Guid facultyId, CancellationToken cancellationToken)
+        public async Task<ListResponse<IndustryQueryItem>> GetIndustriesByFacultyId(Guid facultyId, SuggestionQuery suggestionQuery, CancellationToken cancellationToken)
         {
             IQueryable<IndustryQueryItem> query =
                 Context.Industry.Include(f => f.Faculty).Where(f => f.Faculty.Id == facultyId && f.DeletedAt == null).Select(f => new IndustryQueryItem
@@ -28,6 +29,12 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Industries
                     Id = f.Id,
                     Name = f.Name
                 }).AsNoTracking();
+
+            if (!string.IsNullOrEmpty(suggestionQuery.Search))
+            {
+                query = query
+                    .Where(i => i.Name.ToLower().Contains(suggestionQuery.Search.ToLower()));
+            }
 
             return new ListResponse<IndustryQueryItem>
             {

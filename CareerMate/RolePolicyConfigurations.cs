@@ -26,6 +26,9 @@ namespace CareerMate
                 
                 options.AddPolicy(Policies.AllUserRoles,
                     policy => policy.RequireRole(Roles.SysAdmin, Roles.Coordinator, Roles.CoordinatorAssistant, Roles.Company, Roles.Student));
+
+                options.AddPolicy(Policies.CompanyAndCoordinatorLevel,
+                    policy => policy.RequireRole(Roles.Coordinator, Roles.CoordinatorAssistant, Roles.Company));
             });
 
             return services;

@@ -149,5 +149,10 @@ namespace CareerMate.Models.Entities.Students
         {
             return Intern != null;
         }
+
+        public void Delete()
+        {
+            DeletedAt = DateTime.UtcNow;
+        }
     }
 }

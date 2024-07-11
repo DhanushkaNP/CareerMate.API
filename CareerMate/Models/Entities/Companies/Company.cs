@@ -85,5 +85,10 @@ namespace CareerMate.Models.Entities.Companies
         public List<Intern> Interns { get; private set; }
 
         public List<CompanyFollower> Followers { get; private set; }
+
+        public void Delete()
+        {
+            DeletedAt = DateTime.UtcNow;
+        }
     }
 }
