@@ -115,7 +115,7 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Create
                 BatchId = student.Batch.Id,
                 DegreeId = degree.Id,
                 PathwayId = pathway.Id,
-                ProfilePicUrl = student.ProfilePicUrl
+                ProfilePicFirebaseId = student.ProfilePicFirebaseId
             };
         }
     }

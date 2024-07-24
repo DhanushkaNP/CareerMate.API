@@ -5,11 +5,27 @@ namespace CareerMate.Models.Entities.Certifications
 {
     public class Certification : Entity
     {
-        public Guid? DeleteAt { get; private set; }
+        public Certification(
+            string name,
+            string organization,
+            DateOnly issuedMonth,
+            Student student)
+        {
+            Name = name;
+            Organization = organization;
+            IssuedMonth = issuedMonth;
+            Student = student;
+        }
+
+        private Certification()
+        {
+        }
 
         public string Name { get; private set; }
 
-        public DateOnly Date { get; private set; }
+        public string Organization { get; private set; }
+
+        public DateOnly IssuedMonth { get; private set; }
 
         public Student Student { get; private set; }
     }

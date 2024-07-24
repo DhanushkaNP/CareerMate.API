@@ -1,7 +1,8 @@
 ﻿using CareerMate.Abstractions.Models.Queries;
 using CareerMate.Abstractions.Repositories;
+using CareerMate.EndPoints.Commands.Users.Students;
 using CareerMate.EndPoints.Handlers;
-using CareerMate.EndPoints.Queries.Students;
+using CareerMate.EndPoints.Queries.Users.Students;
 using CareerMate.Models.Entities.Students;
 using System;
 using System.Threading;
@@ -22,5 +23,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
         Task<PagedResponse<StudentQueryItem>> GetStudentsListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken);
 
         Task<StudentStatsQueryItem> GetStudentsStats(Guid facultyId, CancellationToken cancellationToken);
+
+        Task<StudentCVModal> GetCVDetails(Guid studentId, CancellationToken cancellationToken);
     }
 }

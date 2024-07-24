@@ -20,6 +20,6 @@ namespace CareerMate.Abstractions.Services
 
         Task UpdatePassword(Guid id, string password, CancellationToken cancellationToken);
 
-        Task<UserDetailModel> GetUserDetails(ClaimsPrincipal user, CancellationToken cancellationToken);
+        Task<UserContextModel> GetUserContext(ClaimsPrincipal user, CancellationToken cancellationToken);
     }
 }

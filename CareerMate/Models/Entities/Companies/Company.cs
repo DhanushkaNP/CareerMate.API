@@ -74,7 +74,7 @@ namespace CareerMate.Models.Entities.Companies
 
         public List<Skill> SkillsLookingFor { get; private set; }
 
-        public List<Link> Links { get; private set; }
+        public List<Contact> Links { get; private set; }
 
         public List<Supervisor> Supervisors { get; private set; }
 

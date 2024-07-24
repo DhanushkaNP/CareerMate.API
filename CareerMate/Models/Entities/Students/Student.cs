@@ -40,15 +40,23 @@ namespace CareerMate.Models.Entities.Students
         public string PhoneNumber { get; private set; }
 
         // Cumulative Grade Point Average
-        public float CGPA { get; private set; }
+        public float? CGPA { get; private set; }
 
         public StudentStatus? Status { get; private set; }
 
+        public string CvName { get; set; }
+
         public byte[] CV { get; private set; }
 
-        public bool? IsCvApproved { get; private set; }
+        public CvStatus CVStatus { get; set; }
 
-        public string ProfilePicUrl { get; set; }
+        public string ProfilePicFirebaseId { get; private set; }
+
+        public string About { get; private set; }
+
+        public string Headline { get; private set; }
+
+        public string Location { get; private set; }
 
         public CompanyFeedback CompanyFeedback { get; private set; }
 
@@ -78,7 +86,7 @@ namespace CareerMate.Models.Entities.Students
 
         public List<Experience> Experiences { get; private set; }
 
-        public List<Link> Links { get; private set; }
+        public List<Contact> Links { get; private set; }
 
         public List<Applicant> Applicants { get; private set; }
 
@@ -153,6 +161,50 @@ namespace CareerMate.Models.Entities.Students
         public void Delete()
         {
             DeletedAt = DateTime.UtcNow;
+        }
+
+        public Student SetCGPA(float cgpa)
+        {
+            CGPA = cgpa;
+            return this;
+        }
+
+        public Student SetHeading(string headline)
+        {
+            Headline = headline;
+            return this;
+        }
+
+        public Student SetLocation(string location)
+        {
+            Location = location;
+            return this;
+        }
+
+        public Student SetAbout(string about)
+        {
+            About = about;
+            return this;
+        }
+
+        public Student SetProfilePicFirebaseId(string profilePicFirebaseId)
+        {
+            ProfilePicFirebaseId = profilePicFirebaseId;
+            return this;
+        }
+
+        public void SetCV(byte[] cv, string name)
+        {
+            CV = cv;
+            CvName = name;
+            CVStatus = CvStatus.Uploaded;
+        }
+
+        public void DeleteCV()
+        {
+            CV = null;
+            CvName = null;
+            CVStatus = CvStatus.NotUploaded;
         }
     }
 }

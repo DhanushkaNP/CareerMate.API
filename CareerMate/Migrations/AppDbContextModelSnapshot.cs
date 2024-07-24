@@ -165,16 +165,16 @@ namespace CareerMate.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateOnly>("IssuedMonth")
                         .HasColumnType("date");
-
-                    b.Property<Guid?>("DeleteAt")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Organization")
                         .HasColumnType("text");
 
                     b.Property<Guid?>("StudentId")
@@ -475,14 +475,11 @@ namespace CareerMate.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("DeletedAt")
-                        .HasColumnType("uuid");
+                    b.Property<int>("EmploymentType")
+                        .HasColumnType("integer");
 
                     b.Property<DateOnly>("From")
                         .HasColumnType("date");
-
-                    b.Property<int>("JobType")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -757,7 +754,7 @@ namespace CareerMate.Migrations
                     b.ToTable("Internship", (string)null);
                 });
 
-            modelBuilder.Entity("CareerMate.Models.Entities.Links.Link", b =>
+            modelBuilder.Entity("CareerMate.Models.Entities.Links.Contact", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -766,11 +763,14 @@ namespace CareerMate.Migrations
                     b.Property<Guid?>("CompanyId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("ContactType")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Data")
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -778,16 +778,13 @@ namespace CareerMate.Migrations
                     b.Property<Guid?>("StudentId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("URL")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Link", (string)null);
+                    b.ToTable("Contact", (string)null);
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.Pathways.Pathway", b =>
@@ -832,9 +829,6 @@ namespace CareerMate.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("DeletedAt")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -894,20 +888,29 @@ namespace CareerMate.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("About")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("ApplicationUserId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BatchId")
                         .HasColumnType("uuid");
 
-                    b.Property<float>("CGPA")
+                    b.Property<float?>("CGPA")
                         .HasColumnType("real");
 
                     b.Property<byte[]>("CV")
                         .HasColumnType("bytea");
 
+                    b.Property<int>("CVStatus")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CvName")
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("DegreeId")
                         .HasColumnType("uuid");
@@ -918,10 +921,13 @@ namespace CareerMate.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
-                    b.Property<bool?>("IsCvApproved")
-                        .HasColumnType("boolean");
+                    b.Property<string>("Headline")
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Location")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("ModifiedAt")
@@ -936,7 +942,7 @@ namespace CareerMate.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<string>("ProfilePicUrl")
+                    b.Property<string>("ProfilePicFirebaseId")
                         .HasColumnType("text");
 
                     b.Property<int?>("Status")
@@ -1559,7 +1565,7 @@ namespace CareerMate.Migrations
                     b.Navigation("Faculty");
                 });
 
-            modelBuilder.Entity("CareerMate.Models.Entities.Links.Link", b =>
+            modelBuilder.Entity("CareerMate.Models.Entities.Links.Contact", b =>
                 {
                     b.HasOne("CareerMate.Models.Entities.Companies.Company", "Company")
                         .WithMany("Links")

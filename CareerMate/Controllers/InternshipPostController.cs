@@ -36,7 +36,7 @@ namespace CareerMate.Controllers
         [Authorize(Policy = Policies.AllUserRoles)]
         public async Task<IActionResult> CreateInternshipPost([FromRoute] Guid facultyId, [FromBody] CreateInternshipPostCommand command, CancellationToken cancellationToken)
         {
-            var userDetails = await _userService.GetUserDetails(User, cancellationToken);
+            var userDetails = await _userService.GetUserContext(User, cancellationToken);
 
             command.FacultyId = facultyId;
             command.CurrentUserRole = userDetails.Role;
@@ -60,7 +60,7 @@ namespace CareerMate.Controllers
         [Authorize(Policy = Policies.AllUserRoles)]
         public async Task<IActionResult> DeleteInternshipPost([FromRoute] Guid id, CancellationToken cancellationToken)
         {
-            var userDetails = await _userService.GetUserDetails(User, cancellationToken);
+            var userDetails = await _userService.GetUserContext(User, cancellationToken);
 
             var command = new DeleteInternshipPostCommand
             {

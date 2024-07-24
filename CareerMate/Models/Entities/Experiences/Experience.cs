@@ -6,13 +6,31 @@ namespace CareerMate.Models.Entities.Experiences
 {
     public class Experience : Entity
     {
-        public Guid? DeletedAt { get; private set; }
+        public Experience(
+            string title,
+            string companyName,
+            EmploymentType employmentType,
+            DateOnly from,
+            DateOnly to,
+            Student student)
+        {
+            Title = title;
+            CompanyName = companyName;
+            EmploymentType = employmentType;
+            From = from;
+            To = to;
+            Student = student;
+        }
+
+        private Experience()
+        {
+        }
 
         public string Title { get; private set; }
 
         public string CompanyName { get; private set; }
 
-        public JobType JobType { get; private set; }
+        public EmploymentType EmploymentType { get; private set; }
 
         public DateOnly From { get; private set; }
 

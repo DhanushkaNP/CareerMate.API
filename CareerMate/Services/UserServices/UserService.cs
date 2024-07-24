@@ -121,13 +121,13 @@ namespace CareerMate.Services.UserServices
             }
         }
 
-        public async Task<UserDetailModel> GetUserDetails(ClaimsPrincipal user, CancellationToken cancellationToken)
+        public async Task<UserContextModel> GetUserContext(ClaimsPrincipal user, CancellationToken cancellationToken)
         {
             var currentUser = await _userManager.GetUserAsync(user);
 
             IList<string>  roles = await _userManager.GetRolesAsync(currentUser);
 
-            return new UserDetailModel
+            return new UserContextModel
             {
                 Role = roles.FirstOrDefault(),
                 Id = currentUser.Id

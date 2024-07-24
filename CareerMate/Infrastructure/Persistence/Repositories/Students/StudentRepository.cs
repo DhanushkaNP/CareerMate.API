@@ -1,6 +1,8 @@
-﻿using CareerMate.Abstractions.Models.Queries;
+﻿using CareerMate.Abstractions.Enums;
+using CareerMate.Abstractions.Models.Queries;
+using CareerMate.EndPoints.Commands.Users.Students;
 using CareerMate.EndPoints.Handlers;
-using CareerMate.EndPoints.Queries.Students;
+using CareerMate.EndPoints.Queries.Users.Students;
 using CareerMate.Models.Entities.Students;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,7 +20,9 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
 
         public async Task<bool> AnyByDegreeId(Guid degreeId, CancellationToken cancellationToken)
         {
-            return await GetQueryable().Where(s => s.Degree.Id == degreeId).AnyAsync();
+            return await GetQueryable()
+                .Where(s => s.Degree.Id == degreeId)
+                .AnyAsync();
         }
 
         public async Task<bool> AnyByPathwayId(Guid pathwayId, CancellationToken cancellationToken)
@@ -29,6 +33,9 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
         public override Task<Student> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return GetQueryable()
+                .Include(s => s.Intern).ThenInclude(i => i.Company)
+                .Include(s => s.Degree)
+                .Include(s => s.Pathway)
                 .FirstOrDefaultAsync(s => s.Id == id && s.DeletedAt == null, cancellationToken);
         }
 
@@ -80,13 +87,16 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                     switch (pagedQuery.Filter["cvStatus"])
                     {
                         case "notUploaded":
-                            query = query.Where(s => s.CV == null);
+                            query = query.Where(s => s.CVStatus == CvStatus.NotUploaded);
+                            break;
+                        case "uploaded":
+                            query = query.Where(s => s.CVStatus == CvStatus.Uploaded);
                             break;
                         case "unApproved":
-                            query = query.Where(s => (s.IsCvApproved == null || s.IsCvApproved == false) && s.CV != null);
+                            query = query.Where(s => s.CVStatus == CvStatus.Approved);
                             break;
                         case "approved":
-                            query = query.Where(s => s.IsCvApproved == true);
+                            query = query.Where(s => s.CVStatus == CvStatus.Rejected);
                             break;
                     }
                 }
@@ -131,7 +141,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                 FirstName = s.FirstName,
                 LastName = s.LastName,
                 IsHired = s.IsHired(),
-                ProfilePicUrl = s.ProfilePicUrl,
+                ProfilePicFirebaseId = s.ProfilePicFirebaseId,
                 CompanyName = s.Intern.Company.Name,
                 CompanyId = s.Intern.Company.Id
             }).ToListAsync(cancellationToken);
@@ -164,6 +174,19 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                 RegisteredStudentsCount = students.Count(s => s.ApplicationUserId != null),
                 HiredStudentsCount = students.Count(s => s.IsHired())
             };
+        }
+
+        public async Task<StudentCVModal> GetCVDetails(Guid studentId, CancellationToken cancellationToken)
+        {
+            return await GetQueryable()
+                .Where(s => s.Id == studentId)
+                .Select(s => new StudentCVModal
+                {
+                    Cv = s.CV,
+                    CvName = s.CvName,
+                    StudentId = s.Id
+                })
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         private IQueryable<Student> GetQueryable()

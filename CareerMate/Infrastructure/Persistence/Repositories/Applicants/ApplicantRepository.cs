@@ -75,7 +75,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Applicants
                 PathwayName = a.Student.Pathway.Name,
                 AppliedInternshipName = a.InternshipPost.Title,
                 CGPA = a.Student.CGPA,
-                ProfilePicUrl = a.Student.ProfilePicUrl,
+                ProfilePicUrl = a.Student.ProfilePicFirebaseId,
                 AppliedInternshipPostId = a.InternshipPost.Id
             }).ToListAsync(cancellationToken);
 

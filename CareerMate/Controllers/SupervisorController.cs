@@ -54,7 +54,7 @@ namespace CareerMate.Controllers
         [Authorize(Policy = Policies.CompaniesOnly)]
         public async Task<IActionResult> DeleteSupervisor([FromRoute] Guid facultyId, [FromRoute] Guid companyId, [FromRoute] Guid supervisorId, CancellationToken cancellationToken)
         {
-            var userDetails = await _userService.GetUserDetails(User, cancellationToken);
+            var userDetails = await _userService.GetUserContext(User, cancellationToken);
 
             var command = new DeleteSupervisorCommand
             {
@@ -88,7 +88,7 @@ namespace CareerMate.Controllers
         [Authorize(Policy = Policies.CompaniesOnly)]
         public async Task<IActionResult> UpdateSupervisor([FromRoute] Guid facultyId, [FromRoute] Guid companyId, [FromRoute] Guid supervisorId, [FromBody] UpdateSupervisorCommand command, CancellationToken cancellationToken)
         {
-            var userDetails = await _userService.GetUserDetails(User, cancellationToken);
+            var userDetails = await _userService.GetUserContext(User, cancellationToken);
 
             command.FacultyId = facultyId;
             command.CompanyId = companyId;

@@ -28,6 +28,6 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Login
 
         public Guid PathwayId { get; set; }
 
-        public string ProfilePicUrl { get; set; }
+        public string ProfilePicFirebaseId { get; set; }
     }
 }

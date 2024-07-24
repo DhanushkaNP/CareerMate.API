@@ -22,11 +22,11 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
             
             builder.Property(i => i.PhoneNumber);
             
-            builder.Property(i => i.CGPA);
+            builder.Property(i => i.CGPA).IsRequired(false);
             
             builder.Property(i => i.PersonalEmail);
 
-            builder.Property(i => i.ProfilePicUrl).IsRequired(false);
+            builder.Property(i => i.ProfilePicFirebaseId).IsRequired(false);
 
             builder.HasOne(i => i.Batch)
                 .WithMany(i => i.Students)

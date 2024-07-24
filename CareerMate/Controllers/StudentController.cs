@@ -1,14 +1,23 @@
 ﻿using CareerMate.Abstractions.Enums;
+using CareerMate.Abstractions.Services;
 using CareerMate.API.Controllers;
+using CareerMate.EndPoints.Commands.Users.Students;
 using CareerMate.EndPoints.Commands.Users.Students.Create;
 using CareerMate.EndPoints.Commands.Users.Students.Delete;
+using CareerMate.EndPoints.Commands.Users.Students.DeleteCV;
+using CareerMate.EndPoints.Commands.Users.Students.DownloadCV;
 using CareerMate.EndPoints.Commands.Users.Students.Login;
-using CareerMate.EndPoints.Queries.Students.GetList;
-using CareerMate.EndPoints.Queries.Students.GetStats;
+using CareerMate.EndPoints.Commands.Users.Students.Update;
+using CareerMate.EndPoints.Commands.Users.Students.UploadCV;
+using CareerMate.EndPoints.Queries.Users.Students.GetDetails;
+using CareerMate.EndPoints.Queries.Users.Students.GetList;
+using CareerMate.EndPoints.Queries.Users.Students.GetStats;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,10 +28,14 @@ namespace CareerMate.Controllers
     public class StudentController : BaseController
     {
         private readonly IMediator _mediator;
+        private readonly IUserService _userService;
 
-        public StudentController(IMediator mediator)
+        public StudentController(
+            IMediator mediator,
+            IUserService userService)
         {
             _mediator = mediator;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -72,6 +85,69 @@ namespace CareerMate.Controllers
             var command = new DeleteStudentCommand
             {
                 FacultyId = facultyId,
+                StudentId = studentId
+            };
+
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{studentId:Guid}")]
+        [Authorize(Policy = Policies.AllUserRoles)]
+        public async Task<IActionResult> GetStudentDetails([FromRoute] Guid studentId, CancellationToken cancellationToken)
+        {
+            var userContext = await _userService.GetUserContext(User, cancellationToken);
+
+            var query = new GetStudentDetailsQuery
+            {
+                StudentId = studentId,
+                UserContext = userContext
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{studentId:Guid}")]
+        [Authorize(Policy = Policies.StudentOnly)]
+        public async Task<IActionResult> UpdateStudent([FromRoute] Guid studentId, [FromBody] UpdateStudentCommand command, CancellationToken cancellationToken)
+        {
+            command.StudentId = studentId;
+
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPost("{studentId:Guid}/CV")]
+        [Authorize(Policy = Policies.StudentOnly)]
+        public async Task<IActionResult> UploadCV([FromRoute] Guid studentId, [Required] IFormFile cv, [Required] UploadCVCommand command, CancellationToken cancellationToken)
+        {
+            command.StudentId = studentId;
+            command.Cv = cv;
+
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{studentId:Guid}/CV")]
+        public async Task<IActionResult> DownloadCV([FromRoute] Guid studentId, CancellationToken cancellationToken)
+        {
+            var query = new DownloadCvQuery
+            {
+                StudentId = studentId,
+            };
+
+            DownloadCvQueryResponse result = (DownloadCvQueryResponse)await _mediator.Send(query, cancellationToken);
+
+            return File(result.CvModal.Cv, "application/pdf", result.CvModal.CvName);
+        }
+
+        [HttpDelete("{studentId:Guid}/CV")]
+        [Authorize(Policy = Policies.StudentOnly)]
+        public async Task<IActionResult> DeleteCV([FromRoute] Guid studentId, CancellationToken cancellationToken)
+        {
+            var command = new DeleteCVCommand
+            {
                 StudentId = studentId
             };
 

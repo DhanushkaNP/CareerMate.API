@@ -85,7 +85,7 @@ namespace CareerMate.Infrastructure.Persistence
 
         public DbSet<Experience> Experience { get; private set; }
 
-        public DbSet<Link> Link { get; set; }
+        public DbSet<Contact> Contact { get; set; }
 
         public DbSet<Applicant> Applicant { get; set; }
 
