@@ -202,6 +202,9 @@ namespace CareerMate.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("text");
 
+                    b.Property<int?>("CompanySize")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -214,13 +217,16 @@ namespace CareerMate.Migrations
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("FirebaseLogoId")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("FoundedOn")
+                        .HasColumnType("date");
+
                     b.Property<Guid>("IndustryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Location")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LogoUrl")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("ModifiedAt")
@@ -1213,11 +1219,34 @@ namespace CareerMate.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("CareerMate.Models.Entities.Companies.CompanyRating", "Ratings", b1 =>
+                        {
+                            b1.Property<Guid>("CompanyId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int?>("TotalRaters")
+                                .HasColumnType("integer")
+                                .HasColumnName("TotalRaters");
+
+                            b1.Property<decimal?>("TotalRatings")
+                                .HasColumnType("numeric")
+                                .HasColumnName("TotalRatings");
+
+                            b1.HasKey("CompanyId");
+
+                            b1.ToTable("Company");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CompanyId");
+                        });
+
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Faculty");
 
                     b.Navigation("Industry");
+
+                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.CompanyFollowers.CompanyFollower", b =>

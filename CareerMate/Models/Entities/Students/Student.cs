@@ -206,5 +206,15 @@ namespace CareerMate.Models.Entities.Students
             CvName = null;
             CVStatus = CvStatus.NotUploaded;
         }
+
+        public void ApproveCV()
+        {
+            CVStatus = CvStatus.Approved;
+        }
+
+        public void RejectCV()
+        {
+            CVStatus = CvStatus.Rejected;
+        }
     }
 }

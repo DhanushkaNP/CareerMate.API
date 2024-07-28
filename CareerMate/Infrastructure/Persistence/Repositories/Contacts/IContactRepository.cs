@@ -13,6 +13,8 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Contacts
     {
         Task<bool> IsStudentContactAlreadyExist(Guid studentId, ContactTypes contactTypes, CancellationToken cancellationToken);
 
+        Task<List<ContactListQueryItem>> GetCompanyContactsList(Guid companyId, CancellationToken cancellationToken);
+
         Task<List<ContactListQueryItem>> GetStudentContactsList(Guid studentId, CancellationToken cancellationToken);
     }
 }

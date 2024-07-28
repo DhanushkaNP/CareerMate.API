@@ -1,7 +1,7 @@
 ﻿using CareerMate.Abstractions.Enums;
 using CareerMate.Abstractions.Services;
 using CareerMate.API.Controllers;
-using CareerMate.EndPoints.Commands.Users.Students;
+using CareerMate.EndPoints.Commands.Users.Students.ApproveCV;
 using CareerMate.EndPoints.Commands.Users.Students.Create;
 using CareerMate.EndPoints.Commands.Users.Students.Delete;
 using CareerMate.EndPoints.Commands.Users.Students.DeleteCV;
@@ -151,6 +151,15 @@ namespace CareerMate.Controllers
                 StudentId = studentId
             };
 
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPost("{studentId:Guid}/CV/Approve")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
+        public async Task<IActionResult> ApproveCV([FromRoute] Guid studentId, [FromBody] ApproveCvCommand command, CancellationToken cancellationToken)
+        {
+            command.StudentId = studentId;
             var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);
         }

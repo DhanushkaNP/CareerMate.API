@@ -23,5 +23,7 @@ namespace CareerMate.EndPoints.Queries.Applicants
         public float? CGPA { get; set; }
 
         public string ProfilePicUrl { get; set; }
+
+        public string ProfilePicFirebaseId { get; set; }
     }
 }

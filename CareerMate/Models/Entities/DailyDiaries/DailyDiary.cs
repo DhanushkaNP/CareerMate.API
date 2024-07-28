@@ -1,7 +1,6 @@
 ﻿using CareerMate.Models.Entities.DailyRecords;
 using CareerMate.Models.Entities.Students;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace CareerMate.Models.Entities.DailyDiaries
 {

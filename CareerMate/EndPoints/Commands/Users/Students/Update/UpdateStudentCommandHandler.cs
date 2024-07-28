@@ -1,4 +1,5 @@
-﻿using CareerMate.EndPoints.Handlers;
+﻿using CareerMate.Abstractions.Services;
+using CareerMate.EndPoints.Handlers;
 using CareerMate.Infrastructure.Persistence.Repositories.Students;
 using CareerMate.Models.Entities.Students;
 using MediatR;
@@ -10,10 +11,12 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Update
     public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, BaseResponse>
     {
         private readonly IStudentRepository _studentRepository;
+        private readonly IUserService _userService;
 
-        public UpdateStudentCommandHandler(IStudentRepository studentRepository)
+        public UpdateStudentCommandHandler(IStudentRepository studentRepository, IUserService userService)
         {
             _studentRepository = studentRepository;
+            _userService = userService;
         }
 
         public async Task<BaseResponse> Handle(UpdateStudentCommand command, CancellationToken cancellationToken)
@@ -35,6 +38,8 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Update
                 .SetLocation(command.Location)
                 .SetAbout(command.About)
                 .SetProfilePicFirebaseId(command.ProfilePicFirebaseId);
+
+            await _userService.UpdateEmail(student.ApplicationUserId.Value, command.PersonalEmail, cancellationToken);
 
             _studentRepository.Update(student);
 

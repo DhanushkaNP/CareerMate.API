@@ -27,6 +27,16 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
                 .WithMany(i => i.Companies)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
+
+            builder.OwnsOne(i => i.Ratings, cf =>
+            {
+                cf.Property(i => i.TotalRatings).HasColumnName("TotalRatings");
+                cf.Property(i => i.TotalRaters).HasColumnName("TotalRaters");
+            });
+
+            builder.Property(i => i.FoundedOn).HasDefaultValue(null);
+
+            builder.Property(i => i.CompanySize).HasDefaultValue(null);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace CareerMate.EndPoints.Queries.Companies
 
         public string Bio { get; set; }
 
-        public string LogoUrl { get; set; }
+        public string FirebaseLogoId { get; set; }
 
         public int TotalInternsCount { get; set; }
 

@@ -52,7 +52,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
                 if (pagedQuery.Filter.ContainsKey("industry"))
                 {
                     query = query.Where(c => c.Industry.Id == new Guid(pagedQuery.Filter["industry"]));
-                }               
+                }
             }
 
             if (!companyStatus.IsNullOrEmpty())
@@ -92,7 +92,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
                 Location = c.Location,
                 FollowersCount = c.Followers.Count(),
                 Bio = c.Bio,
-                LogoUrl = c.LogoUrl,
+                FirebaseLogoId = c.FirebaseLogoId,
                 TotalInternsCount = c.Interns.Count(),
                 Status = c.Status
             }).ToListAsync(cancellationToken);
@@ -144,6 +144,36 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
                     Name = c.Name,
                     Email = c.Email,
                 }).ToListAsync(cancellationToken);
+        }
+
+        public async Task<CompanyDetailQueryItem> GetCompanyDetailQuery(Guid companyId, CancellationToken cancellationToken)
+        {
+            return await GetQueryable()
+                .Include(c => c.InternshipPosts)
+                .Include(c => c.Industry)
+                .Include(c => c.Followers)
+                .Where(c => c.Id == companyId && c.DeletedAt == null)
+                .Select(c => new CompanyDetailQueryItem
+                {
+                    Id = c.Id,
+                    FirebaseLogoId = c.FirebaseLogoId,
+                    Status = c.Status,
+                    Name = c.Name,
+                    AvailableInternshipsCount = c.InternshipPosts.Count(),
+                    CompanyRatings = (c.Ratings.TotalRatings / c.Ratings.TotalRaters),
+                    WebUrl = c.WebURL,
+                    FoundedOn = c.FoundedOn,
+                    CompanySize = c.CompanySize,
+                    Location = c.Location,
+                    IndustryName = c.Industry.Name,
+                    FollowersCount = c.Followers.Count(),
+                    Bio = c.Bio,
+                    PhoneNumber = c.PhoneNumber,
+                    Email = c.Email,
+                    Address = c.Address
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         private IQueryable<Company> GetQueryable()

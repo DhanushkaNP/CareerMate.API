@@ -133,5 +133,24 @@ namespace CareerMate.Services.UserServices
                 Id = currentUser.Id
             };
         }
+
+        public async Task UpdateEmail(Guid userId, string newEmail, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new NotFoundException<ApplicationUser>();
+            }
+
+            // Directly update the email and username without generating a token
+            user.Email = newEmail;
+            user.UserName = newEmail;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new BadRequestException(result.Errors.FirstOrDefault()?.Description ?? "Failed to update email");
+            }
+        }
     }
 }

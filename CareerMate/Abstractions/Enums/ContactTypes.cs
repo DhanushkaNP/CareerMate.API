@@ -9,5 +9,6 @@
         GitHub = 4,
         Medium = 5,
         PersonalWebsite = 6,
+        CompanyWebsite = 7,
     }
 }

@@ -112,7 +112,7 @@ namespace CareerMate.Controllers
         }
 
         [HttpGet("Companies/{companyId:Guid}/List")]
-        [Authorize(Policy = Policies.CompaniesOnly)]
+        [Authorize(Policy = Policies.AllUserRoles)]
         public async Task<IActionResult> GetCompanyInternshipPosts([FromRoute] Guid companyId, [FromRoute] Guid facultyId, CancellationToken cancellationToken)
         {
             var query = new InternshipPostListDetailsQuery

@@ -12,5 +12,6 @@
         public const string AllUserRoles = "AllUsers";
 
         public const string CompanyAndCoordinatorLevel = "CompanyAndCoordinatorLevel";
+        public const string StudentAndCompanyLevel = "StudentAndCompanyLevel";
     }
 }

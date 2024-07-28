@@ -18,7 +18,7 @@ namespace CareerMate.EndPoints.Commands.Companies.Login
 
         public Guid UserId { get; set; }
 
-        public string CompanyLogoUrl { get; set; }
+        public string FirebaseLogoId { get; set; }
 
         public string CompanyName { get; set; }
     }

@@ -6,20 +6,20 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Queries.Skills.GetList
+namespace CareerMate.EndPoints.Queries.Skills.GetStudentSkillList
 {
-    public class GetSkillsListQueryHandler : IRequestHandler<GetSkillsListQuery, BaseResponse>
+    public class GetStudentSkillsListQueryHandler : IRequestHandler<GetStudentSkillsListQuery, BaseResponse>
     {
         private readonly IStudentRepository _studentRepository;
         private readonly ISkillRepository _skillRepository;
 
-        public GetSkillsListQueryHandler(IStudentRepository studentRepository, ISkillRepository skillRepository)
+        public GetStudentSkillsListQueryHandler(IStudentRepository studentRepository, ISkillRepository skillRepository)
         {
             _studentRepository = studentRepository;
             _skillRepository = skillRepository;
         }
 
-        public async Task<BaseResponse> Handle(GetSkillsListQuery query, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetStudentSkillsListQuery query, CancellationToken cancellationToken)
         {
             Student student = await _studentRepository.GetByIdAsync(query.StudentId, cancellationToken);
 
@@ -30,7 +30,7 @@ namespace CareerMate.EndPoints.Queries.Skills.GetList
 
             return new ListResponse<SkillQueryItem>
             {
-                Items = await _skillRepository.GetSkillsList(query.StudentId, cancellationToken)
+                Items = await _skillRepository.GetStudentSkillsList(query.StudentId, cancellationToken)
             };
         }
     }

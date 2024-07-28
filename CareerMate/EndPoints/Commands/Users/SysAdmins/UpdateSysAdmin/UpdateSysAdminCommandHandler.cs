@@ -48,6 +48,8 @@ namespace CareerMate.EndPoints.Commands.Users.SysAdmins.UpdateSysAdmin
                 }
             }
 
+            await _userService.UpdateEmail(sysAdmin.ApplicationUser.Id, command.Email, cancellationToken);
+
             _sysAdminRepository.Update(sysAdmin);
 
             await _sysAdminRepository.SaveChangesAsync(cancellationToken);

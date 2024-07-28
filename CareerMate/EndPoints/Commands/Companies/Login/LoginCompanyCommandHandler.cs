@@ -73,7 +73,7 @@ namespace CareerMate.EndPoints.Commands.Companies.Login
                 UserId = company.Id,
                 UniversityId = university.Id,
                 FacultyId = command.FacultyId,
-                CompanyLogoUrl = company.LogoUrl,
+                FirebaseLogoId = company.FirebaseLogoId,
                 CompanyName = company.Name
             };
         }

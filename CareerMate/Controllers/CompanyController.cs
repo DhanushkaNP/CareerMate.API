@@ -1,11 +1,16 @@
 ﻿using CareerMate.Abstractions.Enums;
+using CareerMate.Abstractions.Services;
 using CareerMate.API.Controllers;
 using CareerMate.EndPoints.Commands.Companies.Create;
 using CareerMate.EndPoints.Commands.Companies.Delete;
 using CareerMate.EndPoints.Commands.Companies.Login;
+using CareerMate.EndPoints.Queries.Companies.Approve;
+using CareerMate.EndPoints.Queries.Companies.BlockCompany;
+using CareerMate.EndPoints.Queries.Companies.CompanyDetails;
 using CareerMate.EndPoints.Queries.Companies.GetList;
 using CareerMate.EndPoints.Queries.Companies.GetStats;
 using CareerMate.EndPoints.Queries.Companies.GetSuggestions;
+using CareerMate.EndPoints.Queries.Companies.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +25,12 @@ namespace CareerMate.Controllers
     public class CompanyController : BaseController
     {
         private readonly IMediator _mediator;
+        private readonly IUserService _userService;
 
-        public CompanyController(IMediator mediator)
+        public CompanyController(IMediator mediator, IUserService userService)
         {
             _mediator = mediator;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -85,6 +92,54 @@ namespace CareerMate.Controllers
                 FacultyId = facultyId,
                 CompanyId = companyId
             };
+
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpGet("{id:Guid}")]
+        [Authorize(Policy = Policies.AllUserRoles)]
+        public async Task<IActionResult> GetCompanyDetails([FromRoute] Guid facultyId, Guid id, CancellationToken cancellationToken)
+        {
+            var userContext = await _userService.GetUserContext(User, cancellationToken);
+
+            var query = new GetCompanyDetailsQuery
+            {
+                Id = id,
+                UserContext = userContext
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{companyId:Guid}")]
+        [Authorize(Policy = Policies.CompaniesOnly)]
+        public async Task<IActionResult> UpdateCompany([FromRoute] Guid companyId, [FromBody] UpdateCompanyCommand command, CancellationToken cancellationToken)
+        {
+            command.Id = companyId;
+
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{companyId:Guid}/Approve")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
+        public async Task<IActionResult> ApproveCompany([FromRoute] Guid companyId, CancellationToken cancellationToken)
+        {
+            var command = new ApproveCompanyCommand
+            {
+                CompanyId = companyId
+            };
+            var result = await _mediator.Send(command, cancellationToken);
+            return ToActionResult(result);
+        }
+
+        [HttpPut("{companyId:Guid}/Block")]
+        [Authorize(Policy = Policies.CoordinatorAssistantLevel)]
+        public async Task<IActionResult> BlockCompany([FromRoute] Guid companyId, [FromBody] BlockCompanyCommand command, CancellationToken cancellationToken)
+        {
+            command.CompanyId = companyId;
 
             var result = await _mediator.Send(command, cancellationToken);
             return ToActionResult(result);

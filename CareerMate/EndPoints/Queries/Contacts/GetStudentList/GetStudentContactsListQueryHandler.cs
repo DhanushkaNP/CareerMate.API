@@ -6,20 +6,20 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Queries.Contacts.GetList
+namespace CareerMate.EndPoints.Queries.Contacts.GetStudentList
 {
-    public class GetContactsListQueryHandler : IRequestHandler<GetContactsListQuery, BaseResponse>
+    public class GetStudentContactsListQueryHandler : IRequestHandler<GetStudentContactsListQuery, BaseResponse>
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IContactRepository _contactRepository;
 
-        public GetContactsListQueryHandler(IStudentRepository studentRepository, IContactRepository contactRepository)
+        public GetStudentContactsListQueryHandler(IStudentRepository studentRepository, IContactRepository contactRepository)
         {
             _studentRepository = studentRepository;
             _contactRepository = contactRepository;
         }
 
-        public async Task<BaseResponse> Handle(GetContactsListQuery query, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetStudentContactsListQuery query, CancellationToken cancellationToken)
         {
             Student student = await _studentRepository.GetByIdAsync(query.StudentId, cancellationToken);
 

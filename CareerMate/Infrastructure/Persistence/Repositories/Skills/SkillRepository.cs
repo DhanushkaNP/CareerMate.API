@@ -1,5 +1,6 @@
 ﻿using CareerMate.EndPoints.Queries.Skills;
 using CareerMate.Models.Entities.Skills;
+using CareerMate.Models.Entities.Students;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,22 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Skills
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
 
-        public async Task<List<SkillQueryItem>> GetSkillsList(Guid studentId, CancellationToken cancellationToken)
+        public async Task<List<SkillQueryItem>> GetCompanySkillsList(Guid companyId, CancellationToken cancellationToken)
         {
+            return await GetQueryable()
+            .Include(c => c.Company)
+                .Where(c => c.Company.Id == companyId && c.Company != null)
+                .OrderByDescending(c => c.CreatedAt)
+                .Select(c => new SkillQueryItem
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                })
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<SkillQueryItem>> GetStudentSkillsList(Guid studentId, CancellationToken cancellationToken)
+        {          
             return await GetQueryable()
                 .Include(c => c.Student)
                 .Where(c => c.Student.Id == studentId && c.Student != null)

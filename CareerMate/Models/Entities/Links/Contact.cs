@@ -30,5 +30,10 @@ namespace CareerMate.Models.Entities.Links
         {
             Student = student;
         }
+
+        public void SetCompany(Company company)
+        {
+            Company = company;
+        }
     }
 }

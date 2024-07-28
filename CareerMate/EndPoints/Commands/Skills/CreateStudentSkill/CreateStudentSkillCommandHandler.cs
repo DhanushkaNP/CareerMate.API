@@ -7,20 +7,20 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Commands.Skills.Create
+namespace CareerMate.EndPoints.Commands.Skills.CreateStudentSkill
 {
-    public class CreateSkillCommandHandler : IRequestHandler<CreateSkillCommand, BaseResponse>
+    public class CreateStudentSkillCommandHandler : IRequestHandler<CreateStudentSkillCommand, BaseResponse>
     {
         private readonly IStudentRepository _studentRepository;
         private readonly ISkillRepository _skillRepository;
 
-        public CreateSkillCommandHandler(IStudentRepository studentRepository, ISkillRepository skillRepository)
+        public CreateStudentSkillCommandHandler(IStudentRepository studentRepository, ISkillRepository skillRepository)
         {
             _studentRepository = studentRepository;
             _skillRepository = skillRepository;
         }
 
-        public async Task<BaseResponse> Handle(CreateSkillCommand command, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(CreateStudentSkillCommand command, CancellationToken cancellationToken)
         {
             Student student = await _studentRepository.GetByIdAsync(command.StudentId, cancellationToken);
 

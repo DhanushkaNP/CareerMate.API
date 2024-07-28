@@ -5,9 +5,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace CareerMate.EndPoints.Commands.Contacts.Create
+namespace CareerMate.EndPoints.Commands.Contacts.CreateStudentContact
 {
-    public class CreateContactCommand : IRequest<BaseResponse>
+    public class CreateStudentContactCommand : IRequest<BaseResponse>
     {
         [JsonIgnore]
         public Guid StudentId { get; set; }

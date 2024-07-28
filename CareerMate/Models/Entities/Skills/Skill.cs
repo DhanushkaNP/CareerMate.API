@@ -24,5 +24,10 @@ namespace CareerMate.Models.Entities.Skills
         {
             Student = student;
         }
+
+        public void SetCompany(Company company)
+        {
+            Company = company;
+        }
     }
 }

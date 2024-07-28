@@ -62,7 +62,13 @@ namespace CareerMate.Models.Entities.Companies
 
         public CompanyStatus? Status { get; private set; }
 
-        public string LogoUrl { get; private set; }
+        public string FirebaseLogoId { get; private set; }
+
+        public CompanyRating Ratings { get; private set; }
+
+        public DateOnly? FoundedOn { get; private set; }
+
+        public CompanySize? CompanySize { get; private set; }
 
         public Faculty Faculty { get; private set; }
 
@@ -89,6 +95,93 @@ namespace CareerMate.Models.Entities.Companies
         public void Delete()
         {
             DeletedAt = DateTime.UtcNow;
+        }
+
+        public Company SetFirebaseLogoId(string firebaseLogoId)
+        {
+            FirebaseLogoId = firebaseLogoId;
+            return this;
+        }
+
+        public Company SetName(string name)
+        {
+            Name = name;
+            return this;
+        }
+
+        public Company SetPhoneNumber(string phoneNumber)
+        {
+            PhoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Company SetAddress(string address)
+        {
+            Address = address;
+            return this;
+        }
+
+        public Company SetLocation(string location)
+        {
+            Location = location;
+            return this;
+        }
+
+        public Company SetBio(string bio)
+        {
+            Bio = bio;
+            return this;
+        }
+
+        public Company SetEmail(string email)
+        {
+            Email = email;
+            return this;
+        }
+
+        public Company SetWebUrl(string webUrl)
+        {
+            WebURL = webUrl;
+            return this;
+        }
+
+        public Company SetStatus(CompanyStatus? status)
+        {
+            Status = status;
+            return this;
+        }
+
+        public Company SetRatings(CompanyRating ratings)
+        {
+            Ratings = ratings;
+            return this;
+        }
+
+        public Company SetFoundedOn(DateOnly? foundedOn)
+        {
+            FoundedOn = foundedOn;
+            return this;
+        }
+
+        public Company SetCompanySize(CompanySize? companySize)
+        {
+            CompanySize = companySize;
+            return this;
+        }
+
+        public void Approve()
+        {
+           Status = CompanyStatus.Approved;
+        }
+
+        public void Block()
+        {
+            Status = CompanyStatus.Blocked;
+        }
+
+        public void UnBlock()
+        {
+            Status = CompanyStatus.Approved;
         }
     }
 }

@@ -76,7 +76,8 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Applicants
                 AppliedInternshipName = a.InternshipPost.Title,
                 CGPA = a.Student.CGPA,
                 ProfilePicUrl = a.Student.ProfilePicFirebaseId,
-                AppliedInternshipPostId = a.InternshipPost.Id
+                AppliedInternshipPostId = a.InternshipPost.Id,
+                ProfilePicFirebaseId = a.Student.ProfilePicFirebaseId
             }).ToListAsync(cancellationToken);
 
             return new PagedResponse<ApplicantQueryItem>

@@ -20,5 +20,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Companies
         Task<PagedResponse<CompanyQueryItem>> GetListByFacultyId(Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken);
 
         Task<CompanyStatsQueryItem> GetCompanyStats(Guid facultyId, CancellationToken cancellationToken);
+
+        Task<CompanyDetailQueryItem> GetCompanyDetailQuery(Guid companyId, CancellationToken cancellationToken);
     }
 }

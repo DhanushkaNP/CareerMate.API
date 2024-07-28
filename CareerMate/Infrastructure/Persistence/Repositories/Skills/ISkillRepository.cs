@@ -11,6 +11,8 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Skills
 {
     public interface ISkillRepository : IRepository<Skill>
     {
-        Task<List<SkillQueryItem>> GetSkillsList(Guid studentId, CancellationToken cancellationToken);
+        Task<List<SkillQueryItem>> GetCompanySkillsList(Guid companyId, CancellationToken cancellationToken);
+
+        Task<List<SkillQueryItem>> GetStudentSkillsList(Guid studentId, CancellationToken cancellationToken);
     }
 }

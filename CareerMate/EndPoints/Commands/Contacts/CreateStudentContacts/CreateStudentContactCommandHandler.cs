@@ -8,20 +8,20 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Commands.Contacts.Create
+namespace CareerMate.EndPoints.Commands.Contacts.CreateStudentContact
 {
-    public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand, BaseResponse>
+    public class CreateStudentContactCommandHandler : IRequestHandler<CreateStudentContactCommand, BaseResponse>
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IContactRepository _contactRepository;
 
-        public CreateContactCommandHandler(IStudentRepository studentRepository, IContactRepository contactRepository)
+        public CreateStudentContactCommandHandler(IStudentRepository studentRepository, IContactRepository contactRepository)
         {
             _studentRepository = studentRepository;
             _contactRepository = contactRepository;
         }
 
-        public async Task<BaseResponse> Handle(CreateContactCommand command, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(CreateStudentContactCommand command, CancellationToken cancellationToken)
         {
             Student student = await _studentRepository.GetByIdAsync(command.StudentId, cancellationToken);
 

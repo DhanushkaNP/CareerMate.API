@@ -1,5 +1,4 @@
-﻿using CareerMate.Abstractions.Exceptions;
-using CareerMate.Abstractions.Services;
+﻿using CareerMate.Abstractions.Services;
 using CareerMate.EndPoints.Handlers;
 using CareerMate.Infrastructure.Persistence.Repositories.CoordinatorAssistants;
 using CareerMate.Models.Entities.CoordinatorAssistants;
@@ -13,10 +12,12 @@ namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Update
     public class UpdateCoordinatorAssistantCommandHandler : IRequestHandler<UpdateCoordinatorAssistantCommand, BaseResponse>
     {
         private readonly ICoordinatorAssistantsRepository _coordinatorAssistantsRepository;
+        private readonly IUserService _userService;
 
-        public UpdateCoordinatorAssistantCommandHandler(ICoordinatorAssistantsRepository coordinatorAssistantsRepository)
+        public UpdateCoordinatorAssistantCommandHandler(ICoordinatorAssistantsRepository coordinatorAssistantsRepository, IUserService userService)
         {
             _coordinatorAssistantsRepository = coordinatorAssistantsRepository;
+            _userService = userService;
         }
 
         public async Task<BaseResponse> Handle(UpdateCoordinatorAssistantCommand command, CancellationToken cancellationToken)
@@ -38,6 +39,8 @@ namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Update
                     .SetFirstName(command.FirstName)
                     .SetLastName(command.LastName)
                     .SetEmail(command.Email);
+
+                await _userService.UpdateEmail(applicationUserId, command.Email, cancellationToken);
 
                 _coordinatorAssistantsRepository.Update(coordinatorAssistant);
 

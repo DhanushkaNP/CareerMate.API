@@ -12,7 +12,7 @@ namespace CareerMate.EndPoints.Queries.InternshipPosts
 
         public string CompanyName { get; set; }
 
-        public string CompanyLogoUrl { get; set; }
+        public string FirebaseLogoId { get; set; }
 
         public WorkPlaceType Type { get; set; }
 
