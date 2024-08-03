@@ -13,6 +13,8 @@ using System.Text;
 using CareerMate.Services.AuthServices;
 using CareerMate.Services.UserServices;
 using Microsoft.Extensions.Logging;
+using Quartz;
+using CareerMate.API.BackgroundJobs.UnlockDailyDiary;
 
 namespace CareerMate
 {
@@ -97,12 +99,26 @@ namespace CareerMate
             return services;
         }
 
-        //public static IServiceCollection AddRepositories(this IServiceCollection services)
-        //{
-        //    //services.AddSingleton<IUnitOfWork, AppDbContext>();
-        //    services.AddScoped<ISysAdminRepository,SysAdminRepository>();
+        public static IServiceCollection RegisterBackgroundJobs(this IServiceCollection services)
+        {
+            // Add Quartz.NET services
+            services.AddQuartz(q =>
+            {
+                // Create a job
+                var jobKey = new JobKey(nameof(UnlockDailyDiariesJob));
+                q.AddJob<UnlockDailyDiariesJob>(opts => opts.WithIdentity(jobKey));
 
-        //    return services;
-        //}
+                // Create a trigger to run the job daily at 1 AM
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey)
+                    .WithIdentity("UnlockDailyDiariesJob-trigger")
+                    .WithCronSchedule("0 0 1 * * ?"));
+            });
+
+            // Add the Quartz.NET hosted service
+            services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+            return services;
+        }
     }
 }

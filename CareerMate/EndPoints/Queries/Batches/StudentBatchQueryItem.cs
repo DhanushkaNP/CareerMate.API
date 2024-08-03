@@ -8,10 +8,10 @@ namespace CareerMate.EndPoints.Queries.Batches
 
         public string BatchCode { get; set; }
 
-        public DateTime BatchStartAt { get; set; }
+        public DateOnly BatchStartAt { get; set; }
 
-        public DateTime BatchEndAt { get; set; }
+        public DateOnly BatchEndAt { get; set; }
 
-        public DateTime LastAllowedDateForStartInternship { get; set; }
+        public DateOnly LastAllowedDateForStartInternship { get; set; }
     }
 }

@@ -46,6 +46,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                     s.UniversityEmail.ToLower() == email.ToLower() &&
                     s.ApplicationUserId == null)
                 .Include(s => s.Batch)
+                .Include(s => s.Intern)
                 .FirstOrDefaultAsync();
         }
 
@@ -54,6 +55,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
             return GetQueryable()
                 .Include(s => s.Degree)
                 .Include(s => s.Pathway)
+                .Include(s => s.Intern)
                 .Include(s => s.Batch).ThenInclude(b => b.Faculty).ThenInclude(f => f.University)
                 .FirstOrDefaultAsync(s => s.ApplicationUserId == userId, cancellationToken);
         }

@@ -4,8 +4,16 @@ namespace CareerMate.Models.Entities.DailyDiaries
 {
     public class PeriodCovered
     {
-        public DateTime From { get; private set; }
+        public PeriodCovered(
+            DateOnly from,
+            DateOnly to)
+        {
+            From = from;
+            To = to;
+        }
 
-        public DateTime To { get; private set; }
+        public DateOnly From { get; private set; }
+
+        public DateOnly To { get; private set; }
     }
 }

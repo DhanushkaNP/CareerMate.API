@@ -15,7 +15,11 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Internships
 
         public override Task<Internship> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return GetQueryable().Include(i => i.Interns).Where(i => i.Id == id && i.DeletedAt == null).FirstOrDefaultAsync();
+            return GetQueryable()
+                .Include(i => i.Company)
+                .Include(i => i.Interns)
+                .Where(i => i.Id == id && i.DeletedAt == null)
+                .FirstOrDefaultAsync();
         }
 
         private IQueryable<Internship> GetQueryable()

@@ -20,10 +20,14 @@ namespace CareerMate.EndPoints.Queries.Applicants
 
         public Guid AppliedInternshipPostId { get; set; }
 
+        public Guid AppliedInternshipId { get; set; }
+
         public float? CGPA { get; set; }
 
         public string ProfilePicUrl { get; set; }
 
         public string ProfilePicFirebaseId { get; set; }
+
+        public bool IsAlreadyIntern { get; set; }
     }
 }

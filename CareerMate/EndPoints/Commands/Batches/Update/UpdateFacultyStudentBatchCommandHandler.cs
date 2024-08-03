@@ -2,6 +2,7 @@
 using CareerMate.Infrastructure.Persistence.Repositories.Batches;
 using CareerMate.Models.Entities.StudentBatches;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +26,13 @@ namespace CareerMate.EndPoints.Commands.Batches.Update
                 return new NotFoundResponse<StudentBatch>();
             }
 
-            studentBatch.Update(command.BatchCode, command.StartAt, command.EndAt, command.LastAllowedDateForStartInternship);
+            studentBatch.Update(
+                command.BatchCode,
+                DateOnly.FromDateTime(command.StartAt),
+                DateOnly.FromDateTime(command.EndAt),
+                DateOnly.FromDateTime(command.LastAllowedDateForStartInternship),
+                command.ValidInternshipPeriodInMonths,
+                command.DailyDiaryDueWeeks);
 
             _batchesRepository.Update(studentBatch);
             

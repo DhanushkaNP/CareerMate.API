@@ -7,6 +7,7 @@ using CareerMate.Models.Entities.Faculties;
 using CareerMate.Models.Entities.StudentBatches;
 using CareerMate.Models.Entities.Students;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,7 +43,13 @@ namespace CareerMate.EndPoints.Commands.Batches.Create
 
             using (var transaction = await _facultyRepository.BeginTransaction(cancellationToken))
             {
-                StudentBatch studentBatch = new StudentBatch(command.BatchCode, command.StartAt, command.EndAt, command.LastAllowedDateForStartInternship);
+                StudentBatch studentBatch = new StudentBatch(
+                    command.BatchCode,
+                    DateOnly.FromDateTime(command.StartAt),
+                    DateOnly.FromDateTime(command.EndAt),
+                    DateOnly.FromDateTime(command.LastAllowedDateForStartInternship),
+                    command.ValidInternshipPeriodInMonths,
+                    command.DailyDiaryDueWeeks);
                 _batchesRepository.Add(studentBatch);
 
                 foreach(StudentCsvModel student in command.Students)

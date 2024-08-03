@@ -11,6 +11,7 @@ using CareerMate.Models.Entities.Interns;
 using CareerMate.Models.Entities.Links;
 using CareerMate.Models.Entities.Industries;
 using CareerMate.Models.Entities.CompanyFollowers;
+using CareerMate.Models.Entities.DailyDiaries;
 
 namespace CareerMate.Models.Entities.Companies
 {

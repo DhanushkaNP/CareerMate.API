@@ -4,8 +4,14 @@ namespace CareerMate.Models.Entities.DailyDiaries
 {
     public class InternshipPeriod
     {
-        public DateTime From { get; private set; }
+        public InternshipPeriod(DateOnly from, DateOnly to)
+        {
+            From = from;
+            To = to;
+        }
 
-        public DateTime To { get; private set; }
+        public DateOnly From { get; private set; }
+
+        public DateOnly To { get; private set; }
     }
 }

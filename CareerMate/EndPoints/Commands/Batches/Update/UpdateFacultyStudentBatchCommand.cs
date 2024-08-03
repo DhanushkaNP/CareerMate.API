@@ -20,5 +20,11 @@ namespace CareerMate.EndPoints.Commands.Batches.Update
 
         [Required]
         public DateTime LastAllowedDateForStartInternship { get; set; }
+
+        [Required]
+        public int ValidInternshipPeriodInMonths { get; set; }
+
+        [Required]
+        public int DailyDiaryDueWeeks { get; set; }
     }
 }

@@ -25,6 +25,7 @@ builder.Host
 // Add services to the container.
 builder.Services.RegisterServices(builder.Configuration);
 builder.Services.RegisterSystemServices();
+builder.Services.RegisterBackgroundJobs();
 
 //Roles configurations
 builder.Services.AddRolesPolicies();

@@ -388,6 +388,12 @@ namespace CareerMate.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("InternId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -400,7 +406,12 @@ namespace CareerMate.Migrations
                     b.Property<string>("TrainingLocation")
                         .HasColumnType("text");
 
+                    b.Property<int>("Week")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("InternId");
 
                     b.HasIndex("StudentId");
 
@@ -416,8 +427,8 @@ namespace CareerMate.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
                     b.Property<int>("Day")
                         .HasColumnType("integer");
@@ -581,11 +592,8 @@ namespace CareerMate.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Duration")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("EndedDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("EndedDate")
+                        .HasColumnType("date");
 
                     b.Property<Guid>("InternshipId")
                         .HasColumnType("uuid");
@@ -596,8 +604,8 @@ namespace CareerMate.Migrations
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("StartedDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("StartedDate")
+                        .HasColumnType("date");
 
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uuid");
@@ -863,23 +871,29 @@ namespace CareerMate.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("BatchEndAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("BatchEndAt")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("BatchStartAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("BatchStartAt")
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("DailyDiaryDueWeeks")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("LastAllowedDateForStartInternship")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("LastAllowedDateForStartInternship")
+                        .HasColumnType("date");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ValidInternshipPeriodInMonths")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -1316,25 +1330,29 @@ namespace CareerMate.Migrations
 
             modelBuilder.Entity("CareerMate.Models.Entities.DailyDiaries.DailyDiary", b =>
                 {
-                    b.HasOne("CareerMate.Models.Entities.Students.Student", "Student")
+                    b.HasOne("CareerMate.Models.Entities.Interns.Intern", "Intern")
                         .WithMany("Diary")
-                        .HasForeignKey("StudentId")
+                        .HasForeignKey("InternId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareerMate.Models.Entities.Students.Student", null)
+                        .WithMany("Diary")
+                        .HasForeignKey("StudentId");
 
                     b.OwnsOne("CareerMate.Models.Entities.DailyDiaries.CoordinatorApproval", "CoordinatorApproval", b1 =>
                         {
                             b1.Property<Guid>("DailyDiaryId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<bool>("IsApproved")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("boolean")
-                                .HasDefaultValue(false)
-                                .HasColumnName("IsCoordinatorApproved");
-
                             b1.Property<DateTime?>("RequestedApprovalAt")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("RequestedCoordinatorApprovalAt");
+
+                            b1.Property<int>("Status")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasDefaultValue(0)
+                                .HasColumnName("CoordinatorApprovalStatus");
 
                             b1.HasKey("DailyDiaryId");
 
@@ -1349,12 +1367,12 @@ namespace CareerMate.Migrations
                             b1.Property<Guid>("DailyDiaryId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTime>("From")
-                                .HasColumnType("timestamp with time zone")
+                            b1.Property<DateOnly>("From")
+                                .HasColumnType("date")
                                 .HasColumnName("InternshipPeriodFrom");
 
-                            b1.Property<DateTime>("To")
-                                .HasColumnType("timestamp with time zone")
+                            b1.Property<DateOnly>("To")
+                                .HasColumnType("date")
                                 .HasColumnName("InternshipPeriodTo");
 
                             b1.HasKey("DailyDiaryId");
@@ -1370,12 +1388,12 @@ namespace CareerMate.Migrations
                             b1.Property<Guid>("DailyDiaryId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTime>("From")
-                                .HasColumnType("timestamp with time zone")
+                            b1.Property<DateOnly>("From")
+                                .HasColumnType("date")
                                 .HasColumnName("PeriodCoveredFrom");
 
-                            b1.Property<DateTime>("To")
-                                .HasColumnType("timestamp with time zone")
+                            b1.Property<DateOnly>("To")
+                                .HasColumnType("date")
                                 .HasColumnName("PeriodCoveredTo");
 
                             b1.HasKey("DailyDiaryId");
@@ -1391,15 +1409,15 @@ namespace CareerMate.Migrations
                             b1.Property<Guid>("DailyDiaryId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<bool>("IsApproved")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("boolean")
-                                .HasDefaultValue(false)
-                                .HasColumnName("IsSupervisorApproved");
-
                             b1.Property<DateTime?>("RequestedApprovalAt")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("RequestedSupervisorApprovalAt");
+
+                            b1.Property<int>("Status")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasDefaultValue(0)
+                                .HasColumnName("SupervisorApprovalStatus");
 
                             b1.HasKey("DailyDiaryId");
 
@@ -1412,13 +1430,13 @@ namespace CareerMate.Migrations
                     b.Navigation("CoordinatorApproval")
                         .IsRequired();
 
+                    b.Navigation("Intern");
+
                     b.Navigation("InternshipPeriod")
                         .IsRequired();
 
                     b.Navigation("PeriodCovered")
                         .IsRequired();
-
-                    b.Navigation("Student");
 
                     b.Navigation("SupervisorApproval");
                 });
@@ -1895,6 +1913,11 @@ namespace CareerMate.Migrations
             modelBuilder.Entity("CareerMate.Models.Entities.Industries.Industry", b =>
                 {
                     b.Navigation("Companies");
+                });
+
+            modelBuilder.Entity("CareerMate.Models.Entities.Interns.Intern", b =>
+                {
+                    b.Navigation("Diary");
                 });
 
             modelBuilder.Entity("CareerMate.Models.Entities.InternshipPosts.InternshipPost", b =>

@@ -46,6 +46,7 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Login
                 DegreeId = student.Degree.Id,
                 PathwayId = student.Pathway.Id,
                 ProfilePicFirebaseId = student.ProfilePicFirebaseId,
+                IsIntern = student.Intern != null
             };
         }
     }

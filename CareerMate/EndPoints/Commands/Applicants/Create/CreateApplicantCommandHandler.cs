@@ -1,4 +1,5 @@
-﻿using CareerMate.EndPoints.Handlers;
+﻿using CareerMate.Abstractions;
+using CareerMate.EndPoints.Handlers;
 using CareerMate.Infrastructure.Persistence.Repositories.Applicants;
 using CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts;
 using CareerMate.Infrastructure.Persistence.Repositories.Students;
@@ -38,6 +39,11 @@ namespace CareerMate.EndPoints.Commands.Applicants.Create
             if (student == null)
             {
                 return new NotFoundResponse<Student>();
+            }
+
+            if (student.Intern != null)
+            {
+                return new BadRequestResponse(ErrorCodes.AlreadyAnIntern, "Already an intern");
             }
 
             if (await _applicantRepository.IsAlreadyApplied(command.InternshipPostId, command.StudentId, cancellationToken))

@@ -29,5 +29,7 @@ namespace CareerMate.EndPoints.Commands.Users.Students.Create
         public Guid PathwayId { get; set; }
 
         public string ProfilePicFirebaseId { get; set; }
+
+        public bool IsIntern { get; set; }
     }
 }

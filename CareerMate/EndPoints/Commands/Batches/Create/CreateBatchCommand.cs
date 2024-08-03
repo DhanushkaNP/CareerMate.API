@@ -24,6 +24,12 @@ namespace CareerMate.EndPoints.Commands.Batches.Create
         [Required]
         public DateTime LastAllowedDateForStartInternship { get; set; }
 
+        [Required]
+        public int ValidInternshipPeriodInMonths { get; set; }
+
+        [Required]
+        public int DailyDiaryDueWeeks { get; set; }
+
         public List<StudentCsvModel> Students { get; set; }
     }
 }

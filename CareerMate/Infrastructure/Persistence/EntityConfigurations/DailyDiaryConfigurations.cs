@@ -1,4 +1,5 @@
-﻿using CareerMate.Models.Entities.DailyDiaries;
+﻿using CareerMate.Abstractions.Enums;
+using CareerMate.Models.Entities.DailyDiaries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,7 +31,7 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
 
             builder.OwnsOne(i => i.CoordinatorApproval, cf =>
             {
-                cf.Property(i => i.IsApproved).HasColumnName("IsCoordinatorApproved").HasDefaultValue(false);
+                cf.Property(i => i.Status).HasColumnName("CoordinatorApprovalStatus").HasDefaultValue(ApprovalTypes.waiting).IsRequired();
                 cf.Property(i => i.RequestedApprovalAt).HasColumnName("RequestedCoordinatorApprovalAt");
             });
 
@@ -38,13 +39,13 @@ namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
 
             builder.OwnsOne(i => i.SupervisorApproval, cf =>
             {
-                cf.Property(i => i.IsApproved).HasColumnName("IsSupervisorApproved").HasDefaultValue(false);
+                cf.Property(i => i.Status).HasColumnName("SupervisorApprovalStatus").HasDefaultValue(ApprovalTypes.waiting).IsRequired();
                 cf.Property(i => i.RequestedApprovalAt).HasColumnName("RequestedSupervisorApprovalAt");
             });
 
             builder.Navigation(i => i.CoordinatorApproval).IsRequired();
 
-            builder.HasOne(i => i.Student)
+            builder.HasOne(i => i.Intern)
                 .WithMany(i => i.Diary)
                 .OnDelete(DeleteBehavior.Cascade);
         }

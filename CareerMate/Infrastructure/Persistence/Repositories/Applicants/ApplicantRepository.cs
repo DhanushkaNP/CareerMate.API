@@ -18,7 +18,11 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Applicants
 
         public override Task<Applicant> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return GetQueryable()
+                .Where(a => a.Id == id)
+                .Include(a => a.Student).ThenInclude(s => s.Batch)
+                .Include(a => a.Student).ThenInclude(s => s.Intern)
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<PagedResponse<ApplicantQueryItem>> GetListByCompanyId(Guid companyId, Guid facultyId, PagedQuery pagedQuery, CancellationToken cancellationToken)
@@ -29,6 +33,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Applicants
                 .Include(a => a.InternshipPost).ThenInclude(i => i.Faculty)
                 .Include(a => a.Student).ThenInclude(s => s.Degree)
                 .Include(a => a.Student).ThenInclude(s => s.Pathway)
+                .Include(a => a.Student).ThenInclude(s => s.Intern)
                 .Where(a => a.InternshipPost.Company.Id == companyId && a.InternshipPost.Internship.DeletedAt == null && a.InternshipPost.Faculty.Id == facultyId)
                 .AsNoTracking();
 
@@ -77,7 +82,9 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Applicants
                 CGPA = a.Student.CGPA,
                 ProfilePicUrl = a.Student.ProfilePicFirebaseId,
                 AppliedInternshipPostId = a.InternshipPost.Id,
-                ProfilePicFirebaseId = a.Student.ProfilePicFirebaseId
+                AppliedInternshipId = a.InternshipPost.InternshipId,
+                ProfilePicFirebaseId = a.Student.ProfilePicFirebaseId,
+                IsAlreadyIntern = a.Student.Intern != null
             }).ToListAsync(cancellationToken);
 
             return new PagedResponse<ApplicantQueryItem>
