@@ -1,4 +1,5 @@
-﻿using CareerMate.Abstractions.Exceptions;
+﻿using CareerMate.Abstractions.Enums;
+using CareerMate.Abstractions.Exceptions;
 using CareerMate.Models.Entities.DailyRecords;
 using CareerMate.Models.Entities.Interns;
 using Microsoft.IdentityModel.Tokens;
@@ -22,8 +23,8 @@ namespace CareerMate.Models.Entities.DailyDiaries
             Intern = intern;
 
             IsLocked = true;
-            CoordinatorApproval.SetWaitingForApproval();
-            SupervisorApproval.SetWaitingForApproval();
+            CoordinatorApproval = new CoordinatorApproval();
+            SupervisorApproval = new SupervisorApproval();
         }
 
         private DailyDiary()
@@ -86,6 +87,11 @@ namespace CareerMate.Models.Entities.DailyDiaries
             return !Summary.IsNullOrEmpty() &&
                 !TrainingLocation.IsNullOrEmpty() &&
                 !Records.Any(r => r.Description.IsNullOrEmpty());
+        }
+
+        public bool IsApproved()
+        {
+            return CoordinatorApproval.Status == ApprovalTypes.approved && SupervisorApproval.Status == ApprovalTypes.approved;
         }
     }
 }

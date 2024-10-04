@@ -15,10 +15,16 @@ namespace CareerMate.EndPoints.Queries.DailyDiaries
 
         public bool IsLocked { get; set; }
 
-        public DateOnly DueDate { get; set; }
+        public DateOnly DueDate { get; set; }      
 
         public ApprovalTypes SupervisorApprovalStatus { get; set; }
 
         public ApprovalTypes CoordinatorApprovalStatus { get; set; }
+
+        public string StudentName { get; set; }
+
+        public DateTime? DateSubmittedForSupervisorApproval { get; set; }
+
+        public string InternshipName { get; set; }
     }
 }

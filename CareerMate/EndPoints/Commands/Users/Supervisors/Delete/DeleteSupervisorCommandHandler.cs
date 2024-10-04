@@ -9,7 +9,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Commands.Supervisors.Delete
+namespace CareerMate.EndPoints.Commands.Users.Supervisors.Delete
 {
     public class DeleteSupervisorCommandHandler : IRequestHandler<DeleteSupervisorCommand, BaseResponse>
     {

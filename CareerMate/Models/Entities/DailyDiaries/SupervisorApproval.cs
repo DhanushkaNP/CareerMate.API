@@ -5,14 +5,14 @@ namespace CareerMate.Models.Entities.DailyDiaries
 {
     public class SupervisorApproval
     {
-        public ApprovalTypes Status { get; private set; }
-
-        public DateTime? RequestedApprovalAt { get; private set; }
-
-        public void SetWaitingForApproval()
+        public SupervisorApproval()
         {
             Status = ApprovalTypes.waiting;
         }
+
+        public ApprovalTypes Status { get; private set; }
+
+        public DateTime? RequestedApprovalAt { get; private set; }
 
         public void CreateRequest()
         {
@@ -22,7 +22,7 @@ namespace CareerMate.Models.Entities.DailyDiaries
 
         public void Approve()
         {
-            Status = ApprovalTypes.requested;
+            Status = ApprovalTypes.approved;
         }
     }
 }

@@ -5,11 +5,13 @@ using CareerMate.Infrastructure.Persistence.Repositories.DailyDiaries;
 using CareerMate.Infrastructure.Persistence.Repositories.DailyRecords;
 using CareerMate.Infrastructure.Persistence.Repositories.Interns;
 using CareerMate.Infrastructure.Persistence.Repositories.Internships;
+using CareerMate.Infrastructure.Persistence.Repositories.Supervisors;
 using CareerMate.Models.Entities.Applicants;
 using CareerMate.Models.Entities.DailyDiaries;
 using CareerMate.Models.Entities.DailyRecords;
 using CareerMate.Models.Entities.Interns;
 using CareerMate.Models.Entities.Internships;
+using CareerMate.Models.Entities.Supervisors;
 using MediatR;
 using System;
 using System.Threading;
@@ -24,19 +26,22 @@ namespace CareerMate.EndPoints.Commands.Interns.Create
         private readonly IInternRepository _internRepository;
         private readonly IDailyDiaryRepository _dailyDiariesRepository;
         private readonly IDailyRecordRepository _dailyRecordRepository;
+        private readonly ISupervisorRepository _SupervisorRepository;
 
         public CreateInternByApplicantCommandHandler(
             IInternshipsRepository internshipsRepository,
             IApplicantRepository applicantRepository,
             IInternRepository internRepository,
             IDailyDiaryRepository dailyDiariesRepository,
-            IDailyRecordRepository dailyRecordRepository)
+            IDailyRecordRepository dailyRecordRepository,
+            ISupervisorRepository supervisorRepository)
         {
             _internshipsRepository = internshipsRepository;
             _applicantRepository = applicantRepository;
             _internRepository = internRepository;
             _dailyDiariesRepository = dailyDiariesRepository;
             _dailyRecordRepository = dailyRecordRepository;
+            _SupervisorRepository = supervisorRepository;
         }
 
         public async Task<BaseResponse> Handle(CreateInternByApplicantCommand command, CancellationToken cancellationToken)
@@ -60,11 +65,18 @@ namespace CareerMate.EndPoints.Commands.Interns.Create
                 return new BadRequestResponse(ErrorCodes.AlreadyAnIntern, "Already an intern");
             }
 
+            Supervisor supervisor = await _SupervisorRepository.GetByIdAsync(command.SupervisorId, cancellationToken);
+
+            if (supervisor == null)
+            {
+                return new NotFoundResponse<Supervisor>();
+            }
+
             Guid internId;
 
             using (var transaction = await _dailyDiariesRepository.BeginTransaction(cancellationToken))
             {
-                Intern intern = new Intern(command.StartAt, command.EndAt, applicant.Student, internship, internship.Company);
+                Intern intern = new Intern(command.StartAt, command.EndAt, applicant.Student, internship, internship.Company, supervisor);
 
                 _internRepository.Add(intern);
 

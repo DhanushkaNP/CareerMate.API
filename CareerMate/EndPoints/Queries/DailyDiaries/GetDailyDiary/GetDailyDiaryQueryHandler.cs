@@ -24,14 +24,7 @@ namespace CareerMate.EndPoints.Queries.DailyDiaries.GetDailyDiary
 
         public async Task<BaseResponse> Handle(GetDailyDiaryQuery query, CancellationToken cancellationToken)
         {
-            Student student = await _studentRepository.GetByIdAsync(query.StudentId, cancellationToken);
-
-            if (student == null)
-            {
-                return new NotFoundResponse<Student>();
-            }
-
-            var dailyDiary = await _dailyDiaryRepository.GetDailyDiaryDetails(query.StudentId, query.DailyDiaryId, cancellationToken);
+            var dailyDiary = await _dailyDiaryRepository.GetDailyDiaryDetails(query.DailyDiaryId, cancellationToken);
 
             if (dailyDiary == null)
             {

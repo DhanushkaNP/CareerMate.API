@@ -18,6 +18,8 @@ namespace CareerMate
                     policy => policy.RequireRole(Roles.Student));
                 options.AddPolicy(Policies.CompaniesOnly,
                     policy => policy.RequireRole(Roles.Company));
+                options.AddPolicy(Policies.SupervisorOnly,
+                    policy => policy.RequireRole(Roles.CompanySupervisor));
 
                 options.AddPolicy(Policies.CoordinatorLevel,
                     policy => policy.RequireRole(Roles.SysAdmin ,Roles.Coordinator));
@@ -25,7 +27,7 @@ namespace CareerMate
                     policy => policy.RequireRole(Roles.SysAdmin, Roles.Coordinator, Roles.CoordinatorAssistant));
                 
                 options.AddPolicy(Policies.AllUserRoles,
-                    policy => policy.RequireRole(Roles.SysAdmin, Roles.Coordinator, Roles.CoordinatorAssistant, Roles.Company, Roles.Student));
+                    policy => policy.RequireRole(Roles.SysAdmin, Roles.Coordinator, Roles.CoordinatorAssistant, Roles.Company, Roles.Student, Roles.CompanySupervisor));
 
                 options.AddPolicy(Policies.CompanyAndCoordinatorLevel,
                     policy => policy.RequireRole(Roles.Coordinator, Roles.CoordinatorAssistant, Roles.Company));

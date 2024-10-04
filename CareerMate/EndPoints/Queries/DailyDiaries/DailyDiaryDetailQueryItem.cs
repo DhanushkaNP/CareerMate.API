@@ -38,5 +38,7 @@ namespace CareerMate.EndPoints.Queries.DailyDiaries
         public string TrainingLocation { get; set; }
 
         public List<DailyRecordQueryItem> DailyRecords { get; set; }
+
+        public DateTime? DateSubmitted { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace CareerMate.EndPoints.Commands.Supervisors.Update
+namespace CareerMate.EndPoints.Commands.Users.Supervisors.Update
 {
     public class UpdateSupervisorCommandHandler : IRequestHandler<UpdateSupervisorCommand, BaseResponse>
     {

@@ -12,7 +12,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerMate.EndPoints.Commands.Supervisors.Create
+namespace CareerMate.EndPoints.Commands.Users.Supervisors.Create
 {
     public class CreateSupervisorCommandHandler : IRequestHandler<CreateSupervisorCommand, BaseResponse>
     {
@@ -68,7 +68,7 @@ namespace CareerMate.EndPoints.Commands.Supervisors.Create
                 transaction.Commit();
 
                 return new CreatedResponse(supervisor.Id);
-            }           
+            }
         }
     }
 }

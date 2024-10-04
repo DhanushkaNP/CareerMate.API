@@ -2,7 +2,7 @@
 using MediatR;
 using System;
 
-namespace CareerMate.EndPoints.Commands.Supervisors.Delete
+namespace CareerMate.EndPoints.Commands.Users.Supervisors.Delete
 {
     public class DeleteSupervisorCommand : IRequest<BaseResponse>
     {

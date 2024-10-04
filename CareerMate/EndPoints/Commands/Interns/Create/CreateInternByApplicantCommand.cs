@@ -19,5 +19,8 @@ namespace CareerMate.EndPoints.Commands.Interns.Create
 
         [Required]
         public DateOnly EndAt { get; set; }
+
+        [Required]
+        public Guid SupervisorId { get; set; }
     }
 }

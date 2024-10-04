@@ -15,13 +15,15 @@ namespace CareerMate.Models.Entities.Interns
             DateOnly endedDate,
             Student student,
             Internship internship,
-            Company company)
+            Company company,
+            Supervisor supervisor)
         {
             StartedDate = startedDate;
             EndedDate = endedDate;
             Student = student;
             Internship = internship;
             Company = company;
+            Supervisor = supervisor;
         }
 
         private Intern()
