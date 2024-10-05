@@ -15,7 +15,6 @@ namespace CareerMate.API.Controllers
 {
     [Route("api/SysAdmin")]
     [ApiController]
-    [Authorize(Policy = "AllowedSysAdmin")]
     public class SysAdminController : BaseController
     {
             private readonly IMediator _mediator;
