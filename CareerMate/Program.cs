@@ -3,8 +3,10 @@ using Autofac.Extensions.DependencyInjection;
 using CareerMate;
 using CareerMate.API.AutofacModules;
 using CareerMate.API.Middlewares;
+using CareerMate.Infrastructure.Persistence;
 using CareerMate.Infrastructure.Persistence.Seeds;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -66,6 +68,10 @@ app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+
+    var dbContext = services.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+
     try
     {
         var roleSeeder = services.GetRequiredService<IdentityRoleSeed>();
