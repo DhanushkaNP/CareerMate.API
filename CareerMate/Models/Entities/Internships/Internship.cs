@@ -43,7 +43,7 @@ namespace CareerMate.Models.Entities.Internships
 
         public InternshipPost InternshipPost { get; private set; }
 
-        public List<InternshipInvite> InternshipInvites { get; private set; }
+        public List<InternshipOffer> InternshipOffers { get; private set; }
 
         public List<Intern> Interns { get; private set; }
 

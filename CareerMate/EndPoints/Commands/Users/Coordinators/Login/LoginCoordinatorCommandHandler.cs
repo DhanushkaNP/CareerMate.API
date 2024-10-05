@@ -33,7 +33,7 @@ namespace CareerMate.EndPoints.Commands.Users.Coordinators.Login
             return new LoginCoordinatorCommandResponse()
             {
                 Token = userDetails.Token,
-                UserId = coordinator.Id,
+                UserId = coordinator.ApplicationUserId,
             };
         }
     }

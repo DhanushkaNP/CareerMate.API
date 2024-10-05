@@ -39,7 +39,7 @@ namespace CareerMate.EndPoints.Commands.Users.CoordinatorAssistants.Create
                 Guid userID = await _userService.CreateUser(
                                 command.Email,
                                 command.Password,
-                                Roles.Coordinator,
+                                Roles.CoordinatorAssistant,
                                 command.FirstName,
                                 command.LastName,
                                 cancellationToken);

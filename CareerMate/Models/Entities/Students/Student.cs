@@ -78,7 +78,7 @@ namespace CareerMate.Models.Entities.Students
 
         public Pathway Pathway { get; private set; }
 
-        public List<InternshipInvite> InternshipInvites { get; private set; }
+        public List<InternshipOffer> InternshipOffers { get; private set; }
 
         public List<Skill> Skills { get; private set; }
 

@@ -4,21 +4,26 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CareerMate.Infrastructure.Persistence.EntityConfigurations
 {
-    public class InternshipInviteConfigurations : IEntityTypeConfiguration<InternshipInvite>
+    public class InternshipInviteConfigurations : IEntityTypeConfiguration<InternshipOffer>
     {
-        public void Configure(EntityTypeBuilder<InternshipInvite> builder)
+        public void Configure(EntityTypeBuilder<InternshipOffer> builder)
         {
-            builder.ToTable(nameof(InternshipInvite));
+            builder.ToTable(nameof(InternshipOffer));
 
             builder.HasKey(i => i.Id);
 
             builder.HasOne(i => i.Student)
-                .WithMany(i => i.InternshipInvites)
+                .WithMany(i => i.InternshipOffers)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
             builder.HasOne(i => i.Internship)
-                .WithMany(i => i.InternshipInvites)
+                .WithMany(i => i.InternshipOffers)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            builder.HasOne(i => i.Supervisor)
+                .WithMany(i => i.InternshipOffers)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
         }

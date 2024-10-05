@@ -77,7 +77,7 @@ namespace CareerMate.Infrastructure.Persistence
 
         public DbSet<Industry> Industry { get; set; }
 
-        public DbSet<InternshipInvite> InternshipInvites { get; set; }
+        public DbSet<InternshipOffer> InternshipOffer { get; set; }
 
         public DbSet<Skill> Skill { get; set; }
 

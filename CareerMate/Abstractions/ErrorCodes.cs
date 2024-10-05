@@ -13,5 +13,6 @@ namespace CareerMate.Abstractions
         public static readonly Guid InvalidUniversityForCompany = new Guid("828214d3-313e-4be7-b06a-190d964a72db");
         public static readonly Guid DailyDiaryNotComplete = new Guid("60ed65e3-9836-4764-af76-22f66facd07f");
         public static readonly Guid AlreadyAnIntern = new Guid("3d23938a-334a-42a1-8c26-50b628f605b9");
+        public static readonly Guid AllreadyGaveAnOffer = new Guid("f7e0ff56-b341-48e8-a90d-ad57ddfefb98");
     }
 }

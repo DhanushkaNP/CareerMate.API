@@ -1,6 +1,7 @@
 ﻿using CareerMate.Models.Entities.ApplicationUsers;
 using CareerMate.Models.Entities.Companies;
 using CareerMate.Models.Entities.Interns;
+using CareerMate.Models.Entities.InternshipInvites;
 using System;
 using System.Collections.Generic;
 
@@ -41,6 +42,8 @@ namespace CareerMate.Models.Entities.Supervisors
         public Company Company { get; private set; }
 
         public List<Intern> Interns { get; private set; }
+
+        public List<InternshipOffer> InternshipOffers { get; set; }
 
         public void Delete()
         {

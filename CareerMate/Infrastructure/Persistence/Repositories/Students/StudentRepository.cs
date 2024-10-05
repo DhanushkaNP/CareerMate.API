@@ -36,6 +36,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.Students
                 .Include(s => s.Intern).ThenInclude(i => i.Company)
                 .Include(s => s.Degree)
                 .Include(s => s.Pathway)
+                .Include(s => s.Batch)
                 .FirstOrDefaultAsync(s => s.Id == id && s.DeletedAt == null, cancellationToken);
         }
 

@@ -199,6 +199,7 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
             IQueryable<InternshipPost> query = GetQueryable()
                 .Include(i => i.Company)
                 .Include(i => i.Faculty)
+                .Include(i => i.Internship)
                 .Where(i => i.DeletedAt == null && i.IsApproved == true && i.Company.Id == companyId && i.Faculty.Id == facultyId)
                 .AsNoTracking();
 
@@ -215,7 +216,8 @@ namespace CareerMate.Infrastructure.Persistence.Repositories.InternshipPosts
                 .Select(u => new InternshipPostListQueryItem
                 {
                     Id = u.Id,
-                    Title = u.Title
+                    Title = u.Title,
+                    InternshipId = u.Internship.Id,
                 }).ToListAsync(cancellationToken);
         }
 

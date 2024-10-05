@@ -48,8 +48,8 @@ namespace CareerMate.EndPoints.Commands.Batches.Create
                     DateOnly.FromDateTime(command.StartAt),
                     DateOnly.FromDateTime(command.EndAt),
                     DateOnly.FromDateTime(command.LastAllowedDateForStartInternship),
-                    command.ValidInternshipPeriodInMonths,
-                    command.DailyDiaryDueWeeks);
+                    command.ValidInternshipPeriodInMonths.Value,
+                    command.DailyDiaryDueWeeks.Value);
                 _batchesRepository.Add(studentBatch);
 
                 foreach(StudentCsvModel student in command.Students)
