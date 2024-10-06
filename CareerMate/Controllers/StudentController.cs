@@ -38,7 +38,7 @@ namespace CareerMate.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("/Students")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateStudent([FromBody] CreateStudentCommand command, CancellationToken cancellationToken)
         {
