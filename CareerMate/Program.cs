@@ -38,7 +38,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: corsPolicy, policy =>
     {
         policy
-            .WithOrigins("http://localhost:3000", "https://gray-field-05e650100.5.azurestaticapps.net")
+            .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
